@@ -1,6 +1,11 @@
 package ui;
 
+import java.util.List;
+
 public interface ICommand {
-    void execute();
+    boolean execute();
     void undo();
+    String getCommandName();
+    List<CommandArgument> getCommandArguments();
+    void setCommandArguments(List<CommandArgument> arguments);
 }
