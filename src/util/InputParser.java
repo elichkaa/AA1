@@ -9,16 +9,17 @@ import java.util.Scanner;
 
 public class InputParser {
     private static final Scanner SCANNER = new Scanner(System.in);
+    private static final int FIRST_ARGUMENT_COUNT = 1;
 
     private InputParser(){}
 
-    public static CommandParseResult parseUserInputToCommand(MainSystem system){
+    public static CommandParseResult parseUserInputAsCommand(MainSystem system) {
         // check if input null, emptyString or whatever random stuff it can hold
-        // magic String
-        List<String> splittedInput = Arrays.stream(SCANNER.nextLine().split(" ")).toList();
+        List<String> splittedInput = Arrays.stream(SCANNER.nextLine()
+                .split(StringsUtilEnum.WHITESPACE_STRING.toString())).toList();
         String commandName = splittedInput.stream().findFirst().orElse(null);
-        // 1 is magic number
-        List<CommandArgument> commandArguments = splittedInput.stream().skip(1).toList().stream().map(CommandArgument::new).toList();
+        List<CommandArgument> commandArguments = splittedInput.stream().skip(FIRST_ARGUMENT_COUNT).toList()
+                .stream().map(CommandArgument::new).toList();
         return new CommandParseResult(system, commandName, commandArguments);
     }
 }

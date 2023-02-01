@@ -20,14 +20,14 @@ public class MainSystem {
 
     public void init(){
         this.initializeCommands();
-        Command command = InputParser.parseUserInputToCommand(this).getCommand();
+        Command command = InputParser.parseUserInputAsCommand(this).getCommand();
         this.systemState = true;
         while(command != null){
             this.executeCommand(command);
             if (!this.systemState){
                 return;
             }
-            command = InputParser.parseUserInputToCommand(this).getCommand();
+            command = InputParser.parseUserInputAsCommand(this).getCommand();
         }
     }
 
