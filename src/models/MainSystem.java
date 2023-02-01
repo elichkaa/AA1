@@ -6,13 +6,15 @@ import ui.NewCommand;
 import ui.QuitCommand;
 import ui.CommandNames;
 import util.InputParser;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MainSystem {
     private final CommandHistory commandHistory = new CommandHistory();
-    private boolean systemState;
-    private List<Command> allCommands;
+    private boolean systemState = false;
+    private List<Command> allCommands = new ArrayList<>();
 
     public MainSystem() {}
 
@@ -40,11 +42,8 @@ public class MainSystem {
     }
 
     private void initializeCommands(){
-        MainSystem system = this;
-        this.allCommands = new ArrayList<>() {{
-            add(new NewCommand(system, CommandNames.NEW.toString()));
-            add(new QuitCommand(system, CommandNames.QUIT.toString()));
-        }};
+        this.allCommands = Arrays.asList(new NewCommand(this, CommandNames.NEW.toString()),
+                new QuitCommand(this, CommandNames.QUIT.toString()));
     }
 
     public List<Command> getAllCommands() {
