@@ -20,6 +20,7 @@ public class Session {
     public void init(){
         this.initializeCommands();
         Scanner scanner = new Scanner(System.in);
+        Game game = new Game();
         Command command = InputParser.parseUserInputAsCommand(this, scanner).getCommand();
         this.sessionState = true;
         while(this.sessionState){
@@ -27,7 +28,6 @@ public class Session {
             if (command.getCommandName().equals(CommandNames.QUIT.toString())){
                 this.terminateSession();
             }
-            Game game = new Game();
             if (!game.hasOutput()){
                 command = InputParser.parseUserInputAsCommand(this, scanner).getCommand();
                 game.processInput(command);
@@ -37,9 +37,14 @@ public class Session {
     }
 
     private void executeCommand(Command command){
-        if (command.execute()){
-            commandHistory.addCommand(command);
+        try {
+            if (command.execute()){
+                commandHistory.addCommand(command);
+            }
+        } catch (NullPointerException nullPointerException){
+            System.out.println("Command was null and could not be executed.");
         }
+
     }
 
     private void terminateSession(){

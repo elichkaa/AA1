@@ -1,9 +1,11 @@
 import models.Session;
 
 public final class Main {
-    private Main() { }
+    private Main() {
+        throw new IllegalStateException("Utility class cannot be instantiated.");
+    }
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         if (args != null && args.length != 0){
             System.out.println("Arguments not allowed");
         }
