@@ -1,15 +1,12 @@
 package ui;
 
-import models.MainSystem;
 import java.util.List;
 
 public abstract class Command implements ICommand {
-    protected final MainSystem system;
     protected final String commandName;
     protected List<CommandArgument> commandArguments;
 
-    public Command(MainSystem system, String commandName) {
-        this.system = system;
+    public Command(String commandName) {
         this.commandName = commandName;
     }
 
@@ -19,18 +16,16 @@ public abstract class Command implements ICommand {
     @Override
     public void undo() { }
 
-    @Override
     public String getCommandName(){
         return this.commandName;
     }
 
-    @Override
     public List<CommandArgument> getCommandArguments(){
         return this.commandArguments;
     }
 
-    @Override
-    public void setCommandArguments(List<CommandArgument> arguments){
+    //only ui package can access setter
+    protected void setCommandArguments(List<CommandArgument> arguments){
         this.commandArguments = arguments;
     }
 }

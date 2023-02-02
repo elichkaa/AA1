@@ -3,7 +3,7 @@ package ui;
 import java.util.Stack;
 
 public class CommandHistory implements ICommandHistory {
-    private Stack<Command> commandHistory;
+    private final Stack<Command> commandHistory;
 
     public CommandHistory(){
         this.commandHistory = new Stack<>();

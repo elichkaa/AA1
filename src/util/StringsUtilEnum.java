@@ -3,9 +3,14 @@ package util;
 public enum StringsUtilEnum {
     WHITESPACE_STRING(" ");
 
-    private String value;
+    private final String value;
 
-    private StringsUtilEnum(String value){
+    StringsUtilEnum(String value){
         this.value = value;
+    }
+
+    @Override
+    public String toString(){
+        return this.value;
     }
 }

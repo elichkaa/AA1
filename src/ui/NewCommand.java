@@ -1,10 +1,10 @@
 package ui;
 
-import models.MainSystem;
+import java.util.List;
 
 public class NewCommand extends Command {
-    public NewCommand(MainSystem system, String commandName) {
-        super(system, commandName);
+    public NewCommand(String commandName) {
+        super(commandName);
     }
 
     @Override

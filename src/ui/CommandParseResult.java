@@ -1,23 +1,22 @@
 package ui;
 
-import models.MainSystem;
+import models.Session;
 import util.StringsUtilEnum;
-
 import java.util.List;
 
 public class CommandParseResult {
-    private MainSystem system;
+    private final Session session;
     private final String commandName;
     private final List<CommandArgument> arguments;
 
-    public CommandParseResult(MainSystem system, String commandName, List<CommandArgument> arguments){
-        this.system = system;
+    public CommandParseResult(Session session, String commandName, List<CommandArgument> arguments){
+        this.session = session;
         this.commandName = commandName;
         this.arguments = arguments;
     }
 
     public Command getCommand() {
-        for (Command command : system.getAllCommands()) {
+        for (Command command : session.getAllCommands()) {
             if (command.getCommandName().equals(this.commandName)){
                 command.setCommandArguments(this.arguments);
                 return command;
@@ -26,9 +25,9 @@ public class CommandParseResult {
         return null;
     }
 
+
     @Override
     public String toString() {
-        // magic Strings
         return this.commandName + StringsUtilEnum.WHITESPACE_STRING +
                 String.join(StringsUtilEnum.WHITESPACE_STRING.toString(),
                         this.arguments.stream().map(CommandArgument::getValue).toList());
