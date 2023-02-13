@@ -5,7 +5,9 @@ import ui.CommandHistory;
 import ui.NewCommand;
 import ui.QuitCommand;
 import ui.CommandNames;
-import util.InputParser;
+import util.CommandParser;
+import util.PlayerParser;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,7 +23,8 @@ public class Session {
         this.initializeCommands();
         Scanner scanner = new Scanner(System.in);
         Game game = new Game();
-        Command command = InputParser.parseUserInputAsCommand(this, scanner).getCommand();
+        CommandParser commandParser = new CommandParser();
+        Command command = commandParser.parseResult(this, scanner).getResult();
         this.sessionState = true;
         while(this.sessionState){
             this.executeCommand(command);
@@ -29,7 +32,7 @@ public class Session {
                 this.terminateSession();
             }
             if (!game.hasOutput()){
-                command = InputParser.parseUserInputAsCommand(this, scanner).getCommand();
+                command = commandParser.parseResult(this, scanner).getResult();
                 game.processInput(command);
             }
         }

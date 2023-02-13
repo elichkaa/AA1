@@ -1,7 +1,6 @@
 package models;
 
 import ui.Command;
-import ui.CommandParseResult;
 
 public interface IGame {
     void play();
