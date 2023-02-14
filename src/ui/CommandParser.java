@@ -1,9 +1,7 @@
-package models.parsing;
+package ui;
 
 import models.Session;
-import ui.Command;
-import ui.CommandArgument;
-import ui.CommandParseResult;
+import models.parsing.IParser;
 import util.CoreString;
 
 import java.util.Arrays;
@@ -19,18 +17,29 @@ public class CommandParser implements IParser<Command> {
     }
 
     @Override
-    public IParseResult<Command> parse(Session session, Scanner scanner) {
+    public Command parse(Session session, Scanner scanner) {
         // check if input null, emptyString or whatever random stuff it can hold
         List<String> splittedInput = Arrays.stream(scanner.nextLine()
                 .split(CoreString.WHITESPACE_STRING.toString())).toList();
         String commandName = splittedInput.stream().findFirst().orElse(null);
         List<CommandArgument> commandArguments = splittedInput.stream().skip(FIRST_ARGUMENT).toList()
                 .stream().map(CommandArgument::new).toList();
-        return new CommandParseResult(session, commandName, commandArguments);
+        return this.getCommand(session, commandName, commandArguments);
+    }
+
+    // setCommandArguments is accessible just from the current package
+    private Command getCommand(Session session, String commandName, List<CommandArgument> commandArguments) {
+        for (Command command : session.getAllCommands()) {
+            if (command.getCommandName().equals(commandName)){
+                command.setCommandArguments(commandArguments);
+                return command;
+            }
+        }
+        return null;
     }
 
     @Override
-    public List<IParseResult<Command>> parseAll(Session session, Scanner scanner) {
+    public List<Command> parseAll(Session session, Scanner scanner) {
         return null;
     }
 }

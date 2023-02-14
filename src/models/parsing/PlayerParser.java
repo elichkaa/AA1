@@ -33,12 +33,12 @@ public class PlayerParser implements IParser<Player> {
     }
 
     @Override
-    public IParseResult<Player> parse(Session session, Scanner scanner) {
+    public Player parse(Session session, Scanner scanner) {
         return null;
     }
 
     @Override
-    public List<IParseResult<Player>> parseAll(Session session, Scanner scanner) {
+    public List<Player> parseAll(Session session, Scanner scanner) {
         Object playerCountInput = this.checkInputCorrectness(session, scanner,
                 Regex.COUNT_AND_GOLD.toString(),
                 ErrorMessage.PLAYER_COUNT_INVALID.toString(),
@@ -79,9 +79,9 @@ public class PlayerParser implements IParser<Player> {
         }
         int winningGold = Integer.parseInt((String) winningGoldObject);
 
-        List<IParseResult<Player>> parsedPlayers = new ArrayList<>();
+        List<Player> parsedPlayers = new ArrayList<>();
         for (String playerName: playerNames) {
-            parsedPlayers.add(new PlayerParseResult(playerName, initialGold, winningGold));
+            parsedPlayers.add(new Player(playerName, initialGold, winningGold));
         }
         return parsedPlayers;
     }

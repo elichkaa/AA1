@@ -2,13 +2,11 @@ package models;
 
 import models.core.Game;
 import models.core.Player;
-import models.parsing.IParseResult;
-import models.parsing.IParser;
 import ui.Command;
 import ui.commands.NewCommand;
 import ui.commands.QuitCommand;
 import util.CommandName;
-import models.parsing.CommandParser;
+import ui.CommandParser;
 import models.parsing.PlayerParser;
 import util.IOHandler;
 
@@ -30,13 +28,13 @@ public class Session {
 
         CommandParser commandParser = new CommandParser();
         while (this.sessionState){
-            Command command = commandParser.parse(this, scanner).getResult();
+            Command command = commandParser.parse(this, scanner);
             this.executeCommand(command);
             if (command.getCommandName().equals(CommandName.QUIT.toString())){
                 this.terminateSession();
             }
             if (!game.hasOutput()){
-                command = commandParser.parse(this, scanner).getResult();
+                command = commandParser.parse(this, scanner);
                 game.processInput(command);
             }
         }
@@ -45,11 +43,11 @@ public class Session {
 
     private Game initializeGame(Scanner scanner){
         PlayerParser playerParser = new PlayerParser();
-        List<IParseResult<Player>> parsed =  playerParser.parseAll(this, scanner);
-        if (parsed == null) {
+        List<Player> players =  playerParser.parseAll(this, scanner);
+        if (players == null) {
             return null;
         }
-        return new Game(5, parsed.stream().map(IParseResult::getResult).toList());
+        return new Game(5, players);
     }
 
     private void executeCommand(Command command){
