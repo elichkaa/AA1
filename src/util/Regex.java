@@ -1,11 +1,11 @@
 package util;
 
-public enum StringsUtilEnum {
-    WHITESPACE_STRING(" ");
+public enum Regex {
+    PLAYER_NAME("[A-Za-z]+");
 
     private final String value;
 
-    StringsUtilEnum(String value){
+    Regex(String value){
         this.value = value;
     }
 

@@ -1,12 +1,14 @@
 package models;
 
+import models.core.Game;
+import models.core.Player;
 import ui.Command;
-import ui.CommandHistory;
-import ui.NewCommand;
-import ui.QuitCommand;
-import ui.CommandNames;
-import util.CommandParser;
-import util.PlayerParser;
+import ui.commands.NewCommand;
+import ui.commands.QuitCommand;
+import util.CommandName;
+import models.parsing.CommandParser;
+import models.parsing.PlayerParser;
+import util.IOHandler;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,36 +16,42 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Session {
-    private final CommandHistory commandHistory = new CommandHistory();
     private boolean sessionState = false;
     private List<Command> allCommands = new ArrayList<>();
     public Session() {}
 
-    public void init(){
+    public void init() {
+        IOHandler.printPixelArt();
         this.initializeCommands();
         Scanner scanner = new Scanner(System.in);
-        Game game = new Game();
+        Game game = this.initializeGame(scanner);
         CommandParser commandParser = new CommandParser();
-        Command command = commandParser.parseResult(this, scanner).getResult();
+
+        Command command = commandParser.parse(this, scanner).getResult();
         this.sessionState = true;
         while(this.sessionState){
             this.executeCommand(command);
-            if (command.getCommandName().equals(CommandNames.QUIT.toString())){
+            if (command.getCommandName().equals(CommandName.QUIT.toString())){
                 this.terminateSession();
             }
             if (!game.hasOutput()){
-                command = commandParser.parseResult(this, scanner).getResult();
+                command = commandParser.parse(this, scanner).getResult();
                 game.processInput(command);
             }
         }
         scanner.close();
     }
 
+    private Game initializeGame(Scanner scanner){
+        PlayerParser playerParser = new PlayerParser();
+        List<Player> players = playerParser.parse(this, scanner).getResult();
+        int seed = 7;
+        return new Game(seed);
+    }
+
     private void executeCommand(Command command){
         try {
-            if (command.execute()){
-                commandHistory.addCommand(command);
-            }
+            command.execute();
         } catch (NullPointerException nullPointerException){
             System.out.println("Command was null and could not be executed.");
         }
@@ -55,11 +63,13 @@ public class Session {
     }
 
     private void initializeCommands(){
-        this.allCommands = Arrays.asList(new NewCommand(CommandNames.NEW.toString()),
-                new QuitCommand(CommandNames.QUIT.toString()));
+        this.allCommands = Arrays.asList(new NewCommand(CommandName.NEW.toString()),
+                new QuitCommand(CommandName.QUIT.toString()));
     }
 
     public List<Command> getAllCommands() {
         return allCommands;
     }
+
+
 }

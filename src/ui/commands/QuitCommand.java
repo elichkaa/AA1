@@ -1,9 +1,11 @@
-package ui;
+package ui.commands;
+
+import ui.Command;
 
 import java.util.List;
 
-public class NewCommand extends Command {
-    public NewCommand(String commandName) {
+public class QuitCommand extends Command {
+    public QuitCommand(String commandName) {
         super(commandName);
     }
 

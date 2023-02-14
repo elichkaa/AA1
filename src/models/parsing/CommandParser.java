@@ -1,15 +1,16 @@
-package util;
+package models.parsing;
 
 import models.Session;
 import ui.Command;
 import ui.CommandArgument;
 import ui.CommandParseResult;
+import util.CoreString;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-public class CommandParser implements IParser {
+public class CommandParser implements IParser<Command> {
     private static final int FIRST_ARGUMENT = 1;
 
     @Override
@@ -18,10 +19,10 @@ public class CommandParser implements IParser {
     }
 
     @Override
-    public CommandParseResult parseResult(Session session, Scanner scanner) {
+    public IParseResult<Command> parse(Session session, Scanner scanner) {
         // check if input null, emptyString or whatever random stuff it can hold
         List<String> splittedInput = Arrays.stream(scanner.nextLine()
-                .split(StringsUtilEnum.WHITESPACE_STRING.toString())).toList();
+                .split(CoreString.WHITESPACE_STRING.toString())).toList();
         String commandName = splittedInput.stream().findFirst().orElse(null);
         List<CommandArgument> commandArguments = splittedInput.stream().skip(FIRST_ARGUMENT).toList()
                 .stream().map(CommandArgument::new).toList();

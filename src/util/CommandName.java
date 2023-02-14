@@ -1,12 +1,12 @@
-package ui;
+package util;
 
-public enum CommandNames {
+public enum CommandName {
     NEW("new"),
     QUIT("quit");
 
-    private String commandName;
+    private final String commandName;
 
-    CommandNames(String commandName){
+    CommandName(String commandName){
         this.commandName = commandName;
     }
 

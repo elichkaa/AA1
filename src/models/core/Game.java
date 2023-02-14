@@ -1,14 +1,16 @@
-package models;
+package models.core;
 
 import ui.Command;
 import ui.CommandArgument;
-import ui.NewCommand;
+import ui.commands.NewCommand;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Game implements IGame{
-    public Game() { }
+    public Game(int seed) {
+
+    }
 
     @Override
     public void play() {
