@@ -1,6 +1,7 @@
 package models.parsing;
 
 import models.Session;
+import util.StateObserver;
 
 import java.util.List;
 import java.util.Scanner;
@@ -19,5 +20,10 @@ public class SeedParser implements IParser<Integer> {
     @Override
     public List<Integer> parseAll(Session session, Scanner scanner) {
         return null;
+    }
+
+    @Override
+    public void addObserver(StateObserver observer) {
+
     }
 }

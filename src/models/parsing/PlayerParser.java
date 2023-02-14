@@ -11,6 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PlayerParser implements IParser<Player> {
+    StateObserver observer;
     private final static Pattern quitPattern = Pattern.compile(CommandName.QUIT.toString());
 
     @Override
@@ -20,7 +21,7 @@ public class PlayerParser implements IParser<Player> {
         String line = scanner.nextLine();
         Matcher matcher = quitPattern.matcher(line);
         if (matcher.matches()){
-            session.terminateSession();
+            observer.update("Session terminated.");
             return null;
         }
         matcher = playerCountPattern.matcher(line);
@@ -84,5 +85,10 @@ public class PlayerParser implements IParser<Player> {
             parsedPlayers.add(new Player(playerName, initialGold, winningGold));
         }
         return parsedPlayers;
+    }
+
+    @Override
+    public void addObserver(StateObserver observer){
+        this.observer = observer;
     }
 }

@@ -9,6 +9,7 @@ import util.CommandName;
 import ui.CommandParser;
 import models.parsing.PlayerParser;
 import util.IOHandler;
+import util.StateObserver;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,15 +26,19 @@ public class Session {
         this.initializeCommands();
         Scanner scanner = new Scanner(System.in);
         Game game = this.initializeGame(scanner);
+        if (!sessionState){
+            scanner.close();
+            return;
+        }
 
         CommandParser commandParser = new CommandParser();
-        while (this.sessionState){
-            Command command = commandParser.parse(this, scanner);
+        commandParser.addObserver(x -> {
+            this.sessionState = false;
+        });
+        Command command = commandParser.parse(this, scanner);
+        while(this.sessionState){
             this.executeCommand(command);
-            if (command.getCommandName().equals(CommandName.QUIT.toString())){
-                this.terminateSession();
-            }
-            if (!game.hasOutput()){
+            if (!game.hasOutput()) {
                 command = commandParser.parse(this, scanner);
                 game.processInput(command);
             }
@@ -43,10 +48,10 @@ public class Session {
 
     private Game initializeGame(Scanner scanner){
         PlayerParser playerParser = new PlayerParser();
+        playerParser.addObserver(x -> {
+            this.sessionState = false;
+        });
         List<Player> players =  playerParser.parseAll(this, scanner);
-        if (players == null) {
-            return null;
-        }
         return new Game(5, players);
     }
 
@@ -59,10 +64,6 @@ public class Session {
 
     }
 
-    public void terminateSession(){
-        this.sessionState = false;
-    }
-
     private void initializeCommands(){
         this.allCommands = Arrays.asList(new NewCommand(CommandName.NEW.toString()),
                 new QuitCommand(CommandName.QUIT.toString()));
@@ -71,6 +72,4 @@ public class Session {
     public List<Command> getAllCommands() {
         return allCommands;
     }
-
-
 }
