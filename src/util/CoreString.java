@@ -1,7 +1,9 @@
 package util;
 
 public enum CoreString {
-    WHITESPACE_STRING(" ");
+    WHITESPACE_STRING(" "),
+    SEMICOLON_STRING(";"),
+    COLON_STRING(":");
 
     private final String value;
 

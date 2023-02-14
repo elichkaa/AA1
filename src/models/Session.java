@@ -2,6 +2,8 @@ package models;
 
 import models.core.Game;
 import models.core.Player;
+import models.parsing.IParseResult;
+import models.parsing.IParser;
 import ui.Command;
 import ui.commands.NewCommand;
 import ui.commands.QuitCommand;
@@ -16,7 +18,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Session {
-    private boolean sessionState = false;
+    private boolean sessionState = true;
     private List<Command> allCommands = new ArrayList<>();
     public Session() {}
 
@@ -25,11 +27,10 @@ public class Session {
         this.initializeCommands();
         Scanner scanner = new Scanner(System.in);
         Game game = this.initializeGame(scanner);
-        CommandParser commandParser = new CommandParser();
 
-        Command command = commandParser.parse(this, scanner).getResult();
-        this.sessionState = true;
-        while(this.sessionState){
+        CommandParser commandParser = new CommandParser();
+        while (this.sessionState){
+            Command command = commandParser.parse(this, scanner).getResult();
             this.executeCommand(command);
             if (command.getCommandName().equals(CommandName.QUIT.toString())){
                 this.terminateSession();
@@ -44,9 +45,11 @@ public class Session {
 
     private Game initializeGame(Scanner scanner){
         PlayerParser playerParser = new PlayerParser();
-        List<Player> players = playerParser.parse(this, scanner).getResult();
-        int seed = 7;
-        return new Game(seed);
+        List<IParseResult<Player>> parsed =  playerParser.parseAll(this, scanner);
+        if (parsed == null) {
+            return null;
+        }
+        return new Game(5, parsed.stream().map(IParseResult::getResult).toList());
     }
 
     private void executeCommand(Command command){
@@ -58,7 +61,7 @@ public class Session {
 
     }
 
-    private void terminateSession(){
+    public void terminateSession(){
         this.sessionState = false;
     }
 

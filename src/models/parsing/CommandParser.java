@@ -14,8 +14,8 @@ public class CommandParser implements IParser<Command> {
     private static final int FIRST_ARGUMENT = 1;
 
     @Override
-    public boolean checkInputCorrectness() {
-        return false;
+    public Object checkInputCorrectness(Session session, Scanner scanner, String pattern, String errorMessage, String question) {
+        return null;
     }
 
     @Override
@@ -27,5 +27,10 @@ public class CommandParser implements IParser<Command> {
         List<CommandArgument> commandArguments = splittedInput.stream().skip(FIRST_ARGUMENT).toList()
                 .stream().map(CommandArgument::new).toList();
         return new CommandParseResult(session, commandName, commandArguments);
+    }
+
+    @Override
+    public List<IParseResult<Command>> parseAll(Session session, Scanner scanner) {
+        return null;
     }
 }

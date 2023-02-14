@@ -1,6 +1,9 @@
 package models.parsing;
 
 import models.core.Player;
+import ui.Command;
+
+import java.util.List;
 
 public class PlayerParseResult implements IParseResult<Player>{
     private String playerName;
@@ -12,8 +15,9 @@ public class PlayerParseResult implements IParseResult<Player>{
         this.startingGold = startingGold;
         this.goldToWin = goldToWin;
     }
+
     @Override
     public Player getResult() {
-        return null;
+        return new Player(this.playerName, this.startingGold, this.goldToWin);
     }
 }

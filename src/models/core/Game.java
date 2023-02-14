@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game implements IGame{
-    public Game(int seed) {
+    public Game(int seed, List<Player> players) {
 
     }
 

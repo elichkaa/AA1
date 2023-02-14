@@ -5,11 +5,12 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public final class IOHandler {
+    private static final String FILE_PATH = "./src/util/Pixel-Art.txt";
     private IOHandler() {}
 
     public static void printPixelArt(){
         try{
-            BufferedReader br = new BufferedReader(new FileReader("./src/util/Pixel-Art.txt"));
+            BufferedReader br = new BufferedReader(new FileReader(FILE_PATH));
             for (String line; (line = br.readLine()) != null;) {
                 System.out.println(line);
             }
