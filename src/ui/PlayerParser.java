@@ -1,7 +1,6 @@
 package ui;
 
 import models.core.Player;
-import util.CommandName;
 import util.ErrorMessage;
 import util.Regex;
 import util.StateObserver;
@@ -16,7 +15,7 @@ import java.util.regex.Pattern;
 
 public class PlayerParser implements IParser<List<Player>> {
     private StateObserver observer;
-    private final static Pattern quitPattern = Pattern.compile(CommandName.QUIT.toString());
+    private final static Pattern quitPattern = Pattern.compile(Regex.QUIT.toString());
     private final Scanner scanner;
 
     public PlayerParser(Scanner scanner){

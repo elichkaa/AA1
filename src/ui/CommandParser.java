@@ -1,8 +1,8 @@
 package ui;
 
 import models.Session;
-import util.CommandName;
 import util.CoreString;
+import util.Regex;
 import util.StateObserver;
 import java.util.Arrays;
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 
 public class CommandParser implements IParser<Command> {
     private StateObserver observer;
-    private final static Pattern quitPattern = Pattern.compile(CommandName.QUIT.toString());
+    private final static Pattern quitPattern = Pattern.compile(Regex.QUIT.toString());
     private final Session session;
     private final Scanner scanner;
 

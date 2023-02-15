@@ -3,7 +3,7 @@ package models;
 import models.core.Game;
 import models.core.Player;
 import ui.Command;
-import ui.commands.ShowCommand;
+import ui.commands.*;
 import util.CommandName;
 import ui.CommandParser;
 import ui.PlayerParser;
@@ -23,21 +23,21 @@ public class Session {
         IOHandler.printPixelArt();
         this.initializeCommands();
         Scanner scanner = new Scanner(System.in);
-        /*Game game = this.initializeGame(scanner);
+        Game game = this.initializeGame(scanner);
         if (!sessionState){
             scanner.close();
             return;
-        }*/
+        }
 
         CommandParser commandParser = new CommandParser(this, scanner);
         commandParser.addObserver(x -> this.sessionState = false);
         Command command = commandParser.parse();
         while(this.sessionState){
             this.executeCommand(command);
-            /*if (!game.hasOutput()) {
+            if (!game.hasOutput()) {
                 command = commandParser.parse();
                 game.processInput(command);
-            }*/
+            }
         }
         scanner.close();
     }
@@ -59,7 +59,11 @@ public class Session {
     }
 
     private void initializeCommands(){
-        this.allCommands = Arrays.asList(new ShowCommand(CommandName.SHOW.toString()));
+        this.allCommands = Arrays.asList(new ShowCommand(CommandName.SHOW.toString()),
+                new BuyCommand(CommandName.BUY.toString()),
+                new HarvestCommand(CommandName.HARVEST.toString()),
+                new SellCommand(CommandName.SELL.toString()),
+                new PlantCommand(CommandName.PLANT.toString()));
     }
 
     public List<Command> getAllCommands() {

@@ -2,7 +2,10 @@ package util;
 
 public enum CommandName {
     SHOW("show"),
-    QUIT("quit");
+    SELL("sell"),
+    PLANT("plant"),
+    HARVEST("harvest"),
+    BUY("buy");
 
     private final String commandName;
 

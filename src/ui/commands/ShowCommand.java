@@ -12,8 +12,7 @@ public class ShowCommand extends Command {
     public boolean execute() {
         CommandArgument targetToShow = this.commandArguments.stream().findFirst().orElse(null);
         if (targetToShow != null){
-            String targetValue = targetToShow.getValue();
-            switch (targetValue) {
+            switch (targetToShow.getValue()) {
                 case "barn":
 
                     break;
