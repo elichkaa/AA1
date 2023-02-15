@@ -2,13 +2,13 @@ package ui.commands;
 
 import ui.Command;
 
-public class QuitCommand extends Command {
-    public QuitCommand(String commandName) {
+public class PlantCommand extends Command {
+    public PlantCommand(String commandName) {
         super(commandName);
     }
 
     @Override
     public boolean execute() {
-        return true;
+        return false;
     }
 }

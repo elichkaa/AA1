@@ -4,8 +4,6 @@ import models.Session;
 import util.CommandName;
 import util.CoreString;
 import util.StateObserver;
-
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -31,21 +29,23 @@ public class CommandParser implements IParser<Command> {
     @Override
     public Command parse() {
         // check if input null, emptyString or whatever random stuff it can hold
-        List<String> splittedInput = Arrays.stream(scanner.nextLine()
+
+        List<String> userInput = Arrays.stream(this.scanner.nextLine()
                 .split(CoreString.WHITESPACE_STRING.toString())).toList();
-        String commandName = splittedInput.stream().findFirst().orElse(null);
+        String commandName = userInput.stream().findFirst().orElse(null);
+        if (commandName == null) return null;
         Matcher matcher = quitPattern.matcher(commandName);
         if (matcher.matches()){
             observer.update("Session terminated");
             return null;
         }
-        //List<CommandArgument<?>> commandArguments = splittedInput.stream()
-           //     .skip(FIRST_ARGUMENT).map().toList();
-        return this.getCommand(commandName, new ArrayList<>());
+
+        List<CommandArgument> commandArguments = userInput.stream().skip(1).map(CommandArgument::new).toList();
+        return this.getCommand(commandName, commandArguments);
     }
 
     // setCommandArguments is accessible just from the current package
-    private Command getCommand(String commandName, List<CommandArgument<?>> commandArguments) {
+    private Command getCommand(String commandName, List<CommandArgument> commandArguments) {
         for (Command command : this.session.getAllCommands()) {
             if (command.getCommandName().equals(commandName)){
                 command.setCommandArguments(commandArguments);

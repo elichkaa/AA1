@@ -1,10 +1,6 @@
 package models.core;
 
 import ui.Command;
-import ui.CommandArgument;
-import ui.commands.ShowCommand;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class Game implements IGame{
@@ -14,8 +10,6 @@ public class Game implements IGame{
 
     @Override
     public void play() {
-        var args = new ArrayList<>(List.of(new CommandArgument("Hello"), new CommandArgument("Hello")));
-        var command = new ShowCommand("new");
     }
 
     @Override

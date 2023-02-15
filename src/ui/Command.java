@@ -4,7 +4,7 @@ import java.util.List;
 
 public abstract class Command implements ICommand {
     protected final String commandName;
-    protected List<CommandArgument<?>> commandArguments;
+    protected List<CommandArgument> commandArguments;
 
     public Command(String commandName) {
         this.commandName = commandName;
@@ -20,12 +20,12 @@ public abstract class Command implements ICommand {
         return this.commandName;
     }
 
-    public List<CommandArgument<?>> getCommandArguments(){
+    public List<CommandArgument> getCommandArguments(){
         return this.commandArguments;
     }
 
     //only ui package can access setter
-    protected void setCommandArguments(List<CommandArgument<?>> arguments){
+    protected void setCommandArguments(List<CommandArgument> arguments){
         this.commandArguments = arguments;
     }
 }

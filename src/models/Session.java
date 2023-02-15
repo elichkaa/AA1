@@ -4,7 +4,6 @@ import models.core.Game;
 import models.core.Player;
 import ui.Command;
 import ui.commands.ShowCommand;
-import ui.commands.QuitCommand;
 import util.CommandName;
 import ui.CommandParser;
 import ui.PlayerParser;
@@ -24,32 +23,28 @@ public class Session {
         IOHandler.printPixelArt();
         this.initializeCommands();
         Scanner scanner = new Scanner(System.in);
-        Game game = this.initializeGame(scanner);
+        /*Game game = this.initializeGame(scanner);
         if (!sessionState){
             scanner.close();
             return;
-        }
+        }*/
 
         CommandParser commandParser = new CommandParser(this, scanner);
-        commandParser.addObserver(x -> {
-            this.sessionState = false;
-        });
+        commandParser.addObserver(x -> this.sessionState = false);
         Command command = commandParser.parse();
         while(this.sessionState){
             this.executeCommand(command);
-            if (!game.hasOutput()) {
+            /*if (!game.hasOutput()) {
                 command = commandParser.parse();
                 game.processInput(command);
-            }
+            }*/
         }
         scanner.close();
     }
 
     private Game initializeGame(Scanner scanner){
         PlayerParser playerParser = new PlayerParser(scanner);
-        playerParser.addObserver(x -> {
-            this.sessionState = false;
-        });
+        playerParser.addObserver(x -> this.sessionState = false);
         List<Player> players =  playerParser.parse();
         return new Game(5, players);
     }
@@ -64,8 +59,7 @@ public class Session {
     }
 
     private void initializeCommands(){
-        this.allCommands = Arrays.asList(new ShowCommand(CommandName.SHOW.toString()),
-                new QuitCommand(CommandName.QUIT.toString()));
+        this.allCommands = Arrays.asList(new ShowCommand(CommandName.SHOW.toString()));
     }
 
     public List<Command> getAllCommands() {

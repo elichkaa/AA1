@@ -1,8 +1,12 @@
 package ui;
 
 import models.core.Player;
-import models.Session;
-import util.*;
+import util.CommandName;
+import util.ErrorMessage;
+import util.Regex;
+import util.StateObserver;
+import util.Communication;
+import util.CoreString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +20,6 @@ public class PlayerParser implements IParser<List<Player>> {
     private final Scanner scanner;
 
     public PlayerParser(Scanner scanner){
-
         this.scanner = scanner;
     }
 
@@ -63,7 +66,7 @@ public class PlayerParser implements IParser<List<Player>> {
         }
 
 
-        int[] money = this.parseGold(scanner);
+        int[] money = this.parseGold();
         List<Player> parsedPlayers = new ArrayList<>();
         for (String playerName: playerNames) {
             parsedPlayers.add(new Player(playerName, money[0], money[1]));
@@ -71,7 +74,7 @@ public class PlayerParser implements IParser<List<Player>> {
         return parsedPlayers;
     }
 
-    private int[] parseGold(Scanner scanner){
+    private int[] parseGold(){
         // TODO: initial gold should not be bigger than winning gold
         Object initialGoldObject = this.checkInputCorrectness(
                 Regex.COUNT_AND_GOLD.toString(),
