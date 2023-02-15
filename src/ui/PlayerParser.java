@@ -1,4 +1,4 @@
-package models.parsing;
+package ui;
 
 import models.core.Player;
 import models.Session;
@@ -10,18 +10,24 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class PlayerParser implements IParser<Player> {
-    StateObserver observer;
+public class PlayerParser implements IParser<List<Player>> {
+    private StateObserver observer;
     private final static Pattern quitPattern = Pattern.compile(CommandName.QUIT.toString());
+    private final Scanner scanner;
+
+    public PlayerParser(Scanner scanner){
+
+        this.scanner = scanner;
+    }
 
     @Override
-    public Object checkInputCorrectness(Session session, Scanner scanner, String pattern, String errorMessage, String question) {
+    public Object checkInputCorrectness(String pattern, String errorMessage, String question) {
         Pattern playerCountPattern = Pattern.compile(pattern);
         System.out.println(question);
         String line = scanner.nextLine();
         Matcher matcher = quitPattern.matcher(line);
         if (matcher.matches()){
-            observer.update("Session terminated.");
+            observer.update("Session terminated");
             return null;
         }
         matcher = playerCountPattern.matcher(line);
@@ -34,13 +40,8 @@ public class PlayerParser implements IParser<Player> {
     }
 
     @Override
-    public Player parse(Session session, Scanner scanner) {
-        return null;
-    }
-
-    @Override
-    public List<Player> parseAll(Session session, Scanner scanner) {
-        Object playerCountInput = this.checkInputCorrectness(session, scanner,
+    public List<Player> parse() {
+        Object playerCountInput = this.checkInputCorrectness(
                 Regex.COUNT_AND_GOLD.toString(),
                 ErrorMessage.PLAYER_COUNT_INVALID.toString(),
                 Communication.PLAYER_COUNT_QUESTION.toString());
@@ -51,7 +52,7 @@ public class PlayerParser implements IParser<Player> {
 
         List<String> playerNames = new ArrayList<>();
         for (int i = 1; i <= playerCount; i++){
-            Object playerNameInput = this.checkInputCorrectness(session, scanner,
+            Object playerNameInput = this.checkInputCorrectness(
                     Regex.PLAYER_NAME.toString(),
                     ErrorMessage.PLAYER_NAME_INVALID.toString(),
                     Communication.PLAYER_NAME_PROMPT.toString() + i + CoreString.COLON_STRING);
@@ -61,30 +62,35 @@ public class PlayerParser implements IParser<Player> {
             playerNames.add((String) playerNameInput);
         }
 
+
+        int[] money = this.parseGold(scanner);
+        List<Player> parsedPlayers = new ArrayList<>();
+        for (String playerName: playerNames) {
+            parsedPlayers.add(new Player(playerName, money[0], money[1]));
+        }
+        return parsedPlayers;
+    }
+
+    private int[] parseGold(Scanner scanner){
         // TODO: initial gold should not be bigger than winning gold
-        Object initialGoldObject = this.checkInputCorrectness(session, scanner,
+        Object initialGoldObject = this.checkInputCorrectness(
                 Regex.COUNT_AND_GOLD.toString(),
                 ErrorMessage.INITIAL_GOLD_QUANTITY_INVALID.toString(),
                 Communication.INITIAL_GOLD_QUESTION.toString());
         if (initialGoldObject == null) {
             return null;
         }
-        int initialGold = Integer.parseInt((String) initialGoldObject);
 
-        Object winningGoldObject = this.checkInputCorrectness(session, scanner,
+        Object winningGoldObject = this.checkInputCorrectness(
                 Regex.COUNT_AND_GOLD.toString(),
                 ErrorMessage.WINNING_GOLD_QUANTITY_INVALID.toString(),
                 Communication.WINNING_GOLD_QUESTION.toString());
         if (winningGoldObject == null) {
             return null;
         }
-        int winningGold = Integer.parseInt((String) winningGoldObject);
 
-        List<Player> parsedPlayers = new ArrayList<>();
-        for (String playerName: playerNames) {
-            parsedPlayers.add(new Player(playerName, initialGold, winningGold));
-        }
-        return parsedPlayers;
+        return new int[] {Integer.parseInt((String) initialGoldObject),
+                Integer.parseInt((String) winningGoldObject)};
     }
 
     @Override

@@ -1,7 +1,7 @@
 package util;
 
 public enum CommandName {
-    NEW("new"),
+    SHOW("show"),
     QUIT("quit");
 
     private final String commandName;

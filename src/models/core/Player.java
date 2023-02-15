@@ -11,4 +11,8 @@ public class Player {
         this.startingGold = startingGold;
         this.goldToWin = goldToWin;
     }
+
+    public String getPlayerName() {
+        return this.playerName;
+    }
 }

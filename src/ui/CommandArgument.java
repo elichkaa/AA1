@@ -1,13 +1,13 @@
 package ui;
 
-public class CommandArgument {
-    private final String value;
+public class CommandArgument<T> {
+    private final T value;
 
-    public CommandArgument(String value){
+    public CommandArgument(T value){
         this.value = value;
     }
 
-    public String getValue(){
+    public T getValue(){
         return this.value;
     }
 }

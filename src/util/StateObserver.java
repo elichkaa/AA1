@@ -1,5 +1,5 @@
 package util;
 
 public interface StateObserver {
-    void update(String event);
+    void update(String message);
 }

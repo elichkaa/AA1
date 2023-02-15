@@ -3,13 +3,12 @@ package models;
 import models.core.Game;
 import models.core.Player;
 import ui.Command;
-import ui.commands.NewCommand;
+import ui.commands.ShowCommand;
 import ui.commands.QuitCommand;
 import util.CommandName;
 import ui.CommandParser;
-import models.parsing.PlayerParser;
+import ui.PlayerParser;
 import util.IOHandler;
-import util.StateObserver;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,15 +30,15 @@ public class Session {
             return;
         }
 
-        CommandParser commandParser = new CommandParser();
+        CommandParser commandParser = new CommandParser(this, scanner);
         commandParser.addObserver(x -> {
             this.sessionState = false;
         });
-        Command command = commandParser.parse(this, scanner);
+        Command command = commandParser.parse();
         while(this.sessionState){
             this.executeCommand(command);
             if (!game.hasOutput()) {
-                command = commandParser.parse(this, scanner);
+                command = commandParser.parse();
                 game.processInput(command);
             }
         }
@@ -47,11 +46,11 @@ public class Session {
     }
 
     private Game initializeGame(Scanner scanner){
-        PlayerParser playerParser = new PlayerParser();
+        PlayerParser playerParser = new PlayerParser(scanner);
         playerParser.addObserver(x -> {
             this.sessionState = false;
         });
-        List<Player> players =  playerParser.parseAll(this, scanner);
+        List<Player> players =  playerParser.parse();
         return new Game(5, players);
     }
 
@@ -65,7 +64,7 @@ public class Session {
     }
 
     private void initializeCommands(){
-        this.allCommands = Arrays.asList(new NewCommand(CommandName.NEW.toString()),
+        this.allCommands = Arrays.asList(new ShowCommand(CommandName.SHOW.toString()),
                 new QuitCommand(CommandName.QUIT.toString()));
     }
 
