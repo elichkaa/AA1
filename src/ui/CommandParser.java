@@ -1,9 +1,10 @@
 package ui;
 
 import models.Session;
+import util.Communication;
 import util.CoreString;
 import util.Regex;
-import util.StateObserver;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -11,6 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CommandParser implements IParser<Command> {
+    private final static int COMMAND_NAME = 1;
     private StateObserver observer;
     private final static Pattern quitPattern = Pattern.compile(Regex.QUIT.toString());
     private final Session session;
@@ -36,11 +38,11 @@ public class CommandParser implements IParser<Command> {
         if (commandName == null) return null;
         Matcher matcher = quitPattern.matcher(commandName);
         if (matcher.matches()){
-            observer.update("Session terminated");
+            observer.update(Communication.SESSION_TERMINATED_MESSAGE.toString());
             return null;
         }
 
-        List<CommandArgument> commandArguments = userInput.stream().skip(1).map(CommandArgument::new).toList();
+        List<CommandArgument> commandArguments = userInput.stream().skip(COMMAND_NAME).map(CommandArgument::new).toList();
         return this.getCommand(commandName, commandArguments);
     }
 

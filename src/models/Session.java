@@ -23,21 +23,22 @@ public class Session {
         IOHandler.printPixelArt();
         this.initializeCommands();
         Scanner scanner = new Scanner(System.in);
-        Game game = this.initializeGame(scanner);
+        /*Game game = this.initializeGame(scanner);
         if (!sessionState){
             scanner.close();
             return;
-        }
+        }*/
 
         CommandParser commandParser = new CommandParser(this, scanner);
         commandParser.addObserver(x -> this.sessionState = false);
         Command command = commandParser.parse();
         while(this.sessionState){
             this.executeCommand(command);
-            if (!game.hasOutput()) {
+            /*if (!game.hasOutput()) {
                 command = commandParser.parse();
                 game.processInput(command);
-            }
+            }*/
+            command = commandParser.parse();
         }
         scanner.close();
     }

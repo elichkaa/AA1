@@ -3,7 +3,6 @@ package ui;
 import models.core.Player;
 import util.ErrorMessage;
 import util.Regex;
-import util.StateObserver;
 import util.Communication;
 import util.CoreString;
 
@@ -29,7 +28,7 @@ public class PlayerParser implements IParser<List<Player>> {
         String line = scanner.nextLine();
         Matcher matcher = quitPattern.matcher(line);
         if (matcher.matches()){
-            observer.update("Session terminated");
+            observer.update(Communication.SESSION_TERMINATED_MESSAGE.toString());
             return null;
         }
         matcher = playerCountPattern.matcher(line);

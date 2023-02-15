@@ -10,11 +10,13 @@ public final class IOHandler {
 
     public static void printPixelArt(){
         try{
-            BufferedReader br = new BufferedReader(new FileReader(FILE_PATH));
-            for (String line; (line = br.readLine()) != null;) {
+            BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH));
+            String line = reader.readLine();
+            while (line != null) {
                 System.out.println(line);
+                line = reader.readLine();
             }
-            br.close();
+            reader.close();
         } catch (IOException exception) {
             System.out.println(ErrorMessage.PIXEL_ART_FILE_DOES_NOT_EXIST);
         }
