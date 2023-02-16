@@ -34,7 +34,6 @@ public class PlayerParser implements IParser<List<Player>> {
         matcher = playerCountPattern.matcher(line);
         while (!matcher.find()) {
             System.out.println(errorMessage);
-            System.out.println(question);
             matcher = playerCountPattern.matcher(scanner.nextLine());
         }
         return matcher.group(0);

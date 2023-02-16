@@ -4,7 +4,7 @@ import ui.Command;
 import java.util.List;
 
 public class Game implements IGame{
-    public Game(int seed, List<Player> players) {
+    public Game(List<Player> players, int seed) {
 
     }
 

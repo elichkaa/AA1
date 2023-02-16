@@ -50,7 +50,7 @@ public class Session {
     }
 
     private Game initializeGame(Scanner scanner) {
-        return new Game(this.getSeed(scanner), this.initializePlayers(scanner));
+        return new Game(this.initializePlayers(scanner), this.getSeed(scanner));
     }
 
     private List<Player> initializePlayers(Scanner scanner) {

@@ -5,16 +5,17 @@ public enum Communication {
     PLAYER_COUNT_QUESTION("How many players?"),
     INITIAL_GOLD_QUESTION("With how much gold should each player start?"),
     WINNING_GOLD_QUESTION("With how much gold should a player win?"),
+    SEED_PROMPT("Please enter the seed used to shuffle the tiles:"),
     PLAYER_NAME_PROMPT("Enter the name of player ");
 
     private final String value;
 
-    Communication(String value){
+    Communication(String value) {
         this.value = value;
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return this.value;
     }
 }
