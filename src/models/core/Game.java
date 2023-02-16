@@ -1,6 +1,6 @@
 package models.core;
 
-import models.core.buildings.*;
+import models.core.tiles.*;
 import ui.Command;
 
 import java.util.*;

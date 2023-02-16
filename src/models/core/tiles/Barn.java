@@ -1,4 +1,4 @@
-package models.core.buildings;
+package models.core.tiles;
 
 import models.core.Coordinates;
 

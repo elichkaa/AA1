@@ -1,8 +1,8 @@
 package models.core;
 
-import models.core.buildings.Barn;
-import models.core.buildings.Field;
-import models.core.buildings.Garden;
+import models.core.tiles.Barn;
+import models.core.tiles.Field;
+import models.core.tiles.Garden;
 
 public class GameBoard {
     private final Barn barn;
