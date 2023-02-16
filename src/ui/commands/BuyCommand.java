@@ -35,38 +35,36 @@ public class BuyCommand extends Command {
         LinkedList<String> commandArgs = this.commandArguments.stream().map(CommandArgument::getValue).
                 collect(Collectors.toCollection(LinkedList::new));
 
-        if (commandArgs.getFirst().equals(LAND_ARGUMENT)) {
-            if (commandArgs.size() < MAX_VALID_ARGUMENT_COUNT) {
-                this.printErrorMessage(CommandName.BUY.toString() + CoreString.WHITESPACE_STRING + LAND_ARGUMENT,
-                        ErrorMessage.SECOND_COORDINATE_MISSING.toString());
+        switch (commandArgs.getFirst()) {
+            case LAND_ARGUMENT -> {
+                if (commandArgs.size() < MAX_VALID_ARGUMENT_COUNT) {
+                    this.printErrorMessage(CommandName.BUY.toString() + CoreString.WHITESPACE_STRING + LAND_ARGUMENT,
+                            ErrorMessage.SECOND_COORDINATE_MISSING.toString());
+                    return false;
+                }
+                if (this.areArgumentsInvalid(commandArgs.subList(FIRST_COORDINATE_INDEX, SECOND_COORDINATE_INDEX),
+                        COORDINATES_ARGUMENT,
+                        CommandName.BUY,
+                        ErrorMessage.INVALID_COORDINATES)) {
+                    return false;
+                }
+            }
+            case VEGETABLE_ARGUMENT -> {
+                String vegetableName = commandArgs.get(VEGETABLE_NAME_INDEX);
+                if (this.isArgumentInvalid(vegetableName,
+                        VEGETABLE_NAME_ARGUMENT,
+                        CommandName.BUY,
+                        ErrorMessage.INVALID_VEGETABLE_NAME,
+                        vegetableName)) {
+                    return false;
+                }
+            }
+            default -> {
+                this.printErrorMessage(CommandName.BUY.toString(), ErrorMessage.INVALID_ARGUMENT_NAME.toString(), commandArgs.getFirst());
                 return false;
             }
-            this.areArgumentsInvalid(new ArrayList<>() {
-                                         {
-                                             add(commandArgs.get(FIRST_COORDINATE_INDEX));
-                                             add(commandArgs.get(SECOND_COORDINATE_INDEX));
-                                         }
-                                     },
-                    COORDINATES_ARGUMENT,
-                    CommandName.BUY,
-                    ErrorMessage.INVALID_COORDINATES);
-            {
-                return false;
-            }
-
-        } else if (commandArgs.getFirst().equals(VEGETABLE_ARGUMENT)) {
-            String vegetableName = commandArgs.get(VEGETABLE_NAME_INDEX);
-            if (this.isArgumentInvalid(vegetableName,
-                    VEGETABLE_NAME_ARGUMENT,
-                    CommandName.BUY,
-                    ErrorMessage.INVALID_VEGETABLE_NAME,
-                    vegetableName)) {
-                return false;
-            }
-        } else {
-            this.printErrorMessage(CommandName.BUY.toString(), ErrorMessage.INVALID_ARGUMENT_NAME.toString(), commandArgs.getFirst());
-            return false;
         }
+
         return true;
     }
 }
