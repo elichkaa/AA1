@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class BuyCommand extends Command {
-    private final static Pattern COORDINATES_ARGUMENT = Pattern.compile(Regex.WHOLE_POSITIVE_NUMBER.toString());
+    private final static Pattern COORDINATES_ARGUMENT = Pattern.compile(Regex.COORDINATES.toString());
     private final static Pattern VEGETABLE_NAME_ARGUMENT = Pattern.compile(Regex.VEGETABLE_NAME_ARGS.toString());
     private final static int MIN_VALID_ARGUMENT_COUNT = 2;
     private final static int MAX_VALID_ARGUMENT_COUNT = 3;
@@ -41,7 +41,8 @@ public class BuyCommand extends Command {
         Matcher matcher;
         if (commandArgs.getFirst().equals(LAND_ARGUMENT)) {
             if (commandArgs.size() < MAX_VALID_ARGUMENT_COUNT) {
-                this.printErrorMessage(CommandName.BUY + LAND_ARGUMENT, ErrorMessage.SECOND_COORDINATE_MISSING.toString());
+                this.printErrorMessage(CommandName.BUY.toString() + CoreString.WHITESPACE_STRING + LAND_ARGUMENT,
+                        ErrorMessage.SECOND_COORDINATE_MISSING.toString());
                 return false;
             }
             if (COORDINATES_ARGUMENT.matcher(commandArgs.get(FIRST_COORDINATE_INDEX)).matches() &&

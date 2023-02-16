@@ -13,14 +13,15 @@ public enum ErrorMessage {
     NOT_ENOUGH_ARGUMENTS_PROVIDED("Not enough arguments for the command %s provided. They should be minimum %d."),
     SECOND_COORDINATE_MISSING("The %s command is missing it's second coordinate."),
     INVALID_VEGETABLE_NAME("Invalid vegetable name for %s command. A vegetable with the name %s doesn't exist."),
-    INVALID_COORDINATES("Please enter whole positive numbers for coordinates."),
+    INVALID_COORDINATES("Please enter correct integers for the coordinates."),
+    INVALID_VEGETABLE_QUANTITY("Please enter a positive or zero amount of vegetables."),
     NO_ADDITIONAL_PARAMETERS_REQUIRED("The command %s and the argument %s do not require additional parameters."),
     PLAYER_NAME_INVALID("Name of the player is invalid. Please only include letters.");
 
     private final String value;
     private final static String PREFIX = "Error: ";
 
-    ErrorMessage(String value){
+    ErrorMessage(String value) {
         this.value = value;
     }
 

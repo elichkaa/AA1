@@ -75,7 +75,7 @@ public class PlayerParser implements IParser<List<Player>> {
     private int[] parseGold(){
         // TODO: initial gold should not be bigger than winning gold
         Object initialGoldObject = this.checkInputCorrectness(
-                Regex.WHOLE_POSITIVE_NUMBER.toString(),
+                Regex.WHOLE_NUMBER.toString(),
                 ErrorMessage.INITIAL_GOLD_QUANTITY_INVALID.toString(),
                 Communication.INITIAL_GOLD_QUESTION.toString());
         if (initialGoldObject == null) {
