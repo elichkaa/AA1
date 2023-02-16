@@ -24,7 +24,7 @@ public class CommandParser implements IParser<Command> {
     }
 
     @Override
-    public Object checkInputCorrectness(String pattern, String errorMessage, String question) {
+    public Object getCorrectInputIfAvailable(String pattern, String errorMessage, String question) {
         return null;
     }
 

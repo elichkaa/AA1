@@ -3,10 +3,16 @@ package models;
 import models.core.Game;
 import models.core.Player;
 import ui.Command;
-import ui.commands.*;
+import ui.SeedParser;
+import ui.commands.BuyCommand;
+import ui.commands.HarvestCommand;
+import ui.commands.SellCommand;
+import ui.commands.ShowCommand;
+import ui.commands.PlantCommand;
 import util.CommandName;
 import ui.CommandParser;
 import ui.PlayerParser;
+import util.ErrorMessage;
 import util.IOHandler;
 
 import java.util.ArrayList;
@@ -23,38 +29,47 @@ public class Session {
         IOHandler.printPixelArt();
         this.initializeCommands();
         Scanner scanner = new Scanner(System.in);
-        /*Game game = this.initializeGame(scanner);
+        Game game = this.initializeGame(scanner);
         if (!sessionState){
             scanner.close();
             return;
-        }*/
+        }
 
         CommandParser commandParser = new CommandParser(this, scanner);
         commandParser.addObserver(x -> this.sessionState = false);
         Command command = commandParser.parse();
         while(this.sessionState){
             this.executeCommand(command);
-            /*if (!game.hasOutput()) {
+            if (!game.hasOutput()) {
                 command = commandParser.parse();
                 game.processInput(command);
-            }*/
+            }
             command = commandParser.parse();
         }
         scanner.close();
     }
 
-    private Game initializeGame(Scanner scanner){
-        PlayerParser playerParser = new PlayerParser(scanner);
-        playerParser.addObserver(x -> this.sessionState = false);
-        List<Player> players =  playerParser.parse();
-        return new Game(5, players);
+    private Game initializeGame(Scanner scanner) {
+        return new Game(this.getSeed(scanner), this.initializePlayers(scanner));
     }
 
-    private void executeCommand(Command command){
+    private List<Player> initializePlayers(Scanner scanner) {
+        PlayerParser playerParser = new PlayerParser(scanner);
+        playerParser.addObserver(x -> this.sessionState = false);
+        return playerParser.parse();
+    }
+
+    private int getSeed(Scanner scanner) {
+        SeedParser seedParser = new SeedParser(scanner);
+        seedParser.addObserver(x -> this.sessionState = false);
+        return seedParser.parse();
+    }
+
+    private void executeCommand(Command command) {
         try {
             command.execute();
-        } catch (NullPointerException nullPointerException){
-            System.out.println("Command was null and could not be executed.");
+        } catch (NullPointerException nullPointerException) {
+            System.out.println(ErrorMessage.NULL_COMMAND);
         }
 
     }

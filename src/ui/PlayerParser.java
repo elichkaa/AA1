@@ -22,12 +22,12 @@ public class PlayerParser implements IParser<List<Player>> {
     }
 
     @Override
-    public Object checkInputCorrectness(String pattern, String errorMessage, String question) {
+    public Object getCorrectInputIfAvailable(String pattern, String errorMessage, String question) {
         Pattern playerCountPattern = Pattern.compile(pattern);
         System.out.println(question);
         String line = scanner.nextLine();
         Matcher matcher = quitPattern.matcher(line);
-        if (matcher.matches()){
+        if (matcher.matches()) {
             observer.update(Communication.SESSION_TERMINATED_MESSAGE.toString());
             return null;
         }
@@ -42,7 +42,7 @@ public class PlayerParser implements IParser<List<Player>> {
 
     @Override
     public List<Player> parse() {
-        Object playerCountInput = this.checkInputCorrectness(
+        Object playerCountInput = this.getCorrectInputIfAvailable(
                 Regex.WHOLE_POSITIVE_NUMBER.toString(),
                 ErrorMessage.PLAYER_COUNT_INVALID.toString(),
                 Communication.PLAYER_COUNT_QUESTION.toString());
@@ -53,7 +53,7 @@ public class PlayerParser implements IParser<List<Player>> {
 
         List<String> playerNames = new ArrayList<>();
         for (int i = 1; i <= playerCount; i++){
-            Object playerNameInput = this.checkInputCorrectness(
+            Object playerNameInput = this.getCorrectInputIfAvailable(
                     Regex.PLAYER_NAME.toString(),
                     ErrorMessage.PLAYER_NAME_INVALID.toString(),
                     Communication.PLAYER_NAME_PROMPT.toString() + i + CoreString.COLON_STRING);
@@ -74,7 +74,7 @@ public class PlayerParser implements IParser<List<Player>> {
 
     private int[] parseGold(){
         // TODO: initial gold should not be bigger than winning gold
-        Object initialGoldObject = this.checkInputCorrectness(
+        Object initialGoldObject = this.getCorrectInputIfAvailable(
                 Regex.WHOLE_NUMBER.toString(),
                 ErrorMessage.INITIAL_GOLD_QUANTITY_INVALID.toString(),
                 Communication.INITIAL_GOLD_QUESTION.toString());
@@ -82,7 +82,7 @@ public class PlayerParser implements IParser<List<Player>> {
             return null;
         }
 
-        Object winningGoldObject = this.checkInputCorrectness(
+        Object winningGoldObject = this.getCorrectInputIfAvailable(
                 Regex.WHOLE_POSITIVE_NUMBER.toString(),
                 ErrorMessage.WINNING_GOLD_QUANTITY_INVALID.toString(),
                 Communication.WINNING_GOLD_QUESTION.toString());

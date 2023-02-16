@@ -42,7 +42,7 @@ public class BuyCommand extends Command {
                             ErrorMessage.SECOND_COORDINATE_MISSING.toString());
                     return false;
                 }
-                if (this.areArgumentsInvalid(commandArgs.subList(FIRST_COORDINATE_INDEX, SECOND_COORDINATE_INDEX),
+                if (this.areArgumentsInvalid(commandArgs.subList(FIRST_COORDINATE_INDEX, SECOND_COORDINATE_INDEX + 1),
                         COORDINATES_ARGUMENT,
                         CommandName.BUY,
                         ErrorMessage.INVALID_COORDINATES)) {

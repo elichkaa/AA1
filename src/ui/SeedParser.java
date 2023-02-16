@@ -1,8 +1,17 @@
 package ui;
 
+import java.util.Scanner;
+
 public class SeedParser implements IParser<Integer> {
+    private final Scanner scanner;
+
+    public SeedParser(Scanner scanner) {
+
+        this.scanner = scanner;
+    }
+
     @Override
-    public Object checkInputCorrectness(String pattern, String errorMessage, String question) {
+    public Object getCorrectInputIfAvailable(String pattern, String errorMessage, String question) {
         return null;
     }
 
