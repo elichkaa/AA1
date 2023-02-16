@@ -1,15 +1,16 @@
 package models.core;
 
 public class Player {
-    private String playerName;
-    private int startingGold;
-    private int goldToWin;
+    private final String playerName;
+    private final int startingGold;
+    private final int goldToWin;
+    GameBoard gameBoard;
 
-    public Player(String playerName, int startingGold, int goldToWin){
-
+    public Player(String playerName, int startingGold, int goldToWin) {
         this.playerName = playerName;
         this.startingGold = startingGold;
         this.goldToWin = goldToWin;
+        this.gameBoard = new GameBoard();
     }
 
     public String getPlayerName() {

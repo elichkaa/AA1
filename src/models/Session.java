@@ -15,10 +15,7 @@ import ui.PlayerParser;
 import util.ErrorMessage;
 import util.IOHandler;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Session {
     private boolean sessionState = true;
@@ -59,7 +56,7 @@ public class Session {
         return playerParser.parse();
     }
 
-    private int getSeed(Scanner scanner) {
+    private Random getSeed(Scanner scanner) {
         SeedParser seedParser = new SeedParser(scanner);
         seedParser.addObserver(x -> this.sessionState = false);
         return seedParser.parse();

@@ -9,7 +9,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SeedParser implements IParser<Integer> {
+public class SeedParser implements IParser<Random> {
     private final Scanner scanner;
     private final static Pattern quitPattern = Pattern.compile(Regex.QUIT.toString());
     private StateObserver observer;
@@ -32,7 +32,7 @@ public class SeedParser implements IParser<Integer> {
         boolean foundSeed = false;
         do {
             try {
-                seed = Long.parseLong(line);
+                seed = Integer.parseInt(line);
                 foundSeed = true;
             } catch (NumberFormatException exception) {
                 System.out.println(errorMessage);
@@ -43,11 +43,11 @@ public class SeedParser implements IParser<Integer> {
     }
 
     @Override
-    public Integer parse() {
+    public Random parse() {
         long seed = (long) this.getCorrectInputIfAvailable(null,
                 ErrorMessage.INPUT_FOR_SEED_INVALID.toString(),
                 Communication.SEED_PROMPT.toString());
-        return new Random(seed).nextInt();
+        return new Random(seed);
     }
 
     @Override
