@@ -22,15 +22,17 @@ public class ShowCommand extends Command {
 
     @Override
     public boolean execute() {
-        if (this.areArgumentsEmpty() &&
-                !this.isArgumentCountInvalid(CommandName.SHOW.toString(), MIN_VALID_ARGUMENT_COUNT, MAX_VALID_ARGUMENT_COUNT)){
+        if (this.areArgumentsEmpty()) {
+            return false;
+        }
+        if (this.isArgumentCountInvalid(CommandName.SHOW.toString(), MIN_VALID_ARGUMENT_COUNT, MAX_VALID_ARGUMENT_COUNT)) {
             return false;
         }
 
         CommandArgument objectToShow = this.commandArguments.stream().findFirst()
                 .orElse(new CommandArgument(CoreString.EMPTY_STRING.toString()));
         Matcher matcher = ARGUMENTS_PATTERN.matcher(objectToShow.getValue());
-        if (matcher.matches()){
+        if (matcher.matches()) {
             switch (objectToShow.getValue()) {
                 case BARN_ARGUMENT:
 
@@ -44,7 +46,7 @@ public class ShowCommand extends Command {
             }
             return true;
         } else {
-            this.printErrorMessage(CommandName.SELL.toString(), ErrorMessage.INVALID_ARGUMENT_NAME.toString(), objectToShow.getValue());
+            this.printErrorMessage(CommandName.SHOW.toString(), ErrorMessage.INVALID_ARGUMENT_NAME.toString(), objectToShow.getValue());
             return false;
         }
     }

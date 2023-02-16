@@ -21,4 +21,6 @@ public final class IOHandler {
             System.out.println(ErrorMessage.PIXEL_ART_FILE_DOES_NOT_EXIST);
         }
     }
+
+    // TODO: all the print methods for the logic units
 }
