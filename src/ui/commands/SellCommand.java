@@ -6,8 +6,10 @@ import util.CommandName;
 import util.ErrorMessage;
 import util.Regex;
 
+import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class SellCommand extends Command {
     private final static Pattern SELL_ALL_ARGUMENT = Pattern.compile(Regex.SELL_ALL_COMMAND_ARGS.toString());
@@ -25,21 +27,22 @@ public class SellCommand extends Command {
 
     @Override
     public boolean execute() {
-        if (this.isArgumentCountInvalid(CommandName.SELL.toString(), MIN_VALID_ARGUMENT_COUNT, MAX_VALID_ARGUMENT_COUNT)){
+        if (this.isArgumentCountInvalid(CommandName.SELL.toString(), MIN_VALID_ARGUMENT_COUNT, MAX_VALID_ARGUMENT_COUNT)) {
             return false;
         }
 
-        String[] vegetablesToSell = this.commandArguments.stream().map(CommandArgument::getValue).toArray(String[]::new);
-        if (vegetablesToSell.length == 0){
+        LinkedList<String> vegetablesToSell = this.commandArguments.stream().map(CommandArgument::getValue)
+                .collect(Collectors.toCollection(LinkedList::new));
+        if (vegetablesToSell.isEmpty()) {
             // sell zero vegetables
             return true;
         }
-        Matcher matcher = SELL_ALL_ARGUMENT.matcher(vegetablesToSell[0]);
-        if (vegetablesToSell.length == 1 && matcher.matches()) {
+        Matcher matcher = SELL_ALL_ARGUMENT.matcher(vegetablesToSell.getFirst());
+        if (matcher.matches()) {
             // sell all vegetables of player
             return true;
         }
-        for (String vegetable: vegetablesToSell) {
+        for (String vegetable : vegetablesToSell) {
             matcher = SELL_SPECIFIC_ARGUMENTS.matcher(vegetable);
             if (matcher.matches()) {
                 switch (vegetable) {

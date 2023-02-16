@@ -22,9 +22,6 @@ public class ShowCommand extends Command {
 
     @Override
     public boolean execute() {
-        if (this.areArgumentsEmpty()) {
-            return false;
-        }
         if (this.isArgumentCountInvalid(CommandName.SHOW.toString(), MIN_VALID_ARGUMENT_COUNT, MAX_VALID_ARGUMENT_COUNT)) {
             return false;
         }

@@ -43,14 +43,6 @@ public abstract class Command implements ICommand {
         return false;
     }
 
-    protected boolean areArgumentsEmpty(){
-        if (this.commandArguments.isEmpty()){
-            this.printErrorMessage(commandName, ErrorMessage.NO_ARGUMENTS_PROVIDED.toString());
-            return true;
-        }
-        return false;
-    }
-
     protected void printErrorMessage(String commandName, String errorMessage, Object... optionalMessage){
         if (optionalMessage.length != 0) {
             System.out.printf(errorMessage + System.lineSeparator(), commandName, optionalMessage[0]);
