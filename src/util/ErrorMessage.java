@@ -8,6 +8,7 @@ public enum ErrorMessage {
     INITIAL_GOLD_QUANTITY_INVALID("The initial gold quantity is invalid. Please enter a positive whole number."),
     WINNING_GOLD_QUANTITY_INVALID("The winning gold quantity is invalid. Please enter a positive whole number."),
     INVALID_ARGUMENT_NAME("An argument for the command %s with the name %s doesn't exist."),
+    INVALID_SALE_ARGUMENTS("An argument for the command %s with the name %s doesn't exist or the argument all was entered alongside other arguments."),
     NO_ARGUMENTS_PROVIDED("Please provide arguments for the command %s."),
     TOO_MANY_ARGUMENTS_PROVIDED("Too many arguments for the command %s provided. They should be maximum %d."),
     NOT_ENOUGH_ARGUMENTS_PROVIDED("Not enough arguments for the command %s provided. They should be minimum %d."),

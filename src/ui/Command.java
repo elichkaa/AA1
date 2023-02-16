@@ -52,13 +52,23 @@ public abstract class Command implements ICommand {
         }
     }
 
-    protected boolean areArgumentsValid(List<String> arguments, Pattern pattern, CommandName commandName, ErrorMessage errorMessage) {
+    protected boolean areArgumentsInvalid(List<String> arguments, Pattern pattern, CommandName commandName,
+                                          ErrorMessage errorMessage) {
         for (String argument : arguments) {
             if (!pattern.matcher(argument).matches()) {
-                this.printErrorMessage(commandName.toString(), errorMessage.toString());
-                return false;
+                this.printErrorMessage(commandName.toString(), errorMessage.toString(), argument);
+                return true;
             }
         }
-        return true;
+        return false;
+    }
+
+    protected boolean isArgumentInvalid(String argument, Pattern pattern, CommandName commandName,
+                                        ErrorMessage errorMessage, Object... optional) {
+        if (!pattern.matcher(argument).matches()) {
+            this.printErrorMessage(commandName.toString(), errorMessage.toString(), optional);
+            return true;
+        }
+        return false;
     }
 }

@@ -7,18 +7,12 @@ import util.ErrorMessage;
 import util.Regex;
 
 import java.util.LinkedList;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class SellCommand extends Command {
-    private final static Pattern SELL_ALL_ARGUMENT = Pattern.compile(Regex.SELL_ALL_COMMAND_ARGS.toString());
+    private final static Pattern VEGETABLE_NAME_ARGUMENTS = Pattern.compile(Regex.VEGETABLE_NAME_ARGS.toString());
     private final static Pattern SELL_SPECIFIC_ARGUMENTS = Pattern.compile(Regex.SELL_SPECIFIC_COMMAND_ARGS.toString());
-    private final static String TOMATO_ARGUMENT = "tomato";
-    private final static String CARROT_ARGUMENT = "carrot";
-    private final static String MUSHROOM_ARGUMENT = "mushroom";
-    private final static String SALAD_ARGUMENT = "salad";
-    private final static String ALL_ARGUMENT = "all";
     private final static int MIN_VALID_ARGUMENT_COUNT = 0;
     private final static int MAX_VALID_ARGUMENT_COUNT = Integer.MAX_VALUE;
     public SellCommand(String commandName) {
@@ -33,43 +27,19 @@ public class SellCommand extends Command {
 
         LinkedList<String> vegetablesToSell = this.commandArguments.stream().map(CommandArgument::getValue)
                 .collect(Collectors.toCollection(LinkedList::new));
-        if (vegetablesToSell.isEmpty()) {
-            // sell zero vegetables
-            return true;
+        if (vegetablesToSell.size() == 1) {
+            return !this.isArgumentInvalid(vegetablesToSell.getFirst(),
+                    SELL_SPECIFIC_ARGUMENTS,
+                    CommandName.SELL,
+                    ErrorMessage.INVALID_ARGUMENT_NAME,
+                    vegetablesToSell.getFirst());
+        } else if (vegetablesToSell.size() > 1) {
+            return !this.areArgumentsInvalid(vegetablesToSell,
+                    VEGETABLE_NAME_ARGUMENTS,
+                    CommandName.SELL,
+                    ErrorMessage.INVALID_SALE_ARGUMENTS);
         }
-        Matcher matcher = SELL_ALL_ARGUMENT.matcher(vegetablesToSell.getFirst());
-        if (matcher.matches()) {
-            // sell all vegetables of player
-            return true;
-        }
-        for (String vegetable : vegetablesToSell) {
-            if (SELL_SPECIFIC_ARGUMENTS.matcher(vegetable).matches()) {
-                switch (vegetable) {
-                    case TOMATO_ARGUMENT:
 
-                        break;
-                    case MUSHROOM_ARGUMENT:
-
-                        break;
-                    case CARROT_ARGUMENT:
-
-                        break;
-                    case SALAD_ARGUMENT:
-
-                        break;
-                    case ALL_ARGUMENT:
-                        this.printErrorMessage(CommandName.SELL.toString(),
-                                ErrorMessage.NO_ADDITIONAL_PARAMETERS_REQUIRED.toString(),
-                                ALL_ARGUMENT);
-                        return false;
-                }
-            } else {
-                this.printErrorMessage(CommandName.SELL.toString(),
-                        ErrorMessage.INVALID_ARGUMENT_NAME.toString(),
-                        vegetable);
-                return false;
-            }
-        }
         return true;
     }
 }

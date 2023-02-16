@@ -7,8 +7,6 @@ import util.ErrorMessage;
 import util.Regex;
 
 import java.util.LinkedList;
-import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -30,12 +28,15 @@ public class HarvestCommand extends Command {
 
         LinkedList<String> commandArgs = this.commandArguments.stream().map(CommandArgument::getValue)
                 .collect(Collectors.toCollection(LinkedList::new));
-        List<String> coordinates = commandArgs.subList(0, MAX_VALID_ARGUMENT_COUNT - 1);
-        if (!this.areArgumentsValid(coordinates, COORDINATES_ARGUMENT, CommandName.HARVEST, ErrorMessage.INVALID_COORDINATES)) {
-            return false;
-        }
-        if (!QUANTITY_ARGUMENT.matcher(commandArgs.getLast()).matches()) {
-            this.printErrorMessage(CommandName.HARVEST.toString(), ErrorMessage.INVALID_VEGETABLE_QUANTITY.toString(), commandArgs.getLast());
+        if (this.areArgumentsInvalid(commandArgs.subList(0, MAX_VALID_ARGUMENT_COUNT - 1),
+                COORDINATES_ARGUMENT,
+                CommandName.HARVEST,
+                ErrorMessage.INVALID_COORDINATES)
+                || this.isArgumentInvalid(commandArgs.getLast(),
+                QUANTITY_ARGUMENT,
+                CommandName.HARVEST,
+                ErrorMessage.INVALID_VEGETABLE_QUANTITY,
+                commandArgs.getLast())) {
             return false;
         }
 
