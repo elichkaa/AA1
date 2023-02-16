@@ -38,7 +38,6 @@ public class BuyCommand extends Command {
         }
         LinkedList<String> commandArgs = this.commandArguments.stream().map(CommandArgument::getValue).
                 collect(Collectors.toCollection(LinkedList::new));
-        Matcher matcher;
         if (commandArgs.getFirst().equals(LAND_ARGUMENT)) {
             if (commandArgs.size() < MAX_VALID_ARGUMENT_COUNT) {
                 this.printErrorMessage(CommandName.BUY.toString() + CoreString.WHITESPACE_STRING + LAND_ARGUMENT,
@@ -55,8 +54,7 @@ public class BuyCommand extends Command {
 
         } else if (commandArgs.getFirst().equals(VEGETABLE_ARGUMENT)) {
             String vegetableName = commandArgs.get(VEGETABLE_NAME_INDEX);
-            matcher = VEGETABLE_NAME_ARGUMENT.matcher(vegetableName);
-            if (matcher.matches()) {
+            if (VEGETABLE_NAME_ARGUMENT.matcher(vegetableName).matches()) {
                 // TODO: simplify, maybe have a method in the logic units that converts the String to the specific object type, dont do it here
                 switch (vegetableName) {
                     case TOMATO_ARGUMENT:

@@ -24,22 +24,18 @@ public class HarvestCommand extends Command {
 
     @Override
     public boolean execute() {
-        if (this.isArgumentCountInvalid(CommandName.BUY.toString(), MIN_VALID_ARGUMENT_COUNT, MAX_VALID_ARGUMENT_COUNT)) {
+        if (this.isArgumentCountInvalid(CommandName.HARVEST.toString(), MIN_VALID_ARGUMENT_COUNT, MAX_VALID_ARGUMENT_COUNT)) {
             return false;
         }
 
         LinkedList<String> commandArgs = this.commandArguments.stream().map(CommandArgument::getValue)
                 .collect(Collectors.toCollection(LinkedList::new));
-        List<String> coordinates = commandArgs.subList(0, 1);
-        Matcher matcher;
-        for (String coordinate : coordinates) {
-            if (!COORDINATES_ARGUMENT.matcher(coordinate).matches()) {
-                this.printErrorMessage(CommandName.BUY.toString(), ErrorMessage.INVALID_COORDINATES.toString());
-                return false;
-            }
+        List<String> coordinates = commandArgs.subList(0, MAX_VALID_ARGUMENT_COUNT - 1);
+        if (!this.areArgumentsValid(coordinates, COORDINATES_ARGUMENT, CommandName.HARVEST, ErrorMessage.INVALID_COORDINATES)) {
+            return false;
         }
         if (!QUANTITY_ARGUMENT.matcher(commandArgs.getLast()).matches()) {
-            this.printErrorMessage(CommandName.BUY.toString(), ErrorMessage.INVALID_VEGETABLE_QUANTITY.toString());
+            this.printErrorMessage(CommandName.HARVEST.toString(), ErrorMessage.INVALID_VEGETABLE_QUANTITY.toString(), commandArgs.getLast());
             return false;
         }
 

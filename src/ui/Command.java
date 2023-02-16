@@ -4,6 +4,7 @@ import util.CommandName;
 import util.ErrorMessage;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 public abstract class Command implements ICommand {
     protected final String commandName;
@@ -43,11 +44,21 @@ public abstract class Command implements ICommand {
         return false;
     }
 
-    protected void printErrorMessage(String commandName, String errorMessage, Object... optionalMessage){
+    protected void printErrorMessage(String commandName, String errorMessage, Object... optionalMessage) {
         if (optionalMessage.length != 0) {
             System.out.printf(errorMessage + System.lineSeparator(), commandName, optionalMessage[0]);
         } else {
             System.out.printf(errorMessage + System.lineSeparator(), commandName);
         }
+    }
+
+    protected boolean areArgumentsValid(List<String> arguments, Pattern pattern, CommandName commandName, ErrorMessage errorMessage) {
+        for (String argument : arguments) {
+            if (!pattern.matcher(argument).matches()) {
+                this.printErrorMessage(commandName.toString(), errorMessage.toString());
+                return false;
+            }
+        }
+        return true;
     }
 }

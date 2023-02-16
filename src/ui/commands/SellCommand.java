@@ -43,8 +43,7 @@ public class SellCommand extends Command {
             return true;
         }
         for (String vegetable : vegetablesToSell) {
-            matcher = SELL_SPECIFIC_ARGUMENTS.matcher(vegetable);
-            if (matcher.matches()) {
+            if (SELL_SPECIFIC_ARGUMENTS.matcher(vegetable).matches()) {
                 switch (vegetable) {
                     case TOMATO_ARGUMENT:
 

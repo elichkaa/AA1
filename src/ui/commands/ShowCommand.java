@@ -28,8 +28,7 @@ public class ShowCommand extends Command {
 
         CommandArgument objectToShow = this.commandArguments.stream().findFirst()
                 .orElse(new CommandArgument(CoreString.EMPTY_STRING.toString()));
-        Matcher matcher = ARGUMENTS_PATTERN.matcher(objectToShow.getValue());
-        if (matcher.matches()) {
+        if (ARGUMENTS_PATTERN.matcher(objectToShow.getValue()).matches()) {
             switch (objectToShow.getValue()) {
                 case BARN_ARGUMENT:
 
