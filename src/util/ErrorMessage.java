@@ -9,7 +9,12 @@ public enum ErrorMessage {
     WINNING_GOLD_QUANTITY_INVALID("The winning gold quantity is invalid. Please enter a positive whole number."),
     INVALID_ARGUMENT_NAME("An argument for the command %s with the name %s doesn't exist."),
     NO_ARGUMENTS_PROVIDED("Please provide arguments for the command %s."),
-    TOO_MANY_ARGUMENTS_PROVIDED("Please provide the correct amount of arguments for the command %s. They should be %d."),
+    TOO_MANY_ARGUMENTS_PROVIDED("Too many arguments for the command %s provided. They should be maximum %d."),
+    NOT_ENOUGH_ARGUMENTS_PROVIDED("Not enough arguments for the command %s provided. They should be minimum %d."),
+    SECOND_COORDINATE_MISSING("The %s command is missing it's second coordinate."),
+    INVALID_VEGETABLE_NAME("Invalid vegetable name for %s command. A vegetable with the name %s doesn't exist."),
+    INVALID_COORDINATES("Please enter whole positive numbers for coordinates."),
+    NO_ADDITIONAL_PARAMETERS_REQUIRED("The command %s and the argument %s do not require additional parameters."),
     PLAYER_NAME_INVALID("Name of the player is invalid. Please only include letters.");
 
     private final String value;

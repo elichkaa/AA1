@@ -3,6 +3,7 @@ package util;
 public enum CoreString {
     WHITESPACE_STRING(" "),
     SEMICOLON_STRING(";"),
+    EMPTY_STRING(""),
     COLON_STRING(":");
 
     private final String value;

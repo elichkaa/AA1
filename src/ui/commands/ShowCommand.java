@@ -2,15 +2,17 @@ package ui.commands;
 
 import ui.Command;
 import ui.CommandArgument;
+import util.CommandName;
+import util.CoreString;
 import util.ErrorMessage;
 import util.Regex;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ShowCommand extends Command {
-    private final static Pattern argumentsPattern = Pattern.compile(Regex.SHOW_COMMAND_ARGS.toString());
-    private final static int VALID_ARGUMENT_COUNT = 1;
-    private final static int INVALID_ARGUMENT_COUNT = 2;
+    private final static Pattern ARGUMENTS_PATTERN = Pattern.compile(Regex.SHOW_COMMAND_ARGS.toString());
+    private final static int MIN_VALID_ARGUMENT_COUNT = 1;
+    private final static int MAX_VALID_ARGUMENT_COUNT = 1;
     private final static String BARN_ARGUMENT = "barn";
     private final static String MARKET_ARGUMENT = "market";
     private final static String BOARD_ARGUMENT = "board";
@@ -20,14 +22,16 @@ public class ShowCommand extends Command {
 
     @Override
     public boolean execute() {
-        if (!this.areArgumentsValid(INVALID_ARGUMENT_COUNT, VALID_ARGUMENT_COUNT)){
+        if (this.areArgumentsEmpty() &&
+                !this.isArgumentCountInvalid(CommandName.SHOW.toString(), MIN_VALID_ARGUMENT_COUNT, MAX_VALID_ARGUMENT_COUNT)){
             return false;
         }
 
-        CommandArgument targetToShow = this.commandArguments.stream().findFirst().orElse(null);
-        Matcher matcher = argumentsPattern.matcher(targetToShow.getValue());
+        CommandArgument objectToShow = this.commandArguments.stream().findFirst()
+                .orElse(new CommandArgument(CoreString.EMPTY_STRING.toString()));
+        Matcher matcher = ARGUMENTS_PATTERN.matcher(objectToShow.getValue());
         if (matcher.matches()){
-            switch (targetToShow.getValue()) {
+            switch (objectToShow.getValue()) {
                 case BARN_ARGUMENT:
 
                     break;
@@ -40,7 +44,7 @@ public class ShowCommand extends Command {
             }
             return true;
         } else {
-            this.printErrorMessage(ErrorMessage.INVALID_ARGUMENT_NAME.toString(), targetToShow.getValue());
+            this.printErrorMessage(CommandName.SELL.toString(), ErrorMessage.INVALID_ARGUMENT_NAME.toString(), objectToShow.getValue());
             return false;
         }
     }

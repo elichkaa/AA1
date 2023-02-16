@@ -43,7 +43,7 @@ public class PlayerParser implements IParser<List<Player>> {
     @Override
     public List<Player> parse() {
         Object playerCountInput = this.checkInputCorrectness(
-                Regex.COUNT_AND_GOLD.toString(),
+                Regex.WHOLE_POSITIVE_NUMBER.toString(),
                 ErrorMessage.PLAYER_COUNT_INVALID.toString(),
                 Communication.PLAYER_COUNT_QUESTION.toString());
         if (playerCountInput == null) {
@@ -75,7 +75,7 @@ public class PlayerParser implements IParser<List<Player>> {
     private int[] parseGold(){
         // TODO: initial gold should not be bigger than winning gold
         Object initialGoldObject = this.checkInputCorrectness(
-                Regex.COUNT_AND_GOLD.toString(),
+                Regex.WHOLE_POSITIVE_NUMBER.toString(),
                 ErrorMessage.INITIAL_GOLD_QUANTITY_INVALID.toString(),
                 Communication.INITIAL_GOLD_QUESTION.toString());
         if (initialGoldObject == null) {
@@ -83,7 +83,7 @@ public class PlayerParser implements IParser<List<Player>> {
         }
 
         Object winningGoldObject = this.checkInputCorrectness(
-                Regex.COUNT_AND_GOLD.toString(),
+                Regex.WHOLE_POSITIVE_NUMBER.toString(),
                 ErrorMessage.WINNING_GOLD_QUANTITY_INVALID.toString(),
                 Communication.WINNING_GOLD_QUESTION.toString());
         if (winningGoldObject == null) {

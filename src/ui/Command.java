@@ -32,22 +32,30 @@ public abstract class Command implements ICommand {
         this.commandArguments = arguments;
     }
 
-    protected boolean areArgumentsValid(int invalidArgumentCount, int validArgumentCount){
-        if (this.commandArguments.isEmpty()){
-            this.printErrorMessage(ErrorMessage.NO_ARGUMENTS_PROVIDED.toString());
-            return false;
-        } else if (this.commandArguments.size() >= invalidArgumentCount){
-            this.printErrorMessage(ErrorMessage.TOO_MANY_ARGUMENTS_PROVIDED.toString(), validArgumentCount);
-            return false;
+    protected boolean isArgumentCountInvalid(String commandName, int minValidArgumentCount, int maxValidArgumentCount){
+        if (this.commandArguments.size() > maxValidArgumentCount){
+            this.printErrorMessage(commandName, ErrorMessage.TOO_MANY_ARGUMENTS_PROVIDED.toString(), maxValidArgumentCount);
+            return true;
+        } else if (this.commandArguments.size() < minValidArgumentCount){
+            this.printErrorMessage(commandName, ErrorMessage.NOT_ENOUGH_ARGUMENTS_PROVIDED.toString(), minValidArgumentCount);
+            return true;
         }
-        return true;
+        return false;
     }
 
-    protected void printErrorMessage(String errorMessage, Object... optionalMessage){
+    protected boolean areArgumentsEmpty(){
+        if (this.commandArguments.isEmpty()){
+            this.printErrorMessage(commandName, ErrorMessage.NO_ARGUMENTS_PROVIDED.toString());
+            return true;
+        }
+        return false;
+    }
+
+    protected void printErrorMessage(String commandName, String errorMessage, Object... optionalMessage){
         if (optionalMessage.length != 0) {
-            System.out.printf(errorMessage + System.lineSeparator(), CommandName.SHOW, optionalMessage[0]);
+            System.out.printf(errorMessage + System.lineSeparator(), commandName, optionalMessage[0]);
         } else {
-            System.out.printf(errorMessage + System.lineSeparator(), CommandName.SHOW);
+            System.out.printf(errorMessage + System.lineSeparator(), commandName);
         }
     }
 }

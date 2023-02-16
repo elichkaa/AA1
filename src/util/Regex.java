@@ -3,8 +3,11 @@ package util;
 public enum Regex {
     PLAYER_NAME("[A-Za-z]+"),
     SHOW_COMMAND_ARGS("(barn|market|board)"),
+    SELL_SPECIFIC_COMMAND_ARGS("\\b(tomato|mushroom|salad|carrot|all)\\b"),
+    VEGETABLE_NAME_ARGS("\\b(tomato|mushroom|salad|carrot)\\b"),
+    SELL_ALL_COMMAND_ARGS("all"),
     QUIT("quit"),
-    COUNT_AND_GOLD("^0*[1-9]\\d*$");
+    WHOLE_POSITIVE_NUMBER("^0*[1-9]\\d*$");
 
     private final String value;
 
