@@ -4,7 +4,7 @@ public enum ErrorMessage {
     UTILITY_CLASS_FALSE_INSTANTIATION("You cannot instantiate a utility class."),
     NULL_COMMAND("Command was null and could not be executed."),
     INVALID_ARGUMENT("Argument was too big or out of bounds."),
-    INPUT_FOR_SEED_INVALID("Seed is invalid. Please input a number between " + Integer.MIN_VALUE + " and " + Integer.MAX_VALUE),
+    INTEGER_ARGUMENT_INVALID("Argument is invalid. Please input a number between " + Integer.MIN_VALUE + " and " + Integer.MAX_VALUE),
     COMMANDLINE_ARGUMENTS_NOT_ALLOWED("No command line arguments allowed. Restart the program without them."),
     PIXEL_ART_FILE_DOES_NOT_EXIST("The file with the pixel art appears to be deleted. Restore the file."),
     PLAYER_COUNT_INVALID("Player count is invalid. Please enter a positive whole number."),

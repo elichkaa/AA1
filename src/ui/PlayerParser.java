@@ -35,7 +35,7 @@ public class PlayerParser implements IParser<List<Player>> {
                         result = Integer.parseInt(matcher.group(0));
                         parsingSuccessful = true;
                     } catch (NumberFormatException exception) {
-                        System.out.println(errorMessage);
+                        System.out.println(ErrorMessage.INTEGER_ARGUMENT_INVALID);
                         parsingSuccessful = false;
                     }
                 } else {
