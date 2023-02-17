@@ -12,15 +12,15 @@ import java.util.regex.Pattern;
 public class SeedParser implements IParser<Random> {
     private final Scanner scanner;
     private final static Pattern quitPattern = Pattern.compile(Regex.QUIT.toString());
+    private boolean foundSeed = false;
     private StateObserver observer;
 
     public SeedParser(Scanner scanner) {
-
         this.scanner = scanner;
     }
 
     @Override
-    public Object getCorrectInputIfAvailable(String pattern, String errorMessage, String question) {
+    public Object getCorrectInputIfAvailable(String pattern, String errorMessage, String question, boolean needsParsing) {
         System.out.println(question);
         String line = scanner.nextLine();
         Matcher matcher = quitPattern.matcher(line);
@@ -31,13 +31,8 @@ public class SeedParser implements IParser<Random> {
         long seed = 0L;
         boolean foundSeed = false;
         do {
-            try {
-                seed = Integer.parseInt(line);
-                foundSeed = true;
-            } catch (NumberFormatException exception) {
-                System.out.println(errorMessage);
-                line = scanner.nextLine();
-            }
+            //this.parseObserver.tryParse(line);
+            line = scanner.nextLine();
         } while (!foundSeed);
         return seed;
     }
@@ -46,12 +41,22 @@ public class SeedParser implements IParser<Random> {
     public Random parse() {
         long seed = (long) this.getCorrectInputIfAvailable(null,
                 ErrorMessage.INPUT_FOR_SEED_INVALID.toString(),
-                Communication.SEED_PROMPT.toString());
+                Communication.SEED_PROMPT.toString(), true);
         return new Random(seed);
     }
 
     @Override
     public void addObserver(StateObserver observer) {
         this.observer = observer;
+    }
+
+    private int tryParseInt(Object object) {
+        try {
+            this.foundSeed = true;
+            return Integer.parseInt((String) object);
+        } catch (NumberFormatException exception) {
+            System.out.println(exception.getMessage());
+            return -1;
+        }
     }
 }

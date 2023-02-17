@@ -33,10 +33,15 @@ public class Game implements IGame {
     }
 
     private void shuffleRemainingTiles() {
-        Collections.shuffle(this.remainingTiles, seed);
+        if (this.players != null) {
+            Collections.shuffle(this.remainingTiles, seed);
+        }
     }
 
     private ArrayList<Tile> initializeRemainingTiles() {
+        if (players == null) {
+            return null;
+        }
         ArrayList<Tile> tiles = new ArrayList<>();
         for (int i = 0; i < 2 * players.size(); i++) {
             tiles.add(new Garden());

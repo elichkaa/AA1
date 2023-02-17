@@ -27,7 +27,7 @@ public class Session {
         this.initializeCommands();
         Scanner scanner = new Scanner(System.in);
         Game game = this.initializeGame(scanner);
-        if (!sessionState){
+        if (!sessionState) {
             scanner.close();
             return;
         }
@@ -57,6 +57,9 @@ public class Session {
     }
 
     private Random getSeed(Scanner scanner) {
+        if (!sessionState) {
+            return null;
+        }
         SeedParser seedParser = new SeedParser(scanner);
         seedParser.addObserver(x -> this.sessionState = false);
         return seedParser.parse();
