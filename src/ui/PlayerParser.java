@@ -2,9 +2,6 @@ package ui;
 
 import models.core.Player;
 import util.ErrorMessage;
-import util.Regex;
-import util.Communication;
-import util.CoreString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,22 +10,30 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PlayerParser implements IParser<List<Player>> {
+    private final static Pattern PLAYER_NAME = Pattern.compile("[A-Za-z]+");
+    private final static Pattern WHOLE_NUMBER = Pattern.compile("^0*[0-9]\\d*$");
+    private final static Pattern WHOLE_POSITIVE_NUMBER = Pattern.compile("^0*[1-9]\\d*$");
+    private final static String PLAYER_COUNT_QUESTION = "How many players?";
+    private final static String INITIAL_GOLD_QUESTION = "With how much gold should each player start?";
+    private final static String WINNING_GOLD_QUESTION = "With how much gold should a player win?";
+    private final static String PLAYER_NAME_PROMPT = "Enter the name of player ";
+    private final static String COLON = ":";
+
     private StateObserver observer;
     private final Scanner scanner;
 
-    public PlayerParser(Scanner scanner){
+    public PlayerParser(Scanner scanner) {
         this.scanner = scanner;
     }
 
     @Override
-    public Object getCorrectInputIfAvailable(String pattern, String errorMessage, String question, boolean needsParsing) {
-        Pattern currentPattern = Pattern.compile(pattern);
+    public Object getCorrectInputIfAvailable(Pattern pattern, String errorMessage, String question, boolean needsParsing) {
         System.out.println(question);
         Object result = null;
         Matcher matcher;
         boolean parsingSuccessful = true;
         do {
-            matcher = currentPattern.matcher(scanner.nextLine());
+            matcher = pattern.matcher(scanner.nextLine());
             if (matcher.matches()) {
                 if (needsParsing) {
                     try {
@@ -73,9 +78,9 @@ public class PlayerParser implements IParser<List<Player>> {
 
     private int parsePlayerCount() {
         Object playerCount = this.getCorrectInputIfAvailable(
-                Regex.WHOLE_POSITIVE_NUMBER.toString(),
+                WHOLE_POSITIVE_NUMBER,
                 ErrorMessage.PLAYER_COUNT_INVALID.toString(),
-                Communication.PLAYER_COUNT_QUESTION.toString(),
+                PLAYER_COUNT_QUESTION,
                 true);
         if (playerCount == null) {
             return 0;
@@ -87,9 +92,9 @@ public class PlayerParser implements IParser<List<Player>> {
         List<String> playerNames = new ArrayList<>();
         for (int i = 1; i <= playerCount; i++) {
             Object playerNameInput = this.getCorrectInputIfAvailable(
-                    Regex.PLAYER_NAME.toString(),
+                    PLAYER_NAME,
                     ErrorMessage.PLAYER_NAME_INVALID.toString(),
-                    Communication.PLAYER_NAME_PROMPT.toString() + i + CoreString.COLON_STRING,
+                    PLAYER_NAME_PROMPT + i + COLON,
                     false);
             if (playerNameInput == null) {
                 return null;
@@ -102,18 +107,18 @@ public class PlayerParser implements IParser<List<Player>> {
     private int[] parseGold() {
         // TODO: initial gold should not be bigger than winning gold
         Object initialGold = this.getCorrectInputIfAvailable(
-                Regex.WHOLE_NUMBER.toString(),
+                WHOLE_NUMBER,
                 ErrorMessage.INITIAL_GOLD_QUANTITY_INVALID.toString(),
-                Communication.INITIAL_GOLD_QUESTION.toString(),
+                INITIAL_GOLD_QUESTION,
                 true);
         if (initialGold == null) {
             return null;
         }
 
         Object winningGold = this.getCorrectInputIfAvailable(
-                Regex.WHOLE_POSITIVE_NUMBER.toString(),
+                WHOLE_POSITIVE_NUMBER,
                 ErrorMessage.WINNING_GOLD_QUANTITY_INVALID.toString(),
-                Communication.WINNING_GOLD_QUESTION.toString(),
+                WINNING_GOLD_QUESTION,
                 true);
         if (winningGold == null) {
             return null;

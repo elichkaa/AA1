@@ -1,6 +1,5 @@
 package ui;
 
-import util.CommandName;
 import util.ErrorMessage;
 
 import java.util.List;
@@ -33,18 +32,18 @@ public abstract class Command implements ICommand {
         this.commandArguments = arguments;
     }
 
-    protected boolean isArgumentCountInvalid(String commandName, int minValidArgumentCount, int maxValidArgumentCount){
-        if (this.commandArguments.size() > maxValidArgumentCount){
-            this.printErrorMessage(commandName, ErrorMessage.TOO_MANY_ARGUMENTS_PROVIDED.toString(), maxValidArgumentCount);
+    protected boolean isArgumentCountInvalid(int minValidArgumentCount, int maxValidArgumentCount) {
+        if (this.commandArguments.size() > maxValidArgumentCount) {
+            this.printErrorMessage(this.commandName, ErrorMessage.TOO_MANY_ARGUMENTS_PROVIDED.toString(), maxValidArgumentCount);
             return true;
-        } else if (this.commandArguments.size() < minValidArgumentCount){
-            this.printErrorMessage(commandName, ErrorMessage.NOT_ENOUGH_ARGUMENTS_PROVIDED.toString(), minValidArgumentCount);
+        } else if (this.commandArguments.size() < minValidArgumentCount) {
+            this.printErrorMessage(this.commandName, ErrorMessage.NOT_ENOUGH_ARGUMENTS_PROVIDED.toString(), minValidArgumentCount);
             return true;
         }
         return false;
     }
 
-    protected void printErrorMessage(String commandName, String errorMessage, Object... optionalMessage) {
+    protected void printErrorMessage(String errorMessage, Object... optionalMessage) {
         if (optionalMessage.length != 0) {
             System.out.printf(errorMessage + System.lineSeparator(), commandName, optionalMessage[0]);
         } else {
@@ -52,21 +51,19 @@ public abstract class Command implements ICommand {
         }
     }
 
-    protected boolean areArgumentsInvalid(List<String> arguments, Pattern pattern, CommandName commandName,
-                                          ErrorMessage errorMessage) {
+    protected boolean areArgumentsInvalid(List<String> arguments, Pattern pattern, ErrorMessage errorMessage) {
         for (String argument : arguments) {
             if (!pattern.matcher(argument).matches()) {
-                this.printErrorMessage(commandName.toString(), errorMessage.toString(), argument);
+                this.printErrorMessage(this.commandName, errorMessage.toString(), argument);
                 return true;
             }
         }
         return false;
     }
 
-    protected boolean isArgumentInvalid(String argument, Pattern pattern, CommandName commandName,
-                                        ErrorMessage errorMessage, Object... optional) {
+    protected boolean isArgumentInvalid(String argument, Pattern pattern, ErrorMessage errorMessage, Object... optional) {
         if (!pattern.matcher(argument).matches()) {
-            this.printErrorMessage(commandName.toString(), errorMessage.toString(), optional);
+            this.printErrorMessage(this.commandName, errorMessage.toString(), optional);
             return true;
         }
         return false;

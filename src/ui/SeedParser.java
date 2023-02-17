@@ -1,13 +1,14 @@
 package ui;
 
-import util.Communication;
 import util.ErrorMessage;
 
 import java.util.Random;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class SeedParser implements IParser<Random> {
     private final Scanner scanner;
+    private final static String SEED_PROMPT = "Please enter the seed used to shuffle the tiles:";
     private StateObserver observer;
 
     public SeedParser(Scanner scanner) {
@@ -15,7 +16,7 @@ public class SeedParser implements IParser<Random> {
     }
 
     @Override
-    public Object getCorrectInputIfAvailable(String pattern, String errorMessage, String question, boolean needsParsing) {
+    public Object getCorrectInputIfAvailable(Pattern pattern, String errorMessage, String question, boolean needsParsing) {
         System.out.println(question);
         String line;
         int seed = 0;
@@ -38,7 +39,7 @@ public class SeedParser implements IParser<Random> {
     public Random parse() {
         int seed = (int) this.getCorrectInputIfAvailable(null,
                 ErrorMessage.INTEGER_ARGUMENT_INVALID.toString(),
-                Communication.SEED_PROMPT.toString(),
+                SEED_PROMPT,
                 true);
         return new Random(seed);
     }

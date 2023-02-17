@@ -1,9 +1,6 @@
 package ui;
 
 import models.Session;
-import util.Communication;
-import util.CoreString;
-import util.Regex;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,17 +11,18 @@ import java.util.regex.Pattern;
 public class CommandParser implements IParser<Command> {
     private final static int COMMAND_NAME = 1;
     private StateObserver observer;
-    private final static Pattern quitPattern = Pattern.compile(Regex.QUIT.toString());
+    private final static Pattern quitPattern = Pattern.compile("quit");
+    private final static String WHITESPACE = " ";
     private final Session session;
     private final Scanner scanner;
 
-    public CommandParser(Session session, Scanner scanner){
+    public CommandParser(Session session, Scanner scanner) {
         this.session = session;
         this.scanner = scanner;
     }
 
     @Override
-    public Object getCorrectInputIfAvailable(String pattern, String errorMessage, String question, boolean needsParsing) {
+    public Object getCorrectInputIfAvailable(Pattern pattern, String errorMessage, String question, boolean needsParsing) {
         return null;
     }
 
@@ -33,12 +31,12 @@ public class CommandParser implements IParser<Command> {
         // check if input null, emptyString or whatever random stuff it can hold
 
         List<String> userInput = Arrays.stream(this.scanner.nextLine()
-                .split(CoreString.WHITESPACE_STRING.toString())).toList();
+                .split(WHITESPACE)).toList();
         String commandName = userInput.stream().findFirst().orElse(null);
         if (commandName == null) return null;
         Matcher matcher = quitPattern.matcher(commandName);
         if (matcher.matches()){
-            observer.update(Communication.SESSION_TERMINATED_MESSAGE.toString());
+            observer.update(null);
             return null;
         }
 

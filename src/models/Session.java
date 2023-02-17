@@ -9,18 +9,28 @@ import ui.commands.HarvestCommand;
 import ui.commands.SellCommand;
 import ui.commands.ShowCommand;
 import ui.commands.PlantCommand;
-import util.CommandName;
 import ui.CommandParser;
 import ui.PlayerParser;
 import util.ErrorMessage;
 import util.IOHandler;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.Scanner;
+import java.util.Arrays;
 
 public class Session {
+    private static final String SHOW_COMMAND = "show";
+    private static final String BUY_COMMAND = "buy";
+    private static final String HARVEST_COMMAND = "harvest";
+    private static final String SELL_COMMAND = "sell";
+    private static final String PLANT_COMMAND = "show";
     private boolean sessionState = true;
     private List<Command> allCommands = new ArrayList<>();
-    public Session() {}
+
+    public Session() {
+    }
 
     public void init() {
         IOHandler.printPixelArt();
@@ -41,7 +51,6 @@ public class Session {
                 command = commandParser.parse();
                 game.processInput(command);
             }
-            command = commandParser.parse();
         }
         scanner.close();
     }
@@ -74,12 +83,13 @@ public class Session {
 
     }
 
-    private void initializeCommands(){
-        this.allCommands = Arrays.asList(new ShowCommand(CommandName.SHOW.toString()),
-                new BuyCommand(CommandName.BUY.toString()),
-                new HarvestCommand(CommandName.HARVEST.toString()),
-                new SellCommand(CommandName.SELL.toString()),
-                new PlantCommand(CommandName.PLANT.toString()));
+    private void initializeCommands() {
+        this.allCommands = Arrays.asList(
+                new ShowCommand(SHOW_COMMAND),
+                new BuyCommand(BUY_COMMAND),
+                new HarvestCommand(HARVEST_COMMAND),
+                new SellCommand(SELL_COMMAND),
+                new PlantCommand(PLANT_COMMAND));
     }
 
     public List<Command> getAllCommands() {
