@@ -10,7 +10,7 @@ public abstract class Command implements ICommand {
     protected static final String INVALID_ARGUMENT_NAME = "An argument for the command %s with the name %s doesn't exist.";
     private static final String TOO_MANY_ARGUMENTS_PROVIDED = "Too many arguments for the command %s provided. They should be maximum %d.";
     private static final String NOT_ENOUGH_ARGUMENTS_PROVIDED = "Not enough arguments for the command %s provided. They should be minimum %d.";
-    private final String ERROR_PREFIX = "Error: ";
+    protected final String ERROR_PREFIX = "Error: ";
     protected final String commandName;
     protected List<CommandArgument> commandArguments;
 
@@ -36,10 +36,10 @@ public abstract class Command implements ICommand {
 
     protected boolean isArgumentCountInvalid(int minValidArgumentCount, int maxValidArgumentCount) {
         if (this.commandArguments.size() > maxValidArgumentCount) {
-            this.printErrorMessage(ERROR_PREFIX + TOO_MANY_ARGUMENTS_PROVIDED, maxValidArgumentCount);
+            this.printErrorMessage(this.ERROR_PREFIX + TOO_MANY_ARGUMENTS_PROVIDED, maxValidArgumentCount);
             return true;
         } else if (this.commandArguments.size() < minValidArgumentCount) {
-            this.printErrorMessage(ERROR_PREFIX + NOT_ENOUGH_ARGUMENTS_PROVIDED, minValidArgumentCount);
+            this.printErrorMessage(this.ERROR_PREFIX + NOT_ENOUGH_ARGUMENTS_PROVIDED, minValidArgumentCount);
             return true;
         }
         return false;
