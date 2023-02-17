@@ -1,7 +1,5 @@
 package ui;
 
-import util.ErrorMessage;
-
 import java.util.Random;
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -9,6 +7,7 @@ import java.util.regex.Pattern;
 public class SeedParser implements IParser<Random> {
     private final Scanner scanner;
     private final static String SEED_PROMPT = "Please enter the seed used to shuffle the tiles:";
+    private static final String INTEGER_PARSING_FAILED = "Error: Argument is invalid. Please input a number between " + Integer.MIN_VALUE + " and " + Integer.MAX_VALUE;
     private StateObserver observer;
 
     public SeedParser(Scanner scanner) {
@@ -38,7 +37,7 @@ public class SeedParser implements IParser<Random> {
     @Override
     public Random parse() {
         int seed = (int) this.getCorrectInputIfAvailable(null,
-                ErrorMessage.INTEGER_ARGUMENT_INVALID.toString(),
+                INTEGER_PARSING_FAILED,
                 SEED_PROMPT,
                 true);
         return new Random(seed);

@@ -11,7 +11,6 @@ import ui.commands.ShowCommand;
 import ui.commands.PlantCommand;
 import ui.CommandParser;
 import ui.PlayerParser;
-import util.ErrorMessage;
 import util.IOHandler;
 
 import java.util.ArrayList;
@@ -26,6 +25,7 @@ public class Session {
     private static final String HARVEST_COMMAND = "harvest";
     private static final String SELL_COMMAND = "sell";
     private static final String PLANT_COMMAND = "show";
+    private static final String NULL_COMMAND = "Error: Command was null and could not be executed.";
     private boolean sessionState = true;
     private List<Command> allCommands = new ArrayList<>();
 
@@ -78,7 +78,7 @@ public class Session {
         try {
             command.execute();
         } catch (NullPointerException nullPointerException) {
-            System.out.println(ErrorMessage.NULL_COMMAND);
+            System.out.println(NULL_COMMAND);
         }
 
     }

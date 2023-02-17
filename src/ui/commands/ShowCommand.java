@@ -2,7 +2,6 @@ package ui.commands;
 
 import ui.Command;
 import ui.CommandArgument;
-import util.ErrorMessage;
 
 import java.util.LinkedList;
 import java.util.regex.Pattern;
@@ -26,7 +25,7 @@ public class ShowCommand extends Command {
                 .collect(Collectors.toCollection(LinkedList::new));
         if (this.isArgumentInvalid(commandArgs.getLast(),
                 ARGUMENTS_PATTERN,
-                ErrorMessage.INVALID_ARGUMENT_NAME,
+                INVALID_ARGUMENT_NAME,
                 commandArgs.getFirst())) {
             return false;
         }

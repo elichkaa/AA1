@@ -6,6 +6,7 @@ import java.io.IOException;
 
 public final class IOHandler {
     private static final String FILE_PATH = "./src/util/Pixel-Art.txt";
+    private static final String PIXEL_ART_FILE_DOES_NOT_EXIST = "The file with the pixel art appears to be deleted. Restore the file.";
     private IOHandler() {}
 
     public static void printPixelArt(){
@@ -18,7 +19,7 @@ public final class IOHandler {
             }
             reader.close();
         } catch (IOException exception) {
-            System.out.println(ErrorMessage.PIXEL_ART_FILE_DOES_NOT_EXIST);
+            System.out.println(PIXEL_ART_FILE_DOES_NOT_EXIST);
         }
     }
 
