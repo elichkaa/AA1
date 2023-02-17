@@ -4,11 +4,7 @@ import models.core.Game;
 import models.core.Player;
 import ui.Command;
 import ui.SeedParser;
-import ui.commands.BuyCommand;
-import ui.commands.HarvestCommand;
-import ui.commands.SellCommand;
-import ui.commands.ShowCommand;
-import ui.commands.PlantCommand;
+import ui.commands.*;
 import ui.CommandParser;
 import ui.PlayerParser;
 import util.IOHandler;
@@ -21,6 +17,7 @@ import java.util.Arrays;
 
 public class Session {
     private static final String SHOW_COMMAND = "show";
+    private static final String QUIT_COMMAND = "quit";
     private static final String BUY_COMMAND = "buy";
     private static final String HARVEST_COMMAND = "harvest";
     private static final String SELL_COMMAND = "sell";
@@ -86,6 +83,7 @@ public class Session {
     private void initializeCommands() {
         this.allCommands = Arrays.asList(
                 new ShowCommand(SHOW_COMMAND),
+                new QuitCommand(QUIT_COMMAND),
                 new BuyCommand(BUY_COMMAND),
                 new HarvestCommand(HARVEST_COMMAND),
                 new SellCommand(SELL_COMMAND),

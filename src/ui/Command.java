@@ -21,9 +21,6 @@ public abstract class Command implements ICommand {
     @Override
     public abstract boolean execute();
 
-    @Override
-    public void undo() { }
-
     public String getCommandName(){
         return this.commandName;
     }
