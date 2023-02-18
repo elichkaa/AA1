@@ -4,9 +4,9 @@ import models.core.Coordinates;
 
 public abstract class Tile {
     protected Coordinates coordinates;
+    protected int capacity;
 
     public Tile() {
-
     }
 
     public Tile(Coordinates coordinates) {
@@ -15,5 +15,9 @@ public abstract class Tile {
 
     public Coordinates getCoordinates() {
         return coordinates;
+    }
+
+    public int getCapacity() {
+        return this.capacity;
     }
 }

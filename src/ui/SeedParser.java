@@ -9,7 +9,6 @@ public class SeedParser implements IParser<Random> {
     private final static String SEED_PROMPT = "Please enter the seed used to shuffle the tiles:";
     private static final String INTEGER_PARSING_FAILED = "Error: Argument is invalid. Please input a number between " + Integer.MIN_VALUE + " and " + Integer.MAX_VALUE;
     private StateObserver observer;
-
     public SeedParser(Scanner scanner) {
         this.scanner = scanner;
     }
