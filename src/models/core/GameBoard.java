@@ -5,6 +5,7 @@ import models.core.tiles.Field;
 import models.core.tiles.Garden;
 import models.core.tiles.Tile;
 
+import java.util.List;
 import java.util.TreeMap;
 
 public class GameBoard {
@@ -23,5 +24,13 @@ public class GameBoard {
         board.put(this.leftGarden.getCoordinates(), this.leftGarden);
         board.put(this.rightGarden.getCoordinates(), this.rightGarden);
         board.put(this.field.getCoordinates(), this.field);
+    }
+
+    public List<Vegetable> getGrownVegetables() {
+        return null;
+    }
+
+    public Barn getBarn() {
+        return this.barn;
     }
 }

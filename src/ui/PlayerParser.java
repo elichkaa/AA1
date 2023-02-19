@@ -22,7 +22,6 @@ public class PlayerParser implements IParser<List<Player>> {
     private static final String WINNING_GOLD_QUANTITY_INVALID = "Error: The winning gold quantity is invalid. Please enter a positive whole number.";
     private static final String INTEGER_PARSING_FAILED = "Error: Argument is invalid. Please input a number between " + Integer.MIN_VALUE + " and " + Integer.MAX_VALUE;
     private final static String COLON = ":";
-    private StateObserver observer;
     private final Scanner scanner;
 
     public PlayerParser(Scanner scanner) {
@@ -128,10 +127,5 @@ public class PlayerParser implements IParser<List<Player>> {
         }
 
         return new int[]{(int) initialGold, (int) winningGold};
-    }
-
-    @Override
-    public void addObserver(StateObserver observer){
-        this.observer = observer;
     }
 }

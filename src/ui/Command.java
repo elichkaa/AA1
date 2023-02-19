@@ -1,5 +1,8 @@
 package ui;
 
+import util.StateObserver;
+import util.TurnObserver;
+
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -13,6 +16,8 @@ public abstract class Command implements ICommand {
     protected final String ERROR_PREFIX = "Error: ";
     protected final String commandName;
     protected List<CommandArgument> commandArguments;
+    protected StateObserver stateObserver;
+    protected TurnObserver turnObserver;
 
     public Command(String commandName) {
         this.commandName = commandName;
@@ -21,7 +26,7 @@ public abstract class Command implements ICommand {
     @Override
     public abstract boolean execute();
 
-    public String getCommandName(){
+    public String getCommandName() {
         return this.commandName;
     }
 
@@ -78,5 +83,13 @@ public abstract class Command implements ICommand {
         } catch (NumberFormatException exception) {
             return false;
         }
+    }
+
+    public void addStateObserver(StateObserver observer) {
+        this.stateObserver = observer;
+    }
+
+    public void addTurnObserver(TurnObserver observer) {
+        this.turnObserver = observer;
     }
 }

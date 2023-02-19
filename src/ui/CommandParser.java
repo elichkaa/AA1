@@ -5,13 +5,10 @@ import models.Session;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CommandParser implements IParser<Command> {
     private final static int COMMAND_NAME = 1;
-    private StateObserver observer;
-    private final static Pattern quitPattern = Pattern.compile("quit");
     private final static String WHITESPACE = " ";
     private final Session session;
     private final Scanner scanner;
@@ -34,10 +31,8 @@ public class CommandParser implements IParser<Command> {
                 .split(WHITESPACE)).toList();
         String commandName = userInput.stream().findFirst().orElse(null);
         if (commandName == null) return null;
-        Matcher matcher = quitPattern.matcher(commandName);
-        if (matcher.matches()){
-            observer.update(null);
-            return null;
+        if (commandName.equals("end")) {
+            commandName += " " + userInput.stream().skip(COMMAND_NAME).toList().get(0);
         }
 
         List<CommandArgument> commandArguments = userInput.stream().skip(COMMAND_NAME).map(CommandArgument::new).toList();
@@ -53,10 +48,5 @@ public class CommandParser implements IParser<Command> {
             }
         }
         return null;
-    }
-
-    @Override
-    public void addObserver(StateObserver observer) {
-        this.observer = observer;
     }
 }

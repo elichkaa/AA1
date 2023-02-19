@@ -2,14 +2,14 @@ package ui.commands;
 
 import ui.Command;
 
-public class QuitCommand extends Command {
-    public QuitCommand(String commandName) {
+public class EndTurnCommand extends Command {
+    public EndTurnCommand(String commandName) {
         super(commandName);
     }
 
     @Override
     public boolean execute() {
-        this.stateObserver.update("Game ended.");
+        this.turnObserver.update("Next turn.");
         return true;
     }
 }

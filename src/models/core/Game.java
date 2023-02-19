@@ -2,6 +2,7 @@ package models.core;
 
 import models.core.tiles.*;
 import ui.Command;
+import util.IOHandler;
 
 import java.util.*;
 
@@ -9,6 +10,8 @@ public class Game implements IGame {
     private final ArrayList<Player> players;
     private final Random seed;
     private final ArrayList<Tile> remainingTiles;
+    private static final String NULL_COMMAND = "Error: No such command exists.";
+    private final int currentTurn = -1;
 
     public Game(List<Player> players, Random seed) {
         this.players = (ArrayList<Player>) players;
@@ -18,13 +21,12 @@ public class Game implements IGame {
     }
 
     @Override
-    public void processInput(Command command) {
-
-    }
-
-    @Override
-    public void requestInput() {
-
+    public void processInput(Command command, Player player) {
+        try {
+            command.execute();
+        } catch (NullPointerException nullPointerException) {
+            System.out.println(NULL_COMMAND);
+        }
     }
 
     @Override
@@ -32,10 +34,36 @@ public class Game implements IGame {
         return false;
     }
 
+    @Override
+    public String getOutput() {
+        return "";
+    }
+
+    @Override
+    public void setOutput() {
+
+    }
+
+    public boolean hasWinner() {
+        return false;
+    }
+
+    public ArrayList<Player> getPlayers() {
+        return this.players;
+    }
+
     private void shuffleRemainingTiles() {
         if (this.players != null) {
             Collections.shuffle(this.remainingTiles, seed);
         }
+    }
+
+    public void organizeMarket() {
+
+    }
+
+    public void getEndgame() {
+        IOHandler.printEndgameTable(this.players);
     }
 
     private ArrayList<Tile> initializeRemainingTiles() {

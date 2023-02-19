@@ -2,6 +2,7 @@ package models.core.tiles;
 
 import models.core.Coordinates;
 import models.core.Vegetable;
+import util.CountdownObserver;
 
 import java.util.List;
 
@@ -27,5 +28,9 @@ public abstract class Tile {
 
     public boolean canPlant(Vegetable vegetable) {
         return this.allowedVegetables.contains(vegetable);
+    }
+
+    public void addObserver(CountdownObserver countdownObserver) {
+
     }
 }

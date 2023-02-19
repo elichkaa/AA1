@@ -20,10 +20,12 @@ public class Session {
     private static final String QUIT_COMMAND = "quit";
     private static final String BUY_COMMAND = "buy";
     private static final String HARVEST_COMMAND = "harvest";
+    private static final String END_TURN_COMMAND = "end turn";
     private static final String SELL_COMMAND = "sell";
     private static final String PLANT_COMMAND = "plant";
-    private static final String NULL_COMMAND = "Error: No such command exists.";
-    private boolean sessionState = true;
+    private boolean sessionIsActive = true;
+    private boolean turnIsActive = true;
+    private int turnActionsCounter = 0;
     private List<Command> allCommands = new ArrayList<>();
 
     public Session() {
@@ -34,21 +36,36 @@ public class Session {
         this.initializeCommands();
         Scanner scanner = new Scanner(System.in);
         Game game = this.initializeGame(scanner);
-        if (!sessionState) {
+        if (!sessionIsActive) {
             scanner.close();
             return;
         }
 
         CommandParser commandParser = new CommandParser(this, scanner);
-        commandParser.addObserver(x -> this.sessionState = false);
-        Command command = commandParser.parse();
-        while(this.sessionState){
-            this.executeCommand(command);
-            if (!game.hasOutput()) {
-                command = commandParser.parse();
-                game.processInput(command);
+        Command command;
+        while (!game.hasWinner()) {
+            for (Player player : game.getPlayers()) {
+                IOHandler.startTurnText(player);
+                while (this.turnIsActive && this.sessionIsActive && this.turnActionsCounter <= 2) {
+                    command = commandParser.parse();
+                    if (!isCommandAvailable(command)) {
+                        command = commandParser.parse();
+                    }
+                    command.addStateObserver(x -> this.sessionIsActive = false);
+                    command.addTurnObserver(x -> this.turnIsActive = false);
+                    game.processInput(command, player);
+                    this.turnActionsCounter++;
+                }
+                if (!this.sessionIsActive) {
+                    break;
+                }
+                game.organizeMarket();
             }
+            // barn countdown
+            // vegetable grows
         }
+        game.getEndgame();
+
         scanner.close();
     }
 
@@ -58,26 +75,15 @@ public class Session {
 
     private List<Player> initializePlayers(Scanner scanner) {
         PlayerParser playerParser = new PlayerParser(scanner);
-        playerParser.addObserver(x -> this.sessionState = false);
         return playerParser.parse();
     }
 
     private Random getSeed(Scanner scanner) {
-        if (!sessionState) {
+        if (!sessionIsActive) {
             return null;
         }
         SeedParser seedParser = new SeedParser(scanner);
-        seedParser.addObserver(x -> this.sessionState = false);
         return seedParser.parse();
-    }
-
-    private void executeCommand(Command command) {
-        try {
-            command.execute();
-        } catch (NullPointerException nullPointerException) {
-            System.out.println(NULL_COMMAND);
-        }
-
     }
 
     private void initializeCommands() {
@@ -87,10 +93,15 @@ public class Session {
                 new BuyCommand(BUY_COMMAND),
                 new HarvestCommand(HARVEST_COMMAND),
                 new SellCommand(SELL_COMMAND),
+                new EndTurnCommand(END_TURN_COMMAND),
                 new PlantCommand(PLANT_COMMAND));
     }
 
     public List<Command> getAllCommands() {
         return allCommands;
+    }
+
+    public boolean isCommandAvailable(Command command) {
+        return command != null;
     }
 }
