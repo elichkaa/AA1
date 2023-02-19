@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public abstract class Command implements ICommand {
-    protected final static Pattern NUMBER_ARGUMENT = Pattern.compile("^0*-?[0-9]\\d*$");
+    protected final static Pattern COORDINATE_ARGUMENT = Pattern.compile("^0*-?[0-9]\\d*$");
     protected final static Pattern VEGETABLE_NAME_ARGUMENT = Pattern.compile("\\b(tomato|mushroom|salad|carrot)\\b");
-    protected static final String INVALID_COORDINATES = "Please enter integers for the coordinates.";
+    protected static final String INVALID_COORDINATES = "Coordinates are invalid. Please input numbers between " + Integer.MIN_VALUE + " and " + Integer.MAX_VALUE;
     protected static final String INVALID_ARGUMENT_NAME = "An argument for the command %s with the name %s doesn't exist.";
     private static final String TOO_MANY_ARGUMENTS_PROVIDED = "Too many arguments for the command %s provided. They should be maximum %d.";
     private static final String NOT_ENOUGH_ARGUMENTS_PROVIDED = "Not enough arguments for the command %s provided. They should be minimum %d.";
@@ -53,10 +53,10 @@ public abstract class Command implements ICommand {
         }
     }
 
-    protected boolean areArgumentsInvalid(List<String> arguments, Pattern pattern, String errorMessage) {
-        for (String argument : arguments) {
-            if (!pattern.matcher(argument).matches()) {
-                this.printErrorMessage(this.ERROR_PREFIX + errorMessage, argument);
+    protected boolean areCoordinatesInvalid(List<String> coordinates) {
+        for (String coordinate : coordinates) {
+            if (!Command.COORDINATE_ARGUMENT.matcher(coordinate).matches() || !this.canParseInteger(coordinate)) {
+                this.printErrorMessage(this.ERROR_PREFIX + INVALID_COORDINATES, coordinate);
                 return true;
             }
         }
@@ -69,5 +69,14 @@ public abstract class Command implements ICommand {
             return true;
         }
         return false;
+    }
+
+    private boolean canParseInteger(String coordinate) {
+        try {
+            Integer.parseInt(coordinate);
+            return true;
+        } catch (NumberFormatException exception) {
+            return false;
+        }
     }
 }

@@ -36,9 +36,7 @@ public class BuyCommand extends Command {
                     this.printErrorMessage(this.ERROR_PREFIX + SECOND_COORDINATE_MISSING, this.commandName + WHITESPACE + LAND_ARGUMENT);
                     return false;
                 }
-                if (this.areArgumentsInvalid(commandArgs.subList(FIRST_COORDINATE_INDEX, SECOND_COORDINATE_INDEX + 1),
-                        NUMBER_ARGUMENT,
-                        INVALID_COORDINATES)) {
+                if (this.areCoordinatesInvalid(commandArgs.subList(FIRST_COORDINATE_INDEX, SECOND_COORDINATE_INDEX + 1))) {
                     return false;
                 }
             }

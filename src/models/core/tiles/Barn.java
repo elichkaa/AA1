@@ -2,6 +2,8 @@ package models.core.tiles;
 
 import models.core.Coordinates;
 
+import java.util.ArrayList;
+
 public class Barn extends Tile {
     // infinity
     private final static int storageCapacity = Integer.MAX_VALUE;
@@ -11,5 +13,6 @@ public class Barn extends Tile {
     public Barn() {
         super(new Coordinates(xCoordinate, yCoordinate));
         this.capacity = storageCapacity;
+        this.allowedVegetables = new ArrayList<>();
     }
 }

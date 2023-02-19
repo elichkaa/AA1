@@ -21,8 +21,8 @@ public class Session {
     private static final String BUY_COMMAND = "buy";
     private static final String HARVEST_COMMAND = "harvest";
     private static final String SELL_COMMAND = "sell";
-    private static final String PLANT_COMMAND = "show";
-    private static final String NULL_COMMAND = "Error: Command was null and could not be executed.";
+    private static final String PLANT_COMMAND = "plant";
+    private static final String NULL_COMMAND = "Error: No such command exists.";
     private boolean sessionState = true;
     private List<Command> allCommands = new ArrayList<>();
 

@@ -23,9 +23,7 @@ public class PlantCommand extends Command {
 
         LinkedList<String> commandArgs = this.commandArguments.stream().map(CommandArgument::getValue)
                 .collect(Collectors.toCollection(LinkedList::new));
-        if (this.areArgumentsInvalid(commandArgs.subList(0, MAX_VALID_ARGUMENT_COUNT - 1),
-                NUMBER_ARGUMENT,
-                INVALID_COORDINATES)
+        if (this.areCoordinatesInvalid(commandArgs.subList(0, MAX_VALID_ARGUMENT_COUNT - 1))
                 || this.isArgumentInvalid(commandArgs.getLast(),
                 VEGETABLE_NAME_ARGUMENT,
                 INVALID_VEGETABLE_NAME,

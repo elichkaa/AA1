@@ -30,10 +30,13 @@ public class SellCommand extends Command {
                     SELL_SPECIFIC_ARGUMENTS,
                     INVALID_ARGUMENT_NAME,
                     vegetablesToSell.getFirst());
-        } else if (vegetablesToSell.size() > 1) {
-            return !this.areArgumentsInvalid(vegetablesToSell,
+        }
+        for (String vegetable : vegetablesToSell) {
+            if (!this.isArgumentInvalid(vegetable,
                     VEGETABLE_NAME_ARGUMENT,
-                    INVALID_SALE_ARGUMENTS);
+                    INVALID_SALE_ARGUMENTS)) {
+                return false;
+            }
         }
 
         return true;
