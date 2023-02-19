@@ -8,7 +8,7 @@ import models.core.tiles.Tile;
 import java.util.TreeMap;
 
 public class GameBoard {
-    private TreeMap<Tile, Tile> board = new TreeMap<>();
+    private final TreeMap<Coordinates, Tile> board = new TreeMap<>();
     private final Barn barn;
     private final Garden leftGarden;
     private final Garden rightGarden;
@@ -19,7 +19,9 @@ public class GameBoard {
         this.leftGarden = new Garden(new Coordinates(-1, 0));
         this.rightGarden = new Garden(new Coordinates(1, 0));
         this.field = new Field(new Coordinates(0, 1));
-        this.board.put(barn, leftGarden);
-        this.board.put(barn, rightGarden);
+        board.put(this.barn.getCoordinates(), this.barn);
+        board.put(this.leftGarden.getCoordinates(), this.leftGarden);
+        board.put(this.rightGarden.getCoordinates(), this.rightGarden);
+        board.put(this.field.getCoordinates(), this.field);
     }
 }
