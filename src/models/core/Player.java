@@ -27,6 +27,10 @@ public class Player {
         return this.startingGold;
     }
 
+    public int getGoldToWin() {
+        return this.goldToWin;
+    }
+
     public void winGame() {
         this.isWinner = true;
     }

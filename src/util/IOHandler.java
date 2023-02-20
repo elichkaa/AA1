@@ -34,7 +34,7 @@ public final class IOHandler {
     public static void startTurnText(Player player) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(System.lineSeparator());
-        stringBuilder.append(String.format("It is %s's turn", player.getPlayerName())).append(System.lineSeparator());
+        stringBuilder.append(String.format("It is %s's turn!", player.getPlayerName())).append(System.lineSeparator());
         List<Vegetable> grownVegetables = player.getGameBoard().getGrownVegetables();
         if (grownVegetables != null) {
             if (grownVegetables.size() == 1) {
@@ -54,13 +54,25 @@ public final class IOHandler {
 
     public static void printEndgameTable(List<Player> players) {
         StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < players.size(); i++) {
-            stringBuilder.append(String.format("Player %d (%s): [%d]", i, players.get(i).getPlayerName(), players.get(i).getStartingGold()))
+        for (int i = 1; i <= players.size(); i++) {
+            stringBuilder.append(String.format("Player %d (%s): %d", i, players.get(i - 1).getPlayerName(),
+                            players.get(i - 1).getStartingGold()))
                     .append(System.lineSeparator());
         }
-        Player winner = players.stream().filter(Player::isWinner).findFirst().orElse(null);
-        if (winner != null) {
-            stringBuilder.append(String.format("%s has won!", winner.getPlayerName()));
+        List<Player> winners = players.stream().filter(Player::isWinner).toList();
+        if (winners.size() == 1) {
+            stringBuilder.append(String.format("%s has won!", winners.get(0).getPlayerName()));
+        } else {
+            stringBuilder.append(winners.get(0).getPlayerName());
+            for (int i = 1; i < winners.size(); i++) {
+                if (i == winners.size() - 1) {
+                    stringBuilder.append(String.format(" and %s ", winners.get(i).getPlayerName()));
+                    break;
+                }
+                stringBuilder.append(String.format(", %s", winners.get(i).getPlayerName()));
+            }
+            stringBuilder.append("have won!");
         }
+        System.out.print(stringBuilder);
     }
 }

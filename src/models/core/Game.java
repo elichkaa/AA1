@@ -21,11 +21,12 @@ public class Game implements IGame {
     }
 
     @Override
-    public void processInput(Command command, Player player) {
+    public boolean processInput(Command command, Player player) {
         try {
-            command.execute();
+            return command.execute();
         } catch (NullPointerException nullPointerException) {
             System.out.println(NULL_COMMAND);
+            return false;
         }
     }
 
@@ -44,8 +45,8 @@ public class Game implements IGame {
 
     }
 
-    public boolean hasWinner() {
-        return false;
+    public boolean noWinnerAvailable() {
+        return this.players.stream().filter(Player::isWinner).toList().isEmpty();
     }
 
     public ArrayList<Player> getPlayers() {
@@ -60,6 +61,14 @@ public class Game implements IGame {
 
     public void organizeMarket() {
 
+    }
+
+    public void setWinnerIfAvailable() {
+        for (Player player : this.players) {
+            if (player.getStartingGold() >= player.getGoldToWin()) {
+                player.winGame();
+            }
+        }
     }
 
     public void getEndgame() {
