@@ -32,4 +32,16 @@ public class Barn extends Tile {
     public boolean areVegetablesSpoiled() {
         return false;
     }
+
+    public List<Vegetable> getRemainingVegetablesAfterSell(List<Vegetable> soldVegetables) {
+        // TODO: possible error if the soldVegetable is not contained in the storedVegetables
+        for (Vegetable soldVegetable : soldVegetables) {
+            Vegetable firstMatchedVegetable = this.storedVegetables.stream()
+                    .filter(x -> x.getName().equals(soldVegetable.getName()))
+                    .findFirst()
+                    .orElse(null);
+            this.storedVegetables.remove(firstMatchedVegetable);
+        }
+        return this.storedVegetables;
+    }
 }

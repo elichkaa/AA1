@@ -11,7 +11,6 @@ public class Game implements IGame {
     private final Random seed;
     private final ArrayList<Tile> remainingTiles;
     private static final String NULL_COMMAND = "Error: No such command exists.";
-    private final int currentTurn = -1;
 
     public Game(List<Player> players, Random seed) {
         this.players = (ArrayList<Player>) players;
@@ -59,8 +58,9 @@ public class Game implements IGame {
         }
     }
 
-    public void organizeMarket() {
-
+    public void organizeMarket(Player player) {
+        // TODO: sell vegetables?
+        player.getGameBoard().getMarket().sortMarket(null);
     }
 
     public void setWinnerIfAvailable() {

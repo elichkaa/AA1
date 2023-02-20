@@ -58,7 +58,7 @@ public class Session {
                 }
                 this.turnIsActive = true;
                 turnActionsCounter = 1;
-                game.organizeMarket();
+                game.organizeMarket(player);
             }
             game.setWinnerIfAvailable();
             // barn countdown
