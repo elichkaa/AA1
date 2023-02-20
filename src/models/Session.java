@@ -23,7 +23,6 @@ public class Session {
     private static final String END_TURN_COMMAND = "end turn";
     private static final String SELL_COMMAND = "sell";
     private static final String PLANT_COMMAND = "plant";
-
     private static final String NULL_COMMAND = "Error: No such command exists.";
     private boolean sessionIsActive = true;
     private boolean turnIsActive = true;
@@ -44,19 +43,12 @@ public class Session {
         }
 
         CommandParser commandParser = new CommandParser(this, scanner);
-        Command command;
-        while (game.noWinnerAvailable()) {
+        while (game.hasNoWinner()) {
             for (Player player : game.getPlayers()) {
                 IOHandler.startTurnText(player);
                 while (this.turnIsActive && this.sessionIsActive
-                        && this.turnActionsCounter <= 2 && game.noWinnerAvailable()) {
-                    command = commandParser.parse();
-                    while (!isCommandAvailable(command)) {
-                        command = commandParser.parse();
-                    }
-                    command.addStateObserver(x -> this.sessionIsActive = false);
-                    command.addTurnObserver(x -> this.turnIsActive = false);
-                    if (!game.processInput(command, player)) {
+                        && this.turnActionsCounter <= 2 && game.hasNoWinner()) {
+                    if (this.commandFailedToExecute(commandParser, game, player)) {
                         continue;
                     }
                     this.turnActionsCounter++;
@@ -115,5 +107,16 @@ public class Session {
             return false;
         }
         return true;
+    }
+
+    private boolean commandFailedToExecute(CommandParser commandParser, Game game, Player player) {
+        Command command;
+        command = commandParser.parse();
+        while (!isCommandAvailable(command)) {
+            command = commandParser.parse();
+        }
+        command.addStateObserver(x -> this.sessionIsActive = false);
+        command.addTurnObserver(x -> this.turnIsActive = false);
+        return !game.processInput(command, player);
     }
 }

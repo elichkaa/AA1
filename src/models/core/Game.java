@@ -45,7 +45,7 @@ public class Game implements IGame {
 
     }
 
-    public boolean noWinnerAvailable() {
+    public boolean hasNoWinner() {
         return this.players.stream().filter(Player::isWinner).toList().isEmpty();
     }
 
