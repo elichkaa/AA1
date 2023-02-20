@@ -14,6 +14,7 @@ public class GameBoard {
     private final Garden leftGarden;
     private final Garden rightGarden;
     private final Field field;
+    private List<Vegetable> soldVegetablesThisRound;
 
     public GameBoard() {
         this.barn = new Barn();
@@ -27,6 +28,10 @@ public class GameBoard {
     }
 
     public List<Vegetable> getGrownVegetables() {
+        return null;
+    }
+
+    public List<Vegetable> getSoldVegetablesThisRound() {
         return null;
     }
 

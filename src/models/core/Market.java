@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 public class Market {
     private final static int storageCapacity = -1;
-    private Map<Vegetable, Integer> market;
+    private final Map<Vegetable, Integer> market;
     private int[][] mushroomCarrotPriceConstants = new int[5][2];
     private int mushroomCarrotPriceIndex;
     private int tomatoSaladPriceIndex;
@@ -19,11 +19,14 @@ public class Market {
 
     public Market() {
         this.initializePriceConstants();
-        this.market = this.initializeMarket();
+        this.market = new HashMap<>();
+        this.updateMarket();
     }
 
     public void sortMarket(Barn barn, List<Vegetable> soldVegetables) {
-        // TODO: check if params are null
+        if (soldVegetables == null) {
+            return;
+        }
         List<Vegetable> remainingVegetablesAfterSell = barn.getRemainingVegetablesAfterSell(soldVegetables);
         Map<Vegetable, Long> groupedVegetablesByCount = remainingVegetablesAfterSell.stream()
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
@@ -32,9 +35,11 @@ public class Market {
         }
     }
 
-    private HashMap<Vegetable, Integer> initializeMarket() {
-        // TODO
-        return null;
+    private void updateMarket() {
+        this.market.put(Vegetable.TOMATO, this.tomatoSaladPriceConstants[this.tomatoSaladPriceIndex][0]);
+        this.market.put(Vegetable.SALAD, this.tomatoSaladPriceConstants[this.tomatoSaladPriceIndex][1]);
+        this.market.put(Vegetable.MUSHROOM, this.mushroomCarrotPriceConstants[this.mushroomCarrotPriceIndex][0]);
+        this.market.put(Vegetable.CARROT, this.mushroomCarrotPriceConstants[this.mushroomCarrotPriceIndex][1]);
     }
 
     private void adjustMarket(Vegetable vegetable, int count) {

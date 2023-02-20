@@ -1,6 +1,6 @@
 package models;
 
-import models.core.Game;
+import models.core.QueensFarming;
 import models.core.Player;
 import ui.Command;
 import ui.SeedParser;
@@ -27,20 +27,17 @@ public class Session {
     private boolean sessionIsActive = true;
     private boolean turnIsActive = true;
     private int turnActionsCounter = 1;
-    private List<Command> allCommands = new ArrayList<>();
+    private List<Command> allCommands;
 
     public Session() {
+        this.allCommands = new ArrayList<>();
     }
 
     public void init() {
         IOHandler.printPixelArt();
         this.initializeCommands();
         Scanner scanner = new Scanner(System.in);
-        Game game = this.initializeGame(scanner);
-        if (!sessionIsActive) {
-            scanner.close();
-            return;
-        }
+        QueensFarming game = this.initializeGame(scanner);
 
         CommandParser commandParser = new CommandParser(this, scanner);
         while (game.hasNoWinner()) {
@@ -69,8 +66,8 @@ public class Session {
         scanner.close();
     }
 
-    private Game initializeGame(Scanner scanner) {
-        return new Game(this.initializePlayers(scanner), this.getSeed(scanner));
+    private QueensFarming initializeGame(Scanner scanner) {
+        return new QueensFarming(this.initializePlayers(scanner), this.getSeed(scanner));
     }
 
     private List<Player> initializePlayers(Scanner scanner) {
@@ -109,7 +106,7 @@ public class Session {
         return true;
     }
 
-    private boolean commandFailedToExecute(CommandParser commandParser, Game game, Player player) {
+    private boolean commandFailedToExecute(CommandParser commandParser, QueensFarming game, Player player) {
         Command command;
         command = commandParser.parse();
         while (!isCommandAvailable(command)) {

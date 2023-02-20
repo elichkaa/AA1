@@ -6,14 +6,14 @@ import util.IOHandler;
 
 import java.util.*;
 
-public class Game implements IGame {
+public class QueensFarming implements IGame {
     private final ArrayList<Player> players;
     private final Random seed;
     private final ArrayList<Tile> remainingTiles;
     private final Market market;
     private static final String NULL_COMMAND = "Error: No such command exists.";
 
-    public Game(List<Player> players, Random seed) {
+    public QueensFarming(List<Player> players, Random seed) {
         this.players = (ArrayList<Player>) players;
         this.seed = seed;
         this.remainingTiles = this.initializeRemainingTiles();
@@ -61,7 +61,7 @@ public class Game implements IGame {
     }
 
     public void organizeMarket(Player player) {
-        this.market.sortMarket(player.getGameBoard().getBarn(), null);
+        this.market.sortMarket(player.getGameBoard().getBarn(), player.getGameBoard().getSoldVegetablesThisRound());
     }
 
     public void setWinnerIfAvailable() {
