@@ -10,6 +10,7 @@ public class Game implements IGame {
     private final ArrayList<Player> players;
     private final Random seed;
     private final ArrayList<Tile> remainingTiles;
+    private final Market market;
     private static final String NULL_COMMAND = "Error: No such command exists.";
 
     public Game(List<Player> players, Random seed) {
@@ -17,6 +18,7 @@ public class Game implements IGame {
         this.seed = seed;
         this.remainingTiles = this.initializeRemainingTiles();
         this.shuffleRemainingTiles();
+        this.market = new Market();
     }
 
     @Override
@@ -59,8 +61,7 @@ public class Game implements IGame {
     }
 
     public void organizeMarket(Player player) {
-        // TODO: sell vegetables?
-        player.getGameBoard().getMarket().sortMarket(null);
+        this.market.sortMarket(player.getGameBoard().getBarn(), null);
     }
 
     public void setWinnerIfAvailable() {

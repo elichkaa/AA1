@@ -14,7 +14,6 @@ public class GameBoard {
     private final Garden leftGarden;
     private final Garden rightGarden;
     private final Field field;
-    private final Market market;
 
     public GameBoard() {
         this.barn = new Barn();
@@ -25,7 +24,6 @@ public class GameBoard {
         board.put(this.leftGarden.getCoordinates(), this.leftGarden);
         board.put(this.rightGarden.getCoordinates(), this.rightGarden);
         board.put(this.field.getCoordinates(), this.field);
-        market = new Market(this.barn);
     }
 
     public List<Vegetable> getGrownVegetables() {
@@ -34,9 +32,5 @@ public class GameBoard {
 
     public Barn getBarn() {
         return this.barn;
-    }
-
-    public Market getMarket() {
-        return this.market;
     }
 }

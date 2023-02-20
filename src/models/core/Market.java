@@ -11,21 +11,20 @@ import java.util.stream.Collectors;
 
 public class Market {
     private final static int storageCapacity = -1;
-    private final Barn barn;
     private Map<Vegetable, Integer> market;
     private int[][] mushroomCarrotPriceConstants = new int[5][2];
     private int mushroomCarrotPriceIndex;
     private int tomatoSaladPriceIndex;
     private int[][] tomatoSaladPriceConstants = new int[5][2];
 
-    public Market(Barn barn) {
-        this.barn = barn;
+    public Market() {
         this.initializePriceConstants();
         this.market = this.initializeMarket();
     }
 
-    public void sortMarket(List<Vegetable> soldVegetables) {
-        List<Vegetable> remainingVegetablesAfterSell = this.barn.getRemainingVegetablesAfterSell(soldVegetables);
+    public void sortMarket(Barn barn, List<Vegetable> soldVegetables) {
+        // TODO: check if params are null
+        List<Vegetable> remainingVegetablesAfterSell = barn.getRemainingVegetablesAfterSell(soldVegetables);
         Map<Vegetable, Long> groupedVegetablesByCount = remainingVegetablesAfterSell.stream()
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
         for (Vegetable vegetable : groupedVegetablesByCount.keySet()) {
@@ -34,7 +33,7 @@ public class Market {
     }
 
     private HashMap<Vegetable, Integer> initializeMarket() {
-
+        // TODO
         return null;
     }
 
