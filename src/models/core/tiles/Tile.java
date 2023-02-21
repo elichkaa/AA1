@@ -12,9 +12,6 @@ public abstract class Tile {
     protected List<Vegetable> allowedVegetables;
     protected int countdown = 0;
 
-    protected Tile() {
-    }
-
     protected Tile(Coordinates coordinates) {
         this.coordinates = coordinates;
     }

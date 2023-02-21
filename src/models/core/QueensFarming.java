@@ -82,19 +82,19 @@ public class QueensFarming implements IGame {
         }
         ArrayList<Tile> tiles = new ArrayList<>();
         for (int i = 0; i < 2 * players.size(); i++) {
-            tiles.add(new Garden());
+            tiles.add(new Garden(null));
         }
         for (int i = 0; i < 3 * players.size(); i++) {
-            tiles.add(new Field());
+            tiles.add(new Field(null));
         }
         for (int i = 0; i < 2 * players.size(); i++) {
-            tiles.add(new LargeField());
+            tiles.add(new LargeField(null));
         }
         for (int i = 0; i < 2 * players.size(); i++) {
-            tiles.add(new Forest());
+            tiles.add(new Forest(null));
         }
         for (int i = 0; i < players.size(); i++) {
-            tiles.add(new LargeForest());
+            tiles.add(new LargeForest(null));
         }
         return tiles;
     }

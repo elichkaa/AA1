@@ -3,17 +3,11 @@ package models.core.tiles;
 import models.core.Coordinates;
 import models.core.Vegetable;
 
-import java.util.*;
-
 public abstract class Cultivatable extends Tile {
     private Vegetable plantedVegetable;
 
     public Cultivatable(Coordinates coordinates) {
-        this.coordinates = coordinates;
-    }
-
-    public Cultivatable() {
-        super();
+        super(coordinates);
     }
 
     public Vegetable getPlanted() {
@@ -41,17 +35,27 @@ public abstract class Cultivatable extends Tile {
     }
 
     private String getAbbreviationRepresentation() {
-        if (this.abbreviation.length() == 2) {
-            return " " + this.abbreviation;
+        String abbreviationText = "";
+        switch (abbreviation.length()) {
+            case 1 -> abbreviationText += " " + this.abbreviation + " " + this.getCountdownRepresentation() + " ";
+            case 2 -> abbreviationText += " " + this.abbreviation + " " + this.getCountdownRepresentation();
+            case 3 -> abbreviationText += this.abbreviation + " ";
         }
-        return this.abbreviation + " ";
+        return abbreviationText;
+    }
+
+    private String getPlantedRepresentation() {
+        if (this.getPlanted() == null) {
+            return " ";
+        }
+        return this.plantedVegetable.getShortName();
     }
 
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        this.appendRow(stringBuilder, this.getAbbreviationRepresentation() + this.getCountdownRepresentation());
-        this.appendRow(stringBuilder, String.format("  %s  ", this.getPlanted().getShortName()));
+        this.appendRow(stringBuilder, this.getAbbreviationRepresentation());
+        this.appendRow(stringBuilder, String.format("  %s  ", this.getPlantedRepresentation()));
         this.appendRow(stringBuilder, String.format(" %s ", this.getCapacityRepresentation()));
         return stringBuilder.toString();
     }

@@ -8,10 +8,6 @@ import java.util.ArrayList;
 public class Garden extends Cultivatable {
     private final static int storageCapacity = 2;
 
-    public Garden() {
-        super();
-    }
-
     public Garden(Coordinates coordinates) {
         super(coordinates);
         this.capacity = storageCapacity;

@@ -1,12 +1,15 @@
 package models.core;
 
 public record Coordinates(int x, int y) implements Comparable<Coordinates> {
-    // returns 0 if both are equal, -1 if not equal
     @Override
     public int compareTo(Coordinates coordinates) {
-        int xDifference = this.x() - coordinates.x();
-        int yDifference = this.y() - coordinates.y();
+        int distance = Integer.compare(this.getDistanceBetweenCoordinates(this, coordinates), 0);
+        if (coordinates.y > this.y || coordinates.x > this.x) return -distance;
+        return distance;
+    }
 
-        return Integer.compare(xDifference, yDifference);
+    private int getDistanceBetweenCoordinates(Coordinates firstCoordinates, Coordinates secondCoordinates) {
+        return (int) Math.sqrt(Math.pow(secondCoordinates.x - firstCoordinates.x, 2)
+                + Math.pow(secondCoordinates.y - firstCoordinates.y, 2));
     }
 }

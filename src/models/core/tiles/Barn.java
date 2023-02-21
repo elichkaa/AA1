@@ -51,9 +51,9 @@ public class Barn extends Tile {
         StringBuilder stringBuilder = new StringBuilder();
         char[] emptyRow = new char[5];
         Arrays.fill(emptyRow, ' ');
-        this.appendRow(stringBuilder, Arrays.toString(emptyRow));
+        this.appendRow(stringBuilder, String.valueOf(emptyRow));
         this.appendRow(stringBuilder, String.format(" %s %d ", this.abbreviation, this.countdown));
-        this.appendRow(stringBuilder, Arrays.toString(emptyRow));
+        this.appendRow(stringBuilder, String.valueOf(emptyRow));
         return stringBuilder.toString();
     }
 

@@ -9,10 +9,6 @@ import java.util.List;
 public class Field extends Cultivatable {
     private final static int storageCapacity = 4;
 
-    public Field() {
-        super();
-    }
-
     public Field(Coordinates coordinates) {
         super(coordinates);
         this.capacity = storageCapacity;
