@@ -18,6 +18,7 @@ public class GameBoard {
 
     public GameBoard() {
         this.barn = new Barn();
+        System.out.println(this.barn.toString());
         this.leftGarden = new Garden(new Coordinates(-1, 0));
         this.rightGarden = new Garden(new Coordinates(1, 0));
         this.field = new Field(new Coordinates(0, 1));
@@ -37,5 +38,10 @@ public class GameBoard {
 
     public Barn getBarn() {
         return this.barn;
+    }
+
+    @Override
+    public String toString() {
+        return "";
     }
 }

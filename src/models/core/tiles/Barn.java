@@ -4,6 +4,7 @@ import models.core.Coordinates;
 import models.core.Vegetable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Barn extends Tile {
@@ -12,13 +13,13 @@ public class Barn extends Tile {
     private final static int xCoordinate = 0;
     private final static int yCoordinate = 0;
     private final List<Vegetable> storedVegetables;
-    private int countdown = 0;
 
     public Barn() {
         super(new Coordinates(xCoordinate, yCoordinate));
         this.capacity = storageCapacity;
         this.allowedVegetables = new ArrayList<>();
         this.storedVegetables = new ArrayList<>();
+        this.abbreviation = "B";
     }
 
     public void increaseCountdown() {
@@ -43,5 +44,20 @@ public class Barn extends Tile {
             this.storedVegetables.remove(firstMatchedVegetable);
         }
         return this.storedVegetables;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        char[] emptyRow = new char[5];
+        Arrays.fill(emptyRow, ' ');
+        this.appendRow(stringBuilder, Arrays.toString(emptyRow));
+        this.appendRow(stringBuilder, String.format(" %s %d ", this.abbreviation, this.countdown));
+        this.appendRow(stringBuilder, Arrays.toString(emptyRow));
+        return stringBuilder.toString();
+    }
+
+    private void appendRow(StringBuilder stringBuilder, String text) {
+        stringBuilder.append("|").append(text).append("|").append(System.lineSeparator());
     }
 }

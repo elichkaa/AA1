@@ -5,8 +5,9 @@ import models.core.Vegetable;
 
 import java.util.ArrayList;
 
-public class Forest extends Tile {
+public class Forest extends Cultivatable {
     private final static int storageCapacity = 4;
+
     public Forest() {
         super();
     }
@@ -20,5 +21,6 @@ public class Forest extends Tile {
                 add(Vegetable.MUSHROOM);
             }
         };
+        this.abbreviation = "Fo";
     }
 }
