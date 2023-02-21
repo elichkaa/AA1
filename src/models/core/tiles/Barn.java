@@ -46,18 +46,11 @@ public class Barn extends Tile {
         return this.storedVegetables;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
+    public List<String> getStringRepresentationAsList() {
         char[] emptyRow = new char[5];
         Arrays.fill(emptyRow, ' ');
-        this.appendRow(stringBuilder, String.valueOf(emptyRow));
-        this.appendRow(stringBuilder, String.format(" %s %d ", this.abbreviation, this.countdown));
-        this.appendRow(stringBuilder, String.valueOf(emptyRow));
-        return stringBuilder.toString();
-    }
-
-    private void appendRow(StringBuilder stringBuilder, String text) {
-        stringBuilder.append("|").append(text).append("|").append(System.lineSeparator());
+        return Arrays.asList(this.getRow(String.valueOf(emptyRow)),
+                this.getRow(String.format(" %s %d ", this.abbreviation, this.countdown)),
+                this.getRow(String.valueOf(emptyRow)));
     }
 }

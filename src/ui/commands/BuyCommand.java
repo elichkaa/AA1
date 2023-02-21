@@ -33,7 +33,8 @@ public class BuyCommand extends Command {
         switch (commandArgs.getFirst()) {
             case LAND_ARGUMENT -> {
                 if (commandArgs.size() < MAX_VALID_ARGUMENT_COUNT) {
-                    this.printErrorMessage(this.ERROR_PREFIX + SECOND_COORDINATE_MISSING, this.commandName + WHITESPACE + LAND_ARGUMENT);
+                    this.printErrorMessage(this.ERROR_PREFIX + SECOND_COORDINATE_MISSING,
+                            this.commandName + WHITESPACE + LAND_ARGUMENT);
                     return false;
                 }
                 if (this.areCoordinatesInvalid(commandArgs.subList(FIRST_COORDINATE_INDEX, SECOND_COORDINATE_INDEX + 1))) {

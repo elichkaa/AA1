@@ -3,6 +3,9 @@ package models.core.tiles;
 import models.core.Coordinates;
 import models.core.Vegetable;
 
+import java.util.Arrays;
+import java.util.List;
+
 public abstract class Cultivatable extends Tile {
     private Vegetable plantedVegetable;
 
@@ -51,16 +54,9 @@ public abstract class Cultivatable extends Tile {
         return this.plantedVegetable.getShortName();
     }
 
-    @Override
-    public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        this.appendRow(stringBuilder, this.getAbbreviationRepresentation());
-        this.appendRow(stringBuilder, String.format("  %s  ", this.getPlantedRepresentation()));
-        this.appendRow(stringBuilder, String.format(" %s ", this.getCapacityRepresentation()));
-        return stringBuilder.toString();
-    }
-
-    private void appendRow(StringBuilder stringBuilder, String text) {
-        stringBuilder.append("|").append(text).append("|").append(System.lineSeparator());
+    public List<String> getStringRepresentationAsList() {
+        return Arrays.asList(this.getRow(this.getAbbreviationRepresentation()),
+                this.getRow(String.format("  %s  ", this.getPlantedRepresentation())),
+                this.getRow(String.format(" %s ", this.getCapacityRepresentation())));
     }
 }

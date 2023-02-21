@@ -75,4 +75,12 @@ public final class IOHandler {
         }
         System.out.print(stringBuilder);
     }
+
+    public static void printErrorMessage(String errorMessage, Object... optionalMessage) {
+        if (optionalMessage.length != 0) {
+            System.out.printf(errorMessage + System.lineSeparator(), optionalMessage);
+        } else {
+            System.out.printf(errorMessage + System.lineSeparator());
+        }
+    }
 }
