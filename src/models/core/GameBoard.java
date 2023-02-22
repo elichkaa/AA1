@@ -1,10 +1,7 @@
 package models.core;
 
 import models.core.tiles.*;
-
-import java.sql.Array;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class GameBoard {
     private final TreeMap<Coordinates, Tile> board;
@@ -14,7 +11,6 @@ public class GameBoard {
     private final Garden rightGarden;
     private final Field field;
     private List<Vegetable> soldVegetablesThisRound;
-    private Object x;
 
     public GameBoard() {
         this.barn = new Barn();
@@ -26,15 +22,7 @@ public class GameBoard {
         board.put(this.leftGarden.getCoordinates(), this.leftGarden);
         board.put(this.rightGarden.getCoordinates(), this.rightGarden);
         board.put(this.field.getCoordinates(), this.field);
-        board.put(new Coordinates(-2, 0), this.field);
-        board.put(new Coordinates(-2, -1), this.field);
-        board.put(new Coordinates(0, -1), this.field);
-        board.put(new Coordinates(-2, -2), this.field);
-        board.put(new Coordinates(-2, -3), this.field);
-        board.put(new Coordinates(2, 0), this.field);
-        board.put(new Coordinates(2, 1), this.field);
         this.tileMatrixForPrinting = this.getTileMatrix();
-        System.out.println(this);
     }
 
     public List<Vegetable> getGrownVegetables() {
@@ -102,13 +90,20 @@ public class GameBoard {
 
     private String createEmptyMatrix(int currentColumn, int maxWidth, boolean lastWasEmpty) {
         char[] emptyRow;
-        if (currentColumn > 0 && currentColumn < maxWidth && !lastWasEmpty) {
-            emptyRow = new char[5];
-            Arrays.fill(emptyRow, ' ');
+        if (lastWasEmpty) {
+            if (currentColumn < maxWidth && currentColumn > 0) {
+                emptyRow = new char[6];
+            } else {
+                emptyRow = new char[7];
+            }
         } else {
-            emptyRow = new char[6];
-            Arrays.fill(emptyRow, ' ');
+            if (currentColumn < maxWidth && currentColumn > 0) {
+                emptyRow = new char[5];
+            } else {
+                emptyRow = new char[6];
+            }
         }
+        Arrays.fill(emptyRow, ' ');
 
         return (String.valueOf(emptyRow) + System.lineSeparator() +
                 String.valueOf(emptyRow) + System.lineSeparator() + String.valueOf(emptyRow));
