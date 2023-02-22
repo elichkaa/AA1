@@ -27,13 +27,12 @@ public class GameBoard {
         board.put(this.rightGarden.getCoordinates(), this.rightGarden);
         board.put(this.field.getCoordinates(), this.field);
         board.put(new Coordinates(-2, 0), this.field);
-        board.put(new Coordinates(-3, 0), this.field);
-        board.put(new Coordinates(-3, 1), this.field);
-        board.put(new Coordinates(-3, 1), this.field);
-        board.put(new Coordinates(-3, 2), this.field);
-        board.put(new Coordinates(-3, 3), this.field);
-        board.put(new Coordinates(-3, 4), this.field);
-        board.put(new Coordinates(-4, 0), this.field);
+        board.put(new Coordinates(-2, -1), this.field);
+        board.put(new Coordinates(0, -1), this.field);
+        board.put(new Coordinates(-2, -2), this.field);
+        board.put(new Coordinates(-2, -3), this.field);
+        board.put(new Coordinates(2, 0), this.field);
+        board.put(new Coordinates(2, 1), this.field);
         this.tileMatrixForPrinting = this.getTileMatrix();
         System.out.println(this);
     }
@@ -56,22 +55,22 @@ public class GameBoard {
         List<Integer> yCoordinatesSorted = this.board.keySet().stream().map(Coordinates::y).sorted().toList();
         int maxHeight = yCoordinatesSorted.get(yCoordinatesSorted.size() - 1) - yCoordinatesSorted.get(0);
         String[][] matrix = new String[maxHeight + 1][maxWidth + 1];
+        int xCoordinateOfCentre = -xCoordinatesSorted.get(0);
+        int yCoordinateOfCentre = yCoordinatesSorted.get(yCoordinatesSorted.size() - 1);
+        boolean lastWasEmpty = false;
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix[i].length; j++) {
-                int x = j - maxWidth + 1;
-                int y = maxHeight - i;
-                Tile tile = this.board.getOrDefault(new Coordinates(x, y), null);
+                Tile tile = this.board.getOrDefault(
+                        new Coordinates(j - xCoordinateOfCentre, yCoordinateOfCentre - i), null);
                 if (tile == null) {
-                    char[] emptyRow = new char[7];
-                    Arrays.fill(emptyRow, ' ');
-                    emptyRow[0] = '#';
-                    emptyRow[emptyRow.length - 1] = '#';
-                    matrix[i][j] = (String.valueOf(emptyRow) + System.lineSeparator() +
-                            String.valueOf(emptyRow) + System.lineSeparator() + String.valueOf(emptyRow));
+                    matrix[i][j] = this.createEmptyMatrix(j, maxWidth, lastWasEmpty);
+                    lastWasEmpty = true;
                 } else {
                     matrix[i][j] = tile.toString();
+                    lastWasEmpty = false;
                 }
             }
+            lastWasEmpty = false;
         }
         return matrix;
     }
@@ -92,17 +91,26 @@ public class GameBoard {
             firstRowBuilder.append(System.lineSeparator());
             secondRowBuilder.append(System.lineSeparator());
             thirdRowBuilder.append(System.lineSeparator());
-            gameBoardBuilder.append(firstRowBuilder.toString()
-                            .replaceAll("\\|\\|", "|")
-                            .replaceAll("##|#", " "))
-                    .append(secondRowBuilder.toString()
-                            .replaceAll("\\|\\|", "|")
-                            .replaceAll("##|#", " "))
-                    .append(thirdRowBuilder.toString()
-                            .replaceAll("\\|\\|", "|")
-                            .replaceAll("##|#", " "));
+            gameBoardBuilder.append(firstRowBuilder.toString().replaceAll("\\|\\|", "|"))
+                    .append(secondRowBuilder.toString().replaceAll("\\|\\|", "|"))
+                    .append(thirdRowBuilder.toString().replaceAll("\\|\\|", "|"));
         }
 
+        // TODO: get rid of last line separator
         return gameBoardBuilder.toString();
+    }
+
+    private String createEmptyMatrix(int currentColumn, int maxWidth, boolean lastWasEmpty) {
+        char[] emptyRow;
+        if (currentColumn > 0 && currentColumn < maxWidth && !lastWasEmpty) {
+            emptyRow = new char[5];
+            Arrays.fill(emptyRow, ' ');
+        } else {
+            emptyRow = new char[6];
+            Arrays.fill(emptyRow, ' ');
+        }
+
+        return (String.valueOf(emptyRow) + System.lineSeparator() +
+                String.valueOf(emptyRow) + System.lineSeparator() + String.valueOf(emptyRow));
     }
 }
