@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public abstract class Cultivatable extends Tile {
+    private int countdownToGrow;
     private Vegetable plantedVegetable;
 
     public Cultivatable(Coordinates coordinates) {
@@ -19,6 +20,16 @@ public abstract class Cultivatable extends Tile {
 
     public void plant(Vegetable vegetable) {
         this.plantedVegetable = vegetable;
+        this.countdownToGrow = 0;
+    }
+
+    public void increaseVegetableCountdown() {
+        if (plantedVegetable != null) {
+            this.countdownToGrow++;
+            if (this.countdownToGrow == this.plantedVegetable.getRoundsToGrow()) {
+                countdownToGrow = 0;
+            }
+        }
     }
 
     public int getRemainingCapacityToPlant() {
@@ -31,10 +42,10 @@ public abstract class Cultivatable extends Tile {
     }
 
     private String getCountdownRepresentation() {
-        if (this.countdown == 0) {
+        if (this.countdownToGrow == 0) {
             return "*";
         }
-        return String.valueOf(this.countdown);
+        return String.valueOf(this.countdownToGrow);
     }
 
     private String getAbbreviationRepresentation() {

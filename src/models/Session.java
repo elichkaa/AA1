@@ -1,6 +1,6 @@
 package models;
 
-import models.core.QueensFarming;
+import models.core.Game;
 import models.core.Player;
 import ui.Command;
 import ui.SeedParser;
@@ -37,12 +37,12 @@ public class Session {
         IOHandler.printPixelArt();
         this.initializeCommands();
         Scanner scanner = new Scanner(System.in);
-        QueensFarming game = this.initializeGame(scanner);
+        Game game = this.initializeGame(scanner);
 
         CommandParser commandParser = new CommandParser(this, scanner);
         while (game.hasNoWinner()) {
             for (Player player : game.getPlayers()) {
-                IOHandler.startTurnText(player);
+                game.startTurn(player);
                 while (this.turnIsActive && this.sessionIsActive
                         && this.turnActionsCounter <= 2 && game.hasNoWinner()) {
                     if (this.commandFailedToExecute(commandParser, game, player)) {
@@ -51,28 +51,23 @@ public class Session {
                     this.turnActionsCounter++;
                 }
                 if (!this.sessionIsActive) {
-                    break;
+                    return;
                 }
                 this.turnIsActive = true;
                 turnActionsCounter = 1;
                 game.organizeMarket(player);
             }
+            game.increaseBarnCountdown();
+            game.growVegetables();
             game.setWinnerIfAvailable();
-            // barn countdown
-            // vegetable grows
         }
         game.getEndgame();
-
         scanner.close();
     }
 
-    private QueensFarming initializeGame(Scanner scanner) {
-        return new QueensFarming(this.initializePlayers(scanner), this.getSeed(scanner));
-    }
-
-    private List<Player> initializePlayers(Scanner scanner) {
+    private Game initializeGame(Scanner scanner) {
         PlayerParser playerParser = new PlayerParser(scanner);
-        return playerParser.parse();
+        return new Game(playerParser.parse(), this.getSeed(scanner), playerParser.getWinningGold());
     }
 
     private Random getSeed(Scanner scanner) {
@@ -106,7 +101,7 @@ public class Session {
         return true;
     }
 
-    private boolean commandFailedToExecute(CommandParser commandParser, QueensFarming game, Player player) {
+    private boolean commandFailedToExecute(CommandParser commandParser, Game game, Player player) {
         Command command;
         command = commandParser.parse();
         while (!isCommandAvailable(command)) {

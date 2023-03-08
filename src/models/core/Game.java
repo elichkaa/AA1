@@ -2,48 +2,37 @@ package models.core;
 
 import models.core.tiles.*;
 import ui.Command;
-import util.IOHandler;
+import util.MessagePrinter;
 
 import java.util.*;
 
-public class QueensFarming implements IGame {
+public class Game implements IGame {
     private final ArrayList<Player> players;
+    private final int goldToWin;
     private final Random seed;
     private final ArrayList<Tile> remainingTiles;
     private final Market market;
+    private Player currentPlayer;
     private static final String NULL_COMMAND = "Error: No such command exists.";
 
-    public QueensFarming(List<Player> players, Random seed) {
+    public Game(List<Player> players, Random seed, int goldToWin) {
         this.players = (ArrayList<Player>) players;
         this.seed = seed;
         this.remainingTiles = this.initializeRemainingTiles();
         this.shuffleRemainingTiles();
         this.market = new Market();
+        this.goldToWin = goldToWin;
     }
 
     @Override
     public boolean processInput(Command command, Player player) {
         try {
-            return command.execute();
+            this.currentPlayer = player;
+            return command.execute(this);
         } catch (NullPointerException nullPointerException) {
             System.out.println(NULL_COMMAND);
             return false;
         }
-    }
-
-    @Override
-    public boolean hasOutput() {
-        return false;
-    }
-
-    @Override
-    public String getOutput() {
-        return "";
-    }
-
-    @Override
-    public void setOutput() {
-
     }
 
     public boolean hasNoWinner() {
@@ -61,19 +50,36 @@ public class QueensFarming implements IGame {
     }
 
     public void organizeMarket(Player player) {
-        this.market.sortMarket(player.getGameBoard().getBarn(), player.getGameBoard().getSoldVegetablesThisRound());
+        this.market.sortMarket(player.getGameBoard().getBarn(),
+                player.getGameBoard().getBarn().getSoldVegetablesAfterRound());
     }
 
     public void setWinnerIfAvailable() {
         for (Player player : this.players) {
-            if (player.getStartingGold() >= player.getGoldToWin()) {
+            if (player.getGold() >= goldToWin) {
                 player.winGame();
             }
         }
     }
 
+    public void increaseBarnCountdown() {
+        this.currentPlayer.getGameBoard().getBarn().updateCountdownIfAvailable();
+    }
+
+    public void growVegetables() {
+        this.currentPlayer.getGameBoard().growVegetablesOnBoard();
+    }
+
     public void getEndgame() {
-        IOHandler.printEndgameTable(this.players);
+        MessagePrinter.printEndgameTable(this.players.stream().map(Player::getPlayerName).toList(),
+                this.players.stream().map(Player::getGold).toList(),
+                this.players.stream().filter(Player::isWinner).map(Player::getPlayerName).toList());
+    }
+
+    public void startTurn(Player player) {
+        MessagePrinter.startTurnText(player.getPlayerName(),
+                player.getGameBoard().getGrownVegetablesCount(),
+                player.getGameBoard().getBarn().areVegetablesSpoiled());
     }
 
     private ArrayList<Tile> initializeRemainingTiles() {
@@ -97,5 +103,13 @@ public class QueensFarming implements IGame {
             tiles.add(new LargeForest(null));
         }
         return tiles;
+    }
+
+    public Player getCurrentPlayer() {
+        return this.currentPlayer;
+    }
+
+    public Market getMarket() {
+        return this.market;
     }
 }

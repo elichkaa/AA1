@@ -1,10 +1,11 @@
 package ui;
 
+import models.core.IGame;
 import util.StateObserver;
 import util.TurnObserver;
 
 public interface ICommand {
-    boolean execute();
+    boolean execute(IGame game);
 
     void addStateObserver(StateObserver observer);
 

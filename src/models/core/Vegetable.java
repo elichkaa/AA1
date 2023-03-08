@@ -2,9 +2,9 @@ package models.core;
 
 public enum Vegetable {
     CARROT(1),
+    MUSHROOM(4),
     SALAD(2),
-    TOMATO(3),
-    MUSHROOM(4);
+    TOMATO(3);
     private final int roundsToGrow;
 
     // private enum constructor
@@ -14,6 +14,13 @@ public enum Vegetable {
 
     public String getName() {
         return this.name().toLowerCase();
+    }
+
+    public String getPlural() {
+        if (this == Vegetable.TOMATO) {
+            return this.name().toLowerCase() + "es";
+        }
+        return this.name().toLowerCase() + "s";
     }
 
     public String getShortName() {

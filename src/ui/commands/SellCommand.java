@@ -1,9 +1,13 @@
 package ui.commands;
 
+import models.core.IGame;
+import models.core.Player;
+import models.core.Vegetable;
 import ui.Command;
 import ui.CommandArgument;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -18,7 +22,7 @@ public class SellCommand extends Command {
     }
 
     @Override
-    public boolean execute() {
+    public boolean execute(IGame game) {
         if (this.isArgumentCountInvalid(MIN_VALID_ARGUMENT_COUNT, MAX_VALID_ARGUMENT_COUNT)) {
             return false;
         }
@@ -31,6 +35,10 @@ public class SellCommand extends Command {
                     INVALID_ARGUMENT_NAME,
                     vegetablesToSell.getFirst());
         }
+
+        List<Vegetable> veggies = game.getCurrentPlayer().getGameBoard().getBarn().getRemainingVegetablesAfterSell(vegetablesToSell);
+        System.out.println("You have sold " + veggies.size() + "vegetables.");
+
         for (String vegetable : vegetablesToSell) {
             if (!this.isArgumentInvalid(vegetable,
                     VEGETABLE_NAME_ARGUMENT,

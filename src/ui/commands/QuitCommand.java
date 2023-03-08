@@ -1,5 +1,7 @@
 package ui.commands;
 
+import models.core.IGame;
+import models.core.Player;
 import ui.Command;
 
 public class QuitCommand extends Command {
@@ -8,7 +10,7 @@ public class QuitCommand extends Command {
     }
 
     @Override
-    public boolean execute() {
+    public boolean execute(IGame game) {
         this.stateObserver.update("Game ended.");
         return true;
     }

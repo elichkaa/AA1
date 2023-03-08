@@ -1,5 +1,7 @@
 package ui;
 
+import models.core.IGame;
+import util.ErrorPrinter;
 import util.StateObserver;
 import util.TurnObserver;
 
@@ -18,13 +20,12 @@ public abstract class Command implements ICommand {
     protected List<CommandArgument> commandArguments;
     protected StateObserver stateObserver;
     protected TurnObserver turnObserver;
-
     public Command(String commandName) {
         this.commandName = commandName;
     }
 
     @Override
-    public abstract boolean execute();
+    public abstract boolean execute(IGame game);
 
     public String getCommandName() {
         return this.commandName;
@@ -34,7 +35,6 @@ public abstract class Command implements ICommand {
         return this.commandArguments;
     }
 
-    //only ui package can access setter
     protected void setCommandArguments(List<CommandArgument> arguments){
         this.commandArguments = arguments;
     }
@@ -52,9 +52,9 @@ public abstract class Command implements ICommand {
 
     protected void printErrorMessage(String errorMessage, Object... optionalMessage) {
         if (optionalMessage.length != 0) {
-            System.out.printf(errorMessage + System.lineSeparator(), this.commandName, optionalMessage[0]);
+            ErrorPrinter.print(errorMessage, this.commandName, optionalMessage[0]);
         } else {
-            System.out.printf(errorMessage + System.lineSeparator(), this.commandName);
+            ErrorPrinter.print(errorMessage, this.commandName);
         }
     }
 

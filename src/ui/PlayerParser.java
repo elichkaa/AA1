@@ -23,6 +23,7 @@ public class PlayerParser implements IParser<List<Player>> {
     private static final String INTEGER_PARSING_FAILED = "Error: Argument is invalid. Please input a number between " + Integer.MIN_VALUE + " and " + Integer.MAX_VALUE;
     private final static String COLON = ":";
     private final Scanner scanner;
+    private int winningGold;
 
     public PlayerParser(Scanner scanner) {
         this.scanner = scanner;
@@ -73,7 +74,7 @@ public class PlayerParser implements IParser<List<Player>> {
         }
         List<Player> parsedPlayers = new ArrayList<>();
         for (String playerName : playerNames) {
-            parsedPlayers.add(new Player(playerName, money[0], money[1]));
+            parsedPlayers.add(new Player(playerName, money[0]));
         }
         return parsedPlayers;
     }
@@ -125,7 +126,11 @@ public class PlayerParser implements IParser<List<Player>> {
         if (winningGold == null) {
             return null;
         }
-
+        this.winningGold = (int) winningGold;
         return new int[]{(int) initialGold, (int) winningGold};
+    }
+
+    public int getWinningGold() {
+        return this.winningGold;
     }
 }

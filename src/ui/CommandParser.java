@@ -32,7 +32,7 @@ public class CommandParser implements IParser<Command> {
         String commandName = userInput.stream().findFirst().orElse(null);
         if (commandName == null) return null;
         if (commandName.equals("end")) {
-            commandName += " " + userInput.stream().skip(COMMAND_NAME).toList().get(0);
+            commandName += WHITESPACE + userInput.stream().skip(COMMAND_NAME).toList().get(0);
         }
 
         List<CommandArgument> commandArguments = userInput.stream().skip(COMMAND_NAME).map(CommandArgument::new).toList();

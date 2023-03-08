@@ -1,16 +1,15 @@
 package models.core;
 
 public class Player {
+    // TODO: create player interface and refactor QueensFarming class
     private final String playerName;
-    private final int startingGold;
-    private final int goldToWin;
+    private final int gold;
     private boolean isWinner;
     GameBoard gameBoard;
 
-    public Player(String playerName, int startingGold, int goldToWin) {
+    public Player(String playerName, int startingGold) {
         this.playerName = playerName;
-        this.startingGold = startingGold;
-        this.goldToWin = goldToWin;
+        this.gold = startingGold;
         this.gameBoard = new GameBoard();
         this.isWinner = false;
     }
@@ -23,12 +22,8 @@ public class Player {
         return this.gameBoard;
     }
 
-    public int getStartingGold() {
-        return this.startingGold;
-    }
-
-    public int getGoldToWin() {
-        return this.goldToWin;
+    public int getGold() {
+        return this.gold;
     }
 
     public void winGame() {

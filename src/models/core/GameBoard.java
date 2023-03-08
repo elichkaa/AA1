@@ -4,53 +4,56 @@ import models.core.tiles.*;
 import java.util.*;
 
 public class GameBoard {
-    private final TreeMap<Coordinates, Tile> board;
-    private final String[][] tileMatrixForPrinting;
+    private final TreeMap<Coordinates, Cultivatable> board;
+    private String[][] tileMatrixForPrinting;
     private final Barn barn;
-    private final Garden leftGarden;
-    private final Garden rightGarden;
-    private final Field field;
     private List<Vegetable> soldVegetablesThisRound;
 
     public GameBoard() {
         this.barn = new Barn();
-        this.leftGarden = new Garden(new Coordinates(-1, 0));
-        this.rightGarden = new Garden(new Coordinates(1, 0));
-        this.field = new Field(new Coordinates(0, 1));
-        this.board = new TreeMap<>();
-        board.put(this.barn.getCoordinates(), this.barn);
-        board.put(this.leftGarden.getCoordinates(), this.leftGarden);
-        board.put(this.rightGarden.getCoordinates(), this.rightGarden);
-        board.put(this.field.getCoordinates(), this.field);
-        this.tileMatrixForPrinting = this.getTileMatrix();
+        Garden leftGarden = new Garden(new Coordinates(-1, 0));
+        Garden rightGarden = new Garden(new Coordinates(1, 0));
+        Field field = new Field(new Coordinates(0, 1));
+        this.board = new TreeMap<>() {{
+            put(leftGarden.getCoordinates(), leftGarden);
+            put(rightGarden.getCoordinates(), rightGarden);
+            put(field.getCoordinates(), field);
+        }};
+        System.out.println(this);
     }
 
-    public List<Vegetable> getGrownVegetables() {
-        return null;
-    }
-
-    public List<Vegetable> getSoldVegetablesThisRound() {
-        return null;
+    public int getGrownVegetablesCount() {
+        return 0;
     }
 
     public Barn getBarn() {
         return this.barn;
     }
 
+    public void growVegetablesOnBoard() {
+        for (Cultivatable tile : board.values()) {
+            tile.increaseVegetableCountdown();
+        }
+    }
+
     private String[][] getTileMatrix() {
-        List<Integer> xCoordinatesSorted = this.board.keySet().stream().map(Coordinates::x).sorted().toList();
-        int maxWidth = xCoordinatesSorted.get(xCoordinatesSorted.size() - 1) - xCoordinatesSorted.get(0);
+        int maxWidth = this.board.lastKey().x() - this.board.firstKey().x();
         List<Integer> yCoordinatesSorted = this.board.keySet().stream().map(Coordinates::y).sorted().toList();
         int maxHeight = yCoordinatesSorted.get(yCoordinatesSorted.size() - 1) - yCoordinatesSorted.get(0);
+
         String[][] matrix = new String[maxHeight + 1][maxWidth + 1];
-        int xCoordinateOfCentre = -xCoordinatesSorted.get(0);
+        int xCoordinateOfCentre = -this.board.firstKey().x();
         int yCoordinateOfCentre = yCoordinatesSorted.get(yCoordinatesSorted.size() - 1);
+
         boolean lastWasEmpty = false;
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix[i].length; j++) {
                 Tile tile = this.board.getOrDefault(
                         new Coordinates(j - xCoordinateOfCentre, yCoordinateOfCentre - i), null);
-                if (tile == null) {
+                if (j - xCoordinateOfCentre == 0 && yCoordinateOfCentre - i == 0) {
+                    matrix[i][j] = this.barn.toString();
+                    lastWasEmpty = false;
+                } else if (tile == null) {
                     matrix[i][j] = this.createEmptyMatrix(j, maxWidth, lastWasEmpty);
                     lastWasEmpty = true;
                 } else {
@@ -66,7 +69,7 @@ public class GameBoard {
     @Override
     public String toString() {
         StringBuilder gameBoardBuilder = new StringBuilder();
-
+        this.tileMatrixForPrinting = getTileMatrix();
         for (String[] tiles : this.tileMatrixForPrinting) {
             StringBuilder firstRowBuilder = new StringBuilder();
             StringBuilder secondRowBuilder = new StringBuilder();

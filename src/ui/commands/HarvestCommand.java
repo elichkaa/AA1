@@ -1,5 +1,7 @@
 package ui.commands;
 
+import models.core.IGame;
+import models.core.Player;
 import ui.Command;
 import ui.CommandArgument;
 
@@ -18,7 +20,7 @@ public class HarvestCommand extends Command {
     }
 
     @Override
-    public boolean execute() {
+    public boolean execute(IGame game) {
         if (this.isArgumentCountInvalid(MIN_VALID_ARGUMENT_COUNT, MAX_VALID_ARGUMENT_COUNT)) {
             return false;
         }

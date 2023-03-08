@@ -5,12 +5,13 @@ import models.core.Vegetable;
 
 import java.util.List;
 
+// TODO: interface?
 public abstract class Tile {
     protected Coordinates coordinates;
+    protected int countdown;
     protected int capacity;
     protected String abbreviation = "";
     protected List<Vegetable> allowedVegetables;
-    protected int countdown = 0;
 
     protected Tile(Coordinates coordinates) {
         this.coordinates = coordinates;
@@ -32,14 +33,6 @@ public abstract class Tile {
         return this.allowedVegetables.contains(vegetable);
     }
 
-    protected char getCountdownCharRepresentation() {
-        if (this.countdown == 0) {
-            return '*';
-        } else {
-            return (char) this.countdown;
-        }
-    }
-
     protected String getRow(String text) {
         return "|" + text + "|";
     }
@@ -48,8 +41,8 @@ public abstract class Tile {
 
     @Override
     public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
         List<String> formattedRows = this.getStringRepresentationAsList();
+        StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(formattedRows.get(0)).append(System.lineSeparator());
         stringBuilder.append(formattedRows.get(1)).append(System.lineSeparator());
         stringBuilder.append(formattedRows.get(2));
