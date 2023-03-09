@@ -25,7 +25,7 @@ public final class MessagePrinter {
         if (grownVegetables == 1) {
             stringBuilder.append(String.format(ONE_VEGETABLE_GROWTH_MESSAGE, 1))
                     .append(System.lineSeparator());
-        } else {
+        } else if (grownVegetables > 1) {
             stringBuilder.append(String.format(MULTIPLE_VEGETABLE_GROWTH_MESSAGE, grownVegetables))
                     .append(System.lineSeparator());
         }

@@ -112,4 +112,10 @@ public class Player {
             return false;
         }
     }
+
+    public boolean harvestVegetable(int xCoordinate, int yCoordinate, int count) {
+        Cultivatable tile = this.gameBoard.getBoard().get(new Coordinates(xCoordinate, yCoordinate));
+
+        return true;
+    }
 }

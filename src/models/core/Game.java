@@ -13,6 +13,7 @@ public class Game implements IGame {
     private final LinkedList<Cultivatable> remainingTiles;
     private final Market market;
     private Player currentPlayer;
+    private int growVegetablesThisRound;
     private static final String NULL_COMMAND = "Error: No such command exists.";
 
     public Game(List<Player> players, Random seed, int goldToWin) {
@@ -66,7 +67,7 @@ public class Game implements IGame {
     }
 
     public void growVegetables() {
-        this.currentPlayer.getGameBoard().growVegetablesOnBoard();
+        this.growVegetablesThisRound = this.currentPlayer.getGameBoard().getGrownVegetablesThisRound();
     }
 
     public void getEndgame() {
@@ -77,7 +78,7 @@ public class Game implements IGame {
 
     public void startTurn(Player player) {
         MessagePrinter.startTurnText(player.getPlayerName(),
-                player.getGameBoard().getGrownVegetablesCount(),
+                this.growVegetablesThisRound,
                 player.getGameBoard().getBarn().areVegetablesSpoiled());
     }
 

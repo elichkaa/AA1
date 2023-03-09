@@ -9,8 +9,7 @@ public class GameBoard {
     private final TreeMap<Coordinates, Cultivatable> board;
     private String[][] tileMatrixForPrinting;
     private final Barn barn;
-    private int xCoordinateOfBarn;
-    private int yCoordinateOfBarn;
+    private int grownVegetablesThisRound = 0;
 
     public GameBoard() {
         this.barn = new Barn();
@@ -37,10 +36,13 @@ public class GameBoard {
         return this.board;
     }
 
-    public void growVegetablesOnBoard() {
-        for (Cultivatable tile : board.values()) {
-            tile.decreaseVegetableCountdown();
+    public int getGrownVegetablesThisRound() {
+        for (Cultivatable tile : board.values().stream().filter(tile -> tile.getPlanted() != null).toList()) {
+            if (tile.growVegetable()) {
+                this.grownVegetablesThisRound++;
+            }
         }
+        return this.grownVegetablesThisRound;
     }
 
     private String[][] getTileMatrix() {
@@ -94,7 +96,7 @@ public class GameBoard {
                     .append(thirdRowBuilder.toString().replaceAll("\\|\\|", "|"));
         }
 
-        // TODO: get rid of last line separator
+        gameBoardBuilder.setLength(gameBoardBuilder.length() - 1);
         return gameBoardBuilder.toString();
     }
 

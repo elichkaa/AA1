@@ -10,11 +10,12 @@ import java.util.List;
 public abstract class Cultivatable extends Tile {
     private int countdownToGrow;
     private Vegetable plantedVegetable;
-
+    private int plantedVegetableCount;
     protected List<Vegetable> allowedVegetables;
 
     public Cultivatable(Coordinates coordinates) {
         super(coordinates);
+        this.plantedVegetableCount = 0;
     }
 
     public Vegetable getPlanted() {
@@ -29,6 +30,7 @@ public abstract class Cultivatable extends Tile {
 
         if (this.canPlant(vegetable)) {
             this.plantedVegetable = vegetable;
+            this.plantedVegetableCount = 1;
             this.countdownToGrow = vegetable.getRoundsToGrow();
             return true;
         } else {
@@ -41,19 +43,19 @@ public abstract class Cultivatable extends Tile {
         return this.allowedVegetables.contains(vegetable);
     }
 
-    public void decreaseVegetableCountdown() {
-        if (plantedVegetable != null && countdown > 0) {
+    public boolean growVegetable() {
+        if (plantedVegetable != null && countdownToGrow > 0) {
             this.countdownToGrow--;
+            return false;
+        } else if (countdownToGrow == 0) {
+            this.plantedVegetableCount *= 2;
+            return true;
         }
-    }
-
-    public int getRemainingCapacityToPlant() {
-        // TODO: return after countdown and growth implementation
-        return 0;
+        return false;
     }
 
     private String getCapacityRepresentation() {
-        return String.format("%d/%d", this.getRemainingCapacityToPlant(), this.capacity);
+        return String.format("%d/%d", this.plantedVegetableCount, this.capacity);
     }
 
     private String getCountdownRepresentation() {

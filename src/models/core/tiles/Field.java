@@ -4,7 +4,6 @@ import models.core.Coordinates;
 import models.core.Vegetable;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Field extends Cultivatable {
     private final static int storageCapacity = 4;

@@ -33,7 +33,7 @@ public class Barn extends Tile {
 
     public void updateCountdownIfAvailable() {
         if (countdown == 0) {
-            // vegetables are spoilt and they are removed
+            MessagePrinter.printOutput("The vegetables in your barn are spoiled.");
             this.storedVegetables = new HashMap<>();
         }
         if (this.countdown > 0) {
@@ -46,7 +46,7 @@ public class Barn extends Tile {
     }
 
     public void addVegetable(Vegetable vegetable) {
-        if (this.storedVegetables.size() == 0) {
+        if (this.storedVegetables.isEmpty()) {
             this.countdown = INITIAL_COUNTDOWN;
         }
         this.storedVegetables.put(vegetable, 1);

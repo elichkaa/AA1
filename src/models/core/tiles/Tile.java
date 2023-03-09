@@ -8,7 +8,6 @@ import java.util.List;
 // TODO: interface?
 public abstract class Tile {
     protected Coordinates coordinates;
-    protected int countdown;
     protected int capacity;
     protected String abbreviation = "";
     protected String name = "";
