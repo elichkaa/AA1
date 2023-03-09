@@ -18,5 +18,6 @@ public class Forest extends Cultivatable {
             }
         };
         this.abbreviation = "Fo";
+        this.name = "Forest";
     }
 }

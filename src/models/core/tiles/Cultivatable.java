@@ -2,6 +2,7 @@ package models.core.tiles;
 
 import models.core.Coordinates;
 import models.core.Vegetable;
+import util.ErrorPrinter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -9,6 +10,8 @@ import java.util.List;
 public abstract class Cultivatable extends Tile {
     private int countdownToGrow;
     private Vegetable plantedVegetable;
+
+    protected List<Vegetable> allowedVegetables;
 
     public Cultivatable(Coordinates coordinates) {
         super(coordinates);
@@ -18,17 +21,29 @@ public abstract class Cultivatable extends Tile {
         return this.plantedVegetable;
     }
 
-    public void plant(Vegetable vegetable) {
-        this.plantedVegetable = vegetable;
-        this.countdownToGrow = 0;
+    public boolean plant(Vegetable vegetable) {
+        if (this.plantedVegetable != null) {
+            ErrorPrinter.print("%s is already planted on this tile.", this.plantedVegetable.getName());
+            return false;
+        }
+
+        if (this.canPlant(vegetable)) {
+            this.plantedVegetable = vegetable;
+            this.countdownToGrow = vegetable.getRoundsToGrow();
+            return true;
+        } else {
+            ErrorPrinter.print("%s is not allowed on this tile.", vegetable.getName());
+        }
+        return false;
     }
 
-    public void increaseVegetableCountdown() {
-        if (plantedVegetable != null) {
-            this.countdownToGrow++;
-            if (this.countdownToGrow == this.plantedVegetable.getRoundsToGrow()) {
-                countdownToGrow = 0;
-            }
+    private boolean canPlant(Vegetable vegetable) {
+        return this.allowedVegetables.contains(vegetable);
+    }
+
+    public void decreaseVegetableCountdown() {
+        if (plantedVegetable != null && countdown > 0) {
+            this.countdownToGrow--;
         }
     }
 
@@ -53,7 +68,7 @@ public abstract class Cultivatable extends Tile {
         switch (abbreviation.length()) {
             case 1 -> abbreviationText += " " + this.abbreviation + " " + this.getCountdownRepresentation() + " ";
             case 2 -> abbreviationText += " " + this.abbreviation + " " + this.getCountdownRepresentation();
-            case 3 -> abbreviationText += this.abbreviation + " ";
+            case 3 -> abbreviationText += this.abbreviation + " " + this.getCountdownRepresentation();
         }
         return abbreviationText;
     }

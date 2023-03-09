@@ -2,8 +2,8 @@ package util;
 
 import java.util.List;
 
-public final class EntitiesPrinter {
-    private EntitiesPrinter() {
+public final class EntitiesBuilder {
+    private EntitiesBuilder() {
     }
 
     public String getTile(List<String> formattedRows) {

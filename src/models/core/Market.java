@@ -106,4 +106,8 @@ public class Market {
             add(Vegetable.SALAD);
         }};
     }
+
+    public int getVegetablePrice(Vegetable key) {
+        return this.market.get(key);
+    }
 }

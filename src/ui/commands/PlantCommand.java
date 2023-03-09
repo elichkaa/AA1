@@ -33,8 +33,10 @@ public class PlantCommand extends Command {
             return false;
         }
 
-        // TODO: redirect correct arguments to logic unit
+        int xCoordinateOfTile = Integer.parseInt(commandArgs.get(0));
+        int yCoordinateOfTile = Integer.parseInt(commandArgs.get(1));
+        String vegetableName = commandArgs.get(2);
 
-        return true;
+        return game.getCurrentPlayer().plantVegetable(vegetableName, xCoordinateOfTile, yCoordinateOfTile);
     }
 }

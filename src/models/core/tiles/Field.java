@@ -20,5 +20,6 @@ public class Field extends Cultivatable {
             }
         };
         this.abbreviation = "Fi";
+        this.name = "Field";
     }
 }

@@ -1,11 +1,15 @@
 package models.core;
 
+import models.core.tiles.Cultivatable;
 import ui.Command;
 
+import java.util.List;
+
 public interface IGame {
-    boolean processInput(Command command, Player player);
 
     Player getCurrentPlayer();
 
     Market getMarket();
+
+    Cultivatable getFirstRemainingTile();
 }

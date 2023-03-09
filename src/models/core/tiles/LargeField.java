@@ -9,5 +9,6 @@ public class LargeField extends Cultivatable {
         super(coordinates);
         this.capacity = storageCapacity;
         this.abbreviation = "LFi";
+        this.name = "Large Field";
     }
 }

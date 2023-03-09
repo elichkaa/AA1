@@ -1,15 +1,22 @@
 package models.core;
 
+import models.core.tiles.Cultivatable;
+import util.ErrorPrinter;
+import util.MessagePrinter;
+
+import java.util.HashMap;
+import java.util.List;
+
 public class Player {
     // TODO: create player interface and refactor QueensFarming class
     private final String playerName;
-    private final int gold;
+    private int gold;
     private boolean isWinner;
     GameBoard gameBoard;
 
-    public Player(String playerName, int startingGold) {
+    public Player(String playerName, int gold) {
         this.playerName = playerName;
-        this.gold = startingGold;
+        this.gold = gold;
         this.gameBoard = new GameBoard();
         this.isWinner = false;
     }
@@ -32,5 +39,77 @@ public class Player {
 
     public boolean isWinner() {
         return this.isWinner;
+    }
+
+    public boolean sellAllVegetables(Market market) {
+        HashMap<Vegetable, Integer> storedVegetables = this.gameBoard.getBarn().getStoredVegetables();
+        int initialGold = this.gold;
+        for (Vegetable vegetable : storedVegetables.keySet()) {
+            this.gold += market.getVegetablePrice(vegetable);
+        }
+        int initialSize = storedVegetables.size();
+        storedVegetables.clear();
+        MessagePrinter.printMessageAfterSell(initialSize, this.gold - initialGold);
+        return true;
+    }
+
+    public boolean sellSpecificVegetables(Market market, List<String> vegetablesToSell) {
+        int initialGold = this.gold;
+        HashMap<Vegetable, Integer> storedVegetables = this.gameBoard.getBarn().getStoredVegetables();
+        for (String vegetable : vegetablesToSell) {
+            Vegetable vegetableObject = Vegetable.valueOf(vegetable.toUpperCase());
+            if (storedVegetables.containsKey(vegetableObject)) {
+                this.gold += market.getVegetablePrice(vegetableObject);
+                storedVegetables.remove(vegetableObject);
+            } else {
+                ErrorPrinter.print("Barn does not contain a %s.", vegetable);
+                return false;
+            }
+        }
+        MessagePrinter.printMessageAfterSell(vegetablesToSell.size(), this.gold - initialGold);
+        return true;
+    }
+
+    public boolean buyVegetable(String vegetable, Market market) {
+        Vegetable vegetableObject = Vegetable.valueOf(vegetable.toUpperCase());
+        int vegetablePrice = market.getVegetablePrice(vegetableObject);
+        if (vegetablePrice > this.gold) {
+            ErrorPrinter.print("Player cannot afford the %s", vegetable);
+            return false;
+        }
+        this.gameBoard.getBarn().addVegetable(vegetableObject);
+        this.gold -= vegetablePrice;
+        return true;
+    }
+
+    public boolean plantVegetable(String vegetableName, int xCoordinate, int yCoordinate) {
+        Cultivatable tile = this.getGameBoard().getBoard().getOrDefault(new Coordinates(xCoordinate, yCoordinate),
+                null);
+        if (tile == null) {
+            ErrorPrinter.print("A tile with these coordinates does not exist.");
+            return false;
+        }
+        return tile.plant(Vegetable.valueOf(vegetableName.toUpperCase()));
+    }
+
+    public boolean buyLand(int xCoordinate, int yCoordinate, Cultivatable tile) {
+        if (tile == null) {
+            ErrorPrinter.print("No remaining tiles left. Unable to buy a new one.");
+            return false;
+        }
+        int tilePrice = this.gameBoard.calculateTilePrice(xCoordinate, yCoordinate);
+        if (this.gold < tilePrice) {
+            ErrorPrinter.print("Player %s does not have enough money to buy the tile.", this.playerName);
+            return false;
+        }
+        Cultivatable newTile = this.gameBoard.addTile(xCoordinate, yCoordinate, tile);
+        if (newTile != null) {
+            this.gold -= tilePrice;
+            MessagePrinter.printMessageAfterBuyingTile(tile.getTileName(), tilePrice);
+            return true;
+        } else {
+            ErrorPrinter.print("There are no adjacent tiles to these coordinates or coordinates were already taken.");
+            return false;
+        }
     }
 }

@@ -11,7 +11,7 @@ public abstract class Tile {
     protected int countdown;
     protected int capacity;
     protected String abbreviation = "";
-    protected List<Vegetable> allowedVegetables;
+    protected String name = "";
 
     protected Tile(Coordinates coordinates) {
         this.coordinates = coordinates;
@@ -29,8 +29,8 @@ public abstract class Tile {
         return this.abbreviation;
     }
 
-    public boolean canPlant(Vegetable vegetable) {
-        return this.allowedVegetables.contains(vegetable);
+    public String getTileName() {
+        return this.name;
     }
 
     protected String getRow(String text) {

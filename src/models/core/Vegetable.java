@@ -24,7 +24,7 @@ public enum Vegetable {
     }
 
     public String getShortName() {
-        return this.name().toLowerCase().substring(0, 1);
+        return this.name().substring(0, 1);
     }
 
     public int getRoundsToGrow() {

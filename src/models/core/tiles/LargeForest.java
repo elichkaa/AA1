@@ -9,5 +9,6 @@ public class LargeForest extends Cultivatable {
         super(coordinates);
         this.capacity = storageCapacity;
         this.abbreviation = "LFo";
+        this.name = "Large Forest";
     }
 }

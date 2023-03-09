@@ -1,13 +1,16 @@
 package models.core;
 
 import models.core.tiles.*;
+import util.ErrorPrinter;
+
 import java.util.*;
 
 public class GameBoard {
     private final TreeMap<Coordinates, Cultivatable> board;
     private String[][] tileMatrixForPrinting;
     private final Barn barn;
-    private List<Vegetable> soldVegetablesThisRound;
+    private int xCoordinateOfBarn;
+    private int yCoordinateOfBarn;
 
     public GameBoard() {
         this.barn = new Barn();
@@ -19,7 +22,7 @@ public class GameBoard {
             put(rightGarden.getCoordinates(), rightGarden);
             put(field.getCoordinates(), field);
         }};
-        System.out.println(this);
+        this.tileMatrixForPrinting = this.getTileMatrix();
     }
 
     public int getGrownVegetablesCount() {
@@ -30,9 +33,13 @@ public class GameBoard {
         return this.barn;
     }
 
+    public TreeMap<Coordinates, Cultivatable> getBoard() {
+        return this.board;
+    }
+
     public void growVegetablesOnBoard() {
         for (Cultivatable tile : board.values()) {
-            tile.increaseVegetableCountdown();
+            tile.decreaseVegetableCountdown();
         }
     }
 
@@ -48,7 +55,7 @@ public class GameBoard {
         boolean lastWasEmpty = false;
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix[i].length; j++) {
-                Tile tile = this.board.getOrDefault(
+                Cultivatable tile = this.board.getOrDefault(
                         new Coordinates(j - xCoordinateOfCentre, yCoordinateOfCentre - i), null);
                 if (j - xCoordinateOfCentre == 0 && yCoordinateOfCentre - i == 0) {
                     matrix[i][j] = this.barn.toString();
@@ -110,5 +117,31 @@ public class GameBoard {
 
         return (String.valueOf(emptyRow) + System.lineSeparator() +
                 String.valueOf(emptyRow) + System.lineSeparator() + String.valueOf(emptyRow));
+    }
+
+    public Cultivatable addTile(int xCoordinate, int yCoordinate, Cultivatable tile) {
+        if (this.tileIsNotContained(xCoordinate, yCoordinate)
+                && isAdjacentToOtherTiles(xCoordinate, yCoordinate)) {
+            this.board.put(new Coordinates(xCoordinate, yCoordinate), tile);
+            return tile;
+        } else {
+            return null;
+        }
+    }
+
+    // manhattan distance
+    public int calculateTilePrice(int xCoordinate, int yCoordinate) {
+        return 10 * (Math.abs(xCoordinate) + Math.abs(yCoordinate) - 1);
+    }
+
+    public boolean isAdjacentToOtherTiles(int xCoordinate, int yCoordinate) {
+        return this.board.containsKey(new Coordinates(xCoordinate - 1, yCoordinate))
+                || this.board.containsKey(new Coordinates(xCoordinate, yCoordinate - 1))
+                || this.board.containsKey(new Coordinates(xCoordinate + 1, yCoordinate));
+    }
+
+    public boolean tileIsNotContained(int xCoordinate, int yCoordinate) {
+        return !this.board.containsKey(new Coordinates(xCoordinate, yCoordinate))
+                && !(xCoordinate == 0 && yCoordinate == 0);
     }
 }

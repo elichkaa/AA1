@@ -1,11 +1,11 @@
 package ui.commands;
 
 import models.core.IGame;
-import models.core.Player;
 import ui.Command;
 import ui.CommandArgument;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class BuyCommand extends Command {
@@ -35,13 +35,16 @@ public class BuyCommand extends Command {
         switch (commandArgs.getFirst()) {
             case LAND_ARGUMENT -> {
                 if (commandArgs.size() < MAX_VALID_ARGUMENT_COUNT) {
-                    this.printErrorMessage(this.ERROR_PREFIX + SECOND_COORDINATE_MISSING,
+                    this.printErrorMessage(SECOND_COORDINATE_MISSING,
                             this.commandName + WHITESPACE + LAND_ARGUMENT);
                     return false;
                 }
                 if (this.areCoordinatesInvalid(commandArgs.subList(FIRST_COORDINATE_INDEX, SECOND_COORDINATE_INDEX + 1))) {
                     return false;
                 }
+                List<Integer> coordinates = commandArgs.stream().skip(1).map(Integer::parseInt).toList();
+                return game.getCurrentPlayer().buyLand(coordinates.get(0), coordinates.get(1),
+                        game.getFirstRemainingTile());
             }
             case VEGETABLE_ARGUMENT -> {
                 String vegetableName = commandArgs.get(VEGETABLE_NAME_INDEX);
@@ -51,13 +54,12 @@ public class BuyCommand extends Command {
                         vegetableName)) {
                     return false;
                 }
+                return game.getCurrentPlayer().buyVegetable(vegetableName, game.getMarket());
             }
             default -> {
                 this.printErrorMessage(this.commandName, INVALID_ARGUMENT_NAME, commandArgs.getFirst());
                 return false;
             }
         }
-
-        return true;
     }
 }

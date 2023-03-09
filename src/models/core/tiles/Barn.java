@@ -1,7 +1,10 @@
 package models.core.tiles;
 
 import models.core.Coordinates;
+import models.core.Market;
 import models.core.Vegetable;
+import util.ErrorPrinter;
+import util.MessagePrinter;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -17,15 +20,15 @@ public class Barn extends Tile {
     public Barn() {
         super(new Coordinates(xCoordinate, yCoordinate));
         this.capacity = storageCapacity;
-        this.allowedVegetables = new ArrayList<>();
         this.storedVegetables = new HashMap<>() {{
             put(Vegetable.TOMATO, 1);
             put(Vegetable.SALAD, 1);
             put(Vegetable.CARROT, 1);
             put(Vegetable.MUSHROOM, 1);
         }};
-        this.countdown = 6;
+        this.countdown = INITIAL_COUNTDOWN;
         this.abbreviation = "B";
+        this.name = "Barn";
     }
 
     public void updateCountdownIfAvailable() {
@@ -36,6 +39,10 @@ public class Barn extends Tile {
         if (this.countdown > 0) {
             this.countdown--;
         }
+    }
+
+    public HashMap<Vegetable, Integer> getStoredVegetables() {
+        return this.storedVegetables;
     }
 
     public void addVegetable(Vegetable vegetable) {
@@ -64,6 +71,33 @@ public class Barn extends Tile {
             this.storedVegetables.remove(firstMatchedVegetable);
         }*/
         return this.storedVegetables.keySet().stream().toList();
+    }
+
+    public int getGoldAfterSellingAllVegetables(Market market, int playerGold) {
+        int profit = playerGold;
+        for (Vegetable vegetable : storedVegetables.keySet()) {
+            profit += market.getVegetablePrice(vegetable);
+        }
+        int initialSize = storedVegetables.size();
+        storedVegetables.clear();
+        MessagePrinter.printMessageAfterSell(initialSize, profit - playerGold);
+        return profit;
+    }
+
+    public int getGoldAfterSellingSpecificVegetables(List<String> vegetablesToSell, Market market, int playerGold) {
+        int profit = playerGold;
+        for (String vegetable : vegetablesToSell) {
+            Vegetable vegetableObject = Vegetable.valueOf(vegetable.toUpperCase());
+            if (this.storedVegetables.containsKey(vegetableObject)) {
+                profit += market.getVegetablePrice(vegetableObject);
+                storedVegetables.remove(vegetableObject);
+            } else {
+                ErrorPrinter.print("Barn does not contain a %s.", vegetable);
+                return -1;
+            }
+        }
+        MessagePrinter.printMessageAfterSell(vegetablesToSell.size(), profit - playerGold);
+        return profit;
     }
 
     public List<String> getStringRepresentationAsList() {

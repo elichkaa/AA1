@@ -20,5 +20,6 @@ public class Garden extends Cultivatable {
             }
         };
         this.abbreviation = "G";
+        this.name = "Garden";
     }
 }

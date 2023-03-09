@@ -10,7 +10,7 @@ public class Game implements IGame {
     private final ArrayList<Player> players;
     private final int goldToWin;
     private final Random seed;
-    private final ArrayList<Tile> remainingTiles;
+    private final LinkedList<Cultivatable> remainingTiles;
     private final Market market;
     private Player currentPlayer;
     private static final String NULL_COMMAND = "Error: No such command exists.";
@@ -24,7 +24,6 @@ public class Game implements IGame {
         this.goldToWin = goldToWin;
     }
 
-    @Override
     public boolean processInput(Command command, Player player) {
         try {
             this.currentPlayer = player;
@@ -82,11 +81,11 @@ public class Game implements IGame {
                 player.getGameBoard().getBarn().areVegetablesSpoiled());
     }
 
-    private ArrayList<Tile> initializeRemainingTiles() {
+    private LinkedList<Cultivatable> initializeRemainingTiles() {
         if (players == null) {
             return null;
         }
-        ArrayList<Tile> tiles = new ArrayList<>();
+        LinkedList<Cultivatable> tiles = new LinkedList<>();
         for (int i = 0; i < 2 * players.size(); i++) {
             tiles.add(new Garden(null));
         }
@@ -111,5 +110,15 @@ public class Game implements IGame {
 
     public Market getMarket() {
         return this.market;
+    }
+
+    @Override
+    public Cultivatable getFirstRemainingTile() {
+        if (remainingTiles.isEmpty()) {
+            return null;
+        }
+        Cultivatable tile = this.remainingTiles.getFirst();
+        this.remainingTiles.remove(tile);
+        return tile;
     }
 }
