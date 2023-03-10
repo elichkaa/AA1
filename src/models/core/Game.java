@@ -5,6 +5,8 @@ import ui.Command;
 import util.MessagePrinter;
 
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class Game implements IGame {
     private final ArrayList<Player> players;
@@ -57,6 +59,18 @@ public class Game implements IGame {
         for (Player player : this.players) {
             if (player.getGold() >= goldToWin) {
                 player.winGame();
+            }
+        }
+    }
+
+    public void setWinnersByForce() {
+        if (this.hasNoWinner()) {
+            players.sort(Comparator.comparingInt(Player::getGold).reversed());
+            int maxGold = players.get(0).getGold();
+            for (Player player : this.players) {
+                if (player.getGold() >= maxGold) {
+                    player.winGame();
+                }
             }
         }
     }

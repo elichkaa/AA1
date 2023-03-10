@@ -7,7 +7,7 @@ import ui.SeedParser;
 import ui.commands.*;
 import ui.CommandParser;
 import ui.PlayerParser;
-import util.IOHandler;
+import util.MessagePrinter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +34,7 @@ public class Session {
     }
 
     public void init() {
-        IOHandler.printPixelArt();
+        MessagePrinter.printPixelArt();
         this.initializeCommands();
         Scanner scanner = new Scanner(System.in);
         Game game = this.initializeGame(scanner);
@@ -47,6 +47,8 @@ public class Session {
                     this.executeCommand(commandParser, game, player);
                 }
                 if (!this.sessionIsActive) {
+                    game.setWinnersByForce();
+                    game.getEndgame();
                     return;
                 }
                 this.turnIsActive = true;

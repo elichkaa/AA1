@@ -47,7 +47,7 @@ public final class MessagePrinter {
         }
         if (winners.size() == 1) {
             stringBuilder.append(String.format(ONE_WINNER_MESSAGE, winners.get(0)));
-        } else {
+        } else if (winners.size() > 1) {
             stringBuilder.append(winners.get(0));
             // TODO: maybe refactor so its prettier?
             for (int i = 1; i < winners.size(); i++) {
@@ -77,5 +77,21 @@ public final class MessagePrinter {
 
     public static void printMessageAfterBuyingTile(String tileName, int gold) {
         System.out.printf("You have bought a %s for %d gold.%n", tileName, gold);
+    }
+
+    public static void printPixelArt() {
+        System.out.print("""
+                                           _.-^-._    .--.   \s
+                                        .-'   _   '-. |__|   \s
+                                       /     |_|     \\|  |   \s
+                                      /               \\  |   \s
+                                     /|     _____     |\\ |   \s
+                                      |    |==|==|    |  |   \s
+                  |---|---|---|---|---|    |--|--|    |  |   \s
+                  |---|---|---|---|---|    |==|==|    |  |   \s
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                ^^^^^^^^^^^^^^^ QUEENS FARMING ^^^^^^^^^^^^^^^
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                """);
     }
 }

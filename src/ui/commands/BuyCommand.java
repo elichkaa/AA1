@@ -14,11 +14,10 @@ public class BuyCommand extends Command {
     private final static int FIRST_COORDINATE_INDEX = 1;
     private final static int SECOND_COORDINATE_INDEX = 2;
     private final static int VEGETABLE_NAME_INDEX = 1;
-    private final static String WHITESPACE = " ";
     private final static String LAND_ARGUMENT = "land";
     private final static String VEGETABLE_ARGUMENT = "vegetable";
     private final static String INVALID_VEGETABLE_NAME = "Invalid vegetable name for %s command. A vegetable with the name %s doesn't exist.";
-    private final static String SECOND_COORDINATE_MISSING = "The %s command is missing its second coordinate.";
+    private final static String INVALID_COORDINATES = "Coordinates for the %s command are invalid.";
 
     public BuyCommand(String commandName) {
         super(commandName);
@@ -35,8 +34,7 @@ public class BuyCommand extends Command {
         switch (commandArgs.getFirst()) {
             case LAND_ARGUMENT -> {
                 if (commandArgs.size() < MAX_VALID_ARGUMENT_COUNT) {
-                    this.printErrorMessage(SECOND_COORDINATE_MISSING,
-                            this.commandName + WHITESPACE + LAND_ARGUMENT);
+                    this.printErrorMessage(INVALID_COORDINATES);
                     return false;
                 }
                 if (this.areCoordinatesInvalid(commandArgs.subList(FIRST_COORDINATE_INDEX, SECOND_COORDINATE_INDEX + 1))) {
@@ -59,7 +57,7 @@ public class BuyCommand extends Command {
                         game.getCurrentPlayer().buyVegetable(vegetableName, game.getMarket()));
             }
             default -> {
-                this.printErrorMessage(this.commandName, INVALID_ARGUMENT_NAME, commandArgs.getFirst());
+                this.printErrorMessage(INVALID_ARGUMENT_NAME, commandArgs.getFirst());
                 return false;
             }
         }
