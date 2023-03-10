@@ -105,7 +105,7 @@ public class Player {
         Cultivatable newTile = this.gameBoard.addTile(xCoordinate, yCoordinate, tile);
         if (newTile != null) {
             this.gold -= tilePrice;
-            MessagePrinter.printMessageAfterBuyingTile(tile.getTileName(), tilePrice);
+            MessagePrinter.printMessageAfterBuyingTile(tile.getName(), tilePrice);
             return true;
         } else {
             ErrorPrinter.print("There are no adjacent tiles to these coordinates or coordinates were already taken.");
@@ -116,6 +116,32 @@ public class Player {
     public boolean harvestVegetable(int xCoordinate, int yCoordinate, int count) {
         Cultivatable tile = this.gameBoard.getBoard().get(new Coordinates(xCoordinate, yCoordinate));
 
+        if (tile == null || tile.getPlanted() == null) {
+            ErrorPrinter.print("Tile doesn't exist or nothing is planted on it.");
+            return false;
+        }
+        if (count < 0) {
+            ErrorPrinter.print("You cannot harvest a negative amount of vegetables.");
+            return false;
+        }
+
+        Vegetable plantedOnTile = tile.getPlanted();
+        if (tile.harvestVegetable(count)) {
+            this.putHarvestedVegetablesInBarn(plantedOnTile, count);
+        }
+
+        if (count == 1) {
+            MessagePrinter.printOutput("You have harvested " + count + " " + plantedOnTile.getName() + ".");
+        } else {
+            MessagePrinter.printOutput("You have harvested " + count + " " + plantedOnTile.getPlural() + ".");
+        }
+
         return true;
+    }
+
+    private void putHarvestedVegetablesInBarn(Vegetable vegetable, int count) {
+        for (int i = 0; i < count; i++) {
+            this.gameBoard.getBarn().addVegetable(vegetable);
+        }
     }
 }

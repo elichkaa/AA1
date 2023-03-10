@@ -25,13 +25,12 @@ public class Game implements IGame {
         this.goldToWin = goldToWin;
     }
 
-    public boolean processInput(Command command, Player player) {
+    public void processInput(Command command, Player player) {
         try {
             this.currentPlayer = player;
-            return command.execute(this);
+            command.execute(this);
         } catch (NullPointerException nullPointerException) {
             System.out.println(NULL_COMMAND);
-            return false;
         }
     }
 
@@ -62,7 +61,7 @@ public class Game implements IGame {
         }
     }
 
-    public void increaseBarnCountdown() {
+    public void decreaseBarnCountdown() {
         this.currentPlayer.getGameBoard().getBarn().updateCountdownIfAvailable();
     }
 

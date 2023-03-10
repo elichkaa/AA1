@@ -35,9 +35,10 @@ public class HarvestCommand extends Command {
             return false;
         }
 
-        //TODO: do something with correct coordinates and quantity
-
-        return true;
+        return this.updateActionsObserverAndReturnOperationExecutionResult(
+                game.getCurrentPlayer().harvestVegetable(Integer.parseInt(commandArgs.getFirst()),
+                        Integer.parseInt(commandArgs.get(1)),
+                        Integer.parseInt(commandArgs.getLast())));
     }
 
     private boolean canParseVegetableQuantityToInt(String quantity) {

@@ -1,7 +1,6 @@
 package models.core.tiles;
 
 import models.core.Coordinates;
-import models.core.Vegetable;
 
 import java.util.List;
 
@@ -20,15 +19,7 @@ public abstract class Tile {
         return coordinates;
     }
 
-    public int getCapacity() {
-        return this.capacity;
-    }
-
-    public String getAbbreviation() {
-        return this.abbreviation;
-    }
-
-    public String getTileName() {
+    public String getName() {
         return this.name;
     }
 
@@ -41,10 +32,8 @@ public abstract class Tile {
     @Override
     public String toString() {
         List<String> formattedRows = this.getStringRepresentationAsList();
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(formattedRows.get(0)).append(System.lineSeparator());
-        stringBuilder.append(formattedRows.get(1)).append(System.lineSeparator());
-        stringBuilder.append(formattedRows.get(2));
-        return stringBuilder.toString();
+        return formattedRows.get(0) + System.lineSeparator() +
+                formattedRows.get(1) + System.lineSeparator() +
+                formattedRows.get(2);
     }
 }

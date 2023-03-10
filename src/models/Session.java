@@ -43,21 +43,17 @@ public class Session {
         while (game.hasNoWinner()) {
             for (Player player : game.getPlayers()) {
                 game.startTurn(player);
-                while (this.turnIsActive && this.sessionIsActive
-                        && this.turnActionsCounter <= 2 && game.hasNoWinner()) {
-                    if (this.commandFailedToExecute(commandParser, game, player)) {
-                        continue;
-                    }
-                    this.turnActionsCounter++;
+                while (this.turnIsActive && this.sessionIsActive && this.turnActionsCounter <= 2) {
+                    this.executeCommand(commandParser, game, player);
                 }
                 if (!this.sessionIsActive) {
                     return;
                 }
                 this.turnIsActive = true;
-                turnActionsCounter = 1;
+                this.turnActionsCounter = 1;
                 game.organizeMarket(player);
             }
-            game.increaseBarnCountdown();
+            game.decreaseBarnCountdown();
             game.growVegetables();
             game.setWinnerIfAvailable();
         }
@@ -101,7 +97,7 @@ public class Session {
         return true;
     }
 
-    private boolean commandFailedToExecute(CommandParser commandParser, Game game, Player player) {
+    private void executeCommand(CommandParser commandParser, Game game, Player player) {
         Command command;
         command = commandParser.parse();
         while (!isCommandAvailable(command)) {
@@ -109,6 +105,7 @@ public class Session {
         }
         command.addStateObserver(x -> this.sessionIsActive = false);
         command.addTurnObserver(x -> this.turnIsActive = false);
-        return !game.processInput(command, player);
+        command.addActionObserver(x -> this.turnActionsCounter++);
+        game.processInput(command, player);
     }
 }

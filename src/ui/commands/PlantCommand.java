@@ -1,7 +1,6 @@
 package ui.commands;
 
 import models.core.IGame;
-import models.core.Player;
 import ui.Command;
 import ui.CommandArgument;
 
@@ -37,6 +36,7 @@ public class PlantCommand extends Command {
         int yCoordinateOfTile = Integer.parseInt(commandArgs.get(1));
         String vegetableName = commandArgs.get(2);
 
-        return game.getCurrentPlayer().plantVegetable(vegetableName, xCoordinateOfTile, yCoordinateOfTile);
+        return this.updateActionsObserverAndReturnOperationExecutionResult(
+                game.getCurrentPlayer().plantVegetable(vegetableName, xCoordinateOfTile, yCoordinateOfTile));
     }
 }

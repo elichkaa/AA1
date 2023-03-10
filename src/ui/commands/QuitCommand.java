@@ -1,7 +1,6 @@
 package ui.commands;
 
 import models.core.IGame;
-import models.core.Player;
 import ui.Command;
 
 public class QuitCommand extends Command {

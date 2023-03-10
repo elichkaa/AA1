@@ -1,9 +1,10 @@
 package ui;
 
 import models.core.IGame;
+import ui.observers.ActionObserver;
 import util.ErrorPrinter;
-import util.StateObserver;
-import util.TurnObserver;
+import ui.observers.StateObserver;
+import ui.observers.TurnObserver;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -19,6 +20,7 @@ public abstract class Command implements ICommand {
     protected List<CommandArgument> commandArguments;
     protected StateObserver stateObserver;
     protected TurnObserver turnObserver;
+    protected ActionObserver actionObserver;
     public Command(String commandName) {
         this.commandName = commandName;
     }
@@ -90,5 +92,18 @@ public abstract class Command implements ICommand {
 
     public void addTurnObserver(TurnObserver observer) {
         this.turnObserver = observer;
+    }
+
+    @Override
+    public void addActionObserver(ActionObserver observer) {
+        this.actionObserver = observer;
+    }
+
+    public boolean updateActionsObserverAndReturnOperationExecutionResult(boolean action) {
+        if (action) {
+            this.actionObserver.update("Successful action.");
+            return true;
+        }
+        return false;
     }
 }

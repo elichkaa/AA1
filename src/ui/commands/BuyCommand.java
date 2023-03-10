@@ -43,8 +43,9 @@ public class BuyCommand extends Command {
                     return false;
                 }
                 List<Integer> coordinates = commandArgs.stream().skip(1).map(Integer::parseInt).toList();
-                return game.getCurrentPlayer().buyLand(coordinates.get(0), coordinates.get(1),
-                        game.getFirstRemainingTile());
+                return this.updateActionsObserverAndReturnOperationExecutionResult(
+                        game.getCurrentPlayer().buyLand(coordinates.get(0), coordinates.get(1),
+                                game.getFirstRemainingTile()));
             }
             case VEGETABLE_ARGUMENT -> {
                 String vegetableName = commandArgs.get(VEGETABLE_NAME_INDEX);
@@ -54,7 +55,8 @@ public class BuyCommand extends Command {
                         vegetableName)) {
                     return false;
                 }
-                return game.getCurrentPlayer().buyVegetable(vegetableName, game.getMarket());
+                return this.updateActionsObserverAndReturnOperationExecutionResult(
+                        game.getCurrentPlayer().buyVegetable(vegetableName, game.getMarket()));
             }
             default -> {
                 this.printErrorMessage(this.commandName, INVALID_ARGUMENT_NAME, commandArgs.getFirst());

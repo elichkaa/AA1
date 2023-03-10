@@ -44,14 +44,31 @@ public abstract class Cultivatable extends Tile {
     }
 
     public boolean growVegetable() {
-        if (plantedVegetable != null && countdownToGrow > 0) {
-            this.countdownToGrow--;
-            return false;
-        } else if (countdownToGrow == 0) {
-            this.plantedVegetableCount *= 2;
-            return true;
+        if (plantedVegetable != null) {
+            if (countdownToGrow > 0) {
+                this.countdownToGrow--;
+            }
+            if (countdownToGrow == 0) {
+                this.plantedVegetableCount *= 2;
+                return true;
+            }
         }
+
         return false;
+    }
+
+    public boolean harvestVegetable(int count) {
+        if (count > this.plantedVegetableCount) {
+            ErrorPrinter.print("There are not that many vegetables grown on the tile.");
+            return false;
+        }
+        this.plantedVegetableCount -= count;
+        if (this.plantedVegetableCount == 0) {
+            countdownToGrow = 0;
+        } else if (this.countdownToGrow == 0) {
+            this.countdownToGrow = this.plantedVegetable.getRoundsToGrow();
+        }
+        return true;
     }
 
     private String getCapacityRepresentation() {

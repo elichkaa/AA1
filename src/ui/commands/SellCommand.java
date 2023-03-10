@@ -35,7 +35,8 @@ public class SellCommand extends Command {
                 return false;
             }
             if (vegetablesToSell.getFirst().equals(ALL_ARGUMENT)) {
-                return game.getCurrentPlayer().sellAllVegetables(game.getMarket());
+                return this.updateActionsObserverAndReturnOperationExecutionResult(
+                        game.getCurrentPlayer().sellAllVegetables(game.getMarket()));
             }
         }
 
@@ -47,6 +48,7 @@ public class SellCommand extends Command {
             }
         }
 
-        return game.getCurrentPlayer().sellSpecificVegetables(game.getMarket(), vegetablesToSell);
+        return this.updateActionsObserverAndReturnOperationExecutionResult(
+                game.getCurrentPlayer().sellSpecificVegetables(game.getMarket(), vegetablesToSell));
     }
 }
